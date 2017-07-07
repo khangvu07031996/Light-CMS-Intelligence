@@ -1,0 +1,10 @@
+var express = require('express');
+var router = express.Router();
+var passport = require('passport');
+var SessionData = require('../models/session');
+router.post("/session",SessionData.addSession);
+router.get("/session",SessionData.getAllSession);
+router.delete("/session/:id",SessionData.deleteSession);
+router.put("/session/:id",SessionData.UpdateSession);
+router.get("/session/:id",SessionData.getSessionById);
+module.exports = router;

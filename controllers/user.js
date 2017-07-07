@@ -1,0 +1,10 @@
+var express = require('express');
+var router = express.Router();
+var passport = require('passport');
+var Userdata = require('../models/user');
+router.post('/user',Userdata.addUser);
+router.get('/user',Userdata.getAllUser);
+router.delete('/delete/:id',Userdata.deleteUser);
+router.put('/update/:id',Userdata.updateUser);
+router.get('/user/:id',Userdata.getUserById);
+module.exports = router;
