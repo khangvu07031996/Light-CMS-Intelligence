@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
-
+var passport  = require('passport');
+var localStrategy = require('passport-local').Strategy;
 var UserSchema = mongoose.Schema({
     username :{
         type : String,
@@ -29,6 +30,10 @@ module.exports = {
 							.digest('base64');
 		dbUser.email = req.body.email;
 		dbUser.name = req.body.name;
+		// Validation 
+		//req.checkBody('name', 'Name is required').notEmpty();
+		//req.checkBody('email', 'Email is required').notEmpty();
+
 		dbUser.save(function(err){
 			if(err){
 				response = {"error" : true,"message" : "Error adding data"};
@@ -118,6 +123,19 @@ module.exports = {
 			}
 		})
 
+	},
+	//---------------getUserByUsername--------------
+	getUserByUsername : function (username,callback){
+		var query = {username:username};
+		User.findOne(query,callback);
+
+	},
+	//-----------comparePassword--------------------
+	comparePassword :function(candicatePassword,hash,callback){
+		bcrypt.compare(candicatePassword,hash,function(err,isMath){
+			if(err) throw err;
+			callback(null,isMath);
+		})
 	}
 
 }
