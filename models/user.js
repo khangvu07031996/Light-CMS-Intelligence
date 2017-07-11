@@ -158,13 +158,5 @@ module.exports = {
 		User.findById(id,callback);
 	},
 	//-----------comparePassword--------------------
-	comparePassword: function (candidatePassword, hash, callback) {
-		bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
-			if (err) throw err;
-			
-			callback(null, isMatch);
-			
-		});
-	}
 
 }
