@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var Userdata = require('../models/user');
 var localStrategy = require('passport-local').Strategy;
-
+var userMiddleware = require('../middleware/userMidleware');
 router.post('/user', Userdata.addUser);
 router.get('/user', Userdata.getAllUser);
 router.delete('/delete/:id', Userdata.deleteUser);
@@ -26,17 +26,9 @@ function ensureAuthenticated2(req, res, next) {
 router.get('/404', function (req, res) {
 	res.render('404');
 })
-router.get('/', ensureAuthenticated, function (req, res) {
+router.get('/', userMiddleware.ensureAuthenticated, function (req, res) {
 	res.render('index');
 });
-function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) {
-		return next();
-	} else {
-		req.flash('error_msg', 'You are not logged in');
-		res.redirect('/login');
-	}
-}
 
 
 router.get('/login', function (req, res) {
