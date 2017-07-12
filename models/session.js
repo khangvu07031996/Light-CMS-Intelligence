@@ -41,11 +41,13 @@ module.exports = {
 		var response = {};
 		Session.find(function(err,data){
 			 if(err) {
+				
                 response = {"error" : true,"message" : "Error fetching data"};
             } else {
-                response = {"error" : false,"message" : data};
+				
+               res.render('SessionForm',{Session:data});
             }
-            res.json(response);
+           
 		})
 	},
 	//---------------------deleteSession--------------------
@@ -59,9 +61,11 @@ module.exports = {
 					if(err){
 						response = {"error" : true,"message" : "Error deleting data"};
 					} else {
-						response = {"error" : false ,"message" : "Data associated with "+req.params.id+"is deleted"};
+						
+						res.redirect('/sessionForm');
 					}
-					 res.json(response);
+
+					
 				})
 			}
 		})

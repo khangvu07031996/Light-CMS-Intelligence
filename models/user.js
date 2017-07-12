@@ -80,21 +80,21 @@ module.exports = {
 	},
 	// -----------------getUserById-------------------------------------
 	
-	/*getUserById: function (req, res) {
+	getUserByIdDone: function (req, res) {
 		var response = {};
 		User.findById({ _id: req.params.id }, function (err, data) {
 			if (err) {
 				response = { "error": true, "message": "Error fetching data" };
 			} else {
-				response = { "error": false, "message": data };
+				res.render('index',{user:data});
 			}
-			res.json(response);
+			
 
 		})
 
 
 
-	},*/
+	},
 	//---------------delete User----------------------
 
 	deleteUser: function (req, res) {
