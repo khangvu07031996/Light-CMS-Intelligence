@@ -15,7 +15,7 @@ var imageSchema = new Schema({
    // caption: String,
     photographer: String,
     medialist: {
-        Teaser: "",
+        teaser: "",
         searchResult: "",
         articlePreview: ""
     },
@@ -52,14 +52,7 @@ module.exports = {
     all: function () {
         console.log("This is image model");
 
-        var kitty = new image({ heading: 'Photo one' });
-        kitty.save(function (err) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('meow');
-            }
-        });
+       
     },
 
     
@@ -68,12 +61,12 @@ module.exports = {
     upload: function (req, res) {
 
         
-        console.log('file::::::::::: ' + req.file);
-        console.log(req.file.path);
+        console.log(req.file);
+        console.log('path = ' + req.file.path);
         //res.send("Upload successful");
     },
 
-    insert: function (req, res, cb) {
+    insert: function (req, res, objinfo, cb) {
         console.log("in add");
         var p = new image();
         //p.heading = req.body.heading;
@@ -82,20 +75,78 @@ module.exports = {
         //p.caption = req.body.caption;
         //p.photographer = req.body.photographer;
         p.heading = 'heading';
-        p.media = req.file.path;
+        p.media = objinfo.path;
         p.description = 'description';
         p.caption = 'caption';
         p.photographer = 'photorapher';
         p.usercreate = 'unknow';
-        
+
+        p.medialist.teaser = objinfo.teaser;
+        p.medialist.searchResult = objinfo.searchResult;
+        p.medialist.articlePreview = objinfo.articlePreview;
+
         p.save(function (err) {
             if (err) {
                 res.send(err);
             }
             console.log("inserted");
-            //res.send({ message: 'Product Created ----!' })
+            //res.send({ message: 'image Created ----!' })
             //res.send({ title: '--' + p.title });
             cb(err, p);
         });
-    } 
+    },
+
+    edit: function (req, res) {
+
+
+        image.findById(req.params.image_id, function (err, rows) {
+            if (err)
+                res.send(err);
+            //res.json(rows);
+            res.render('edit', { title: "Edit image", data: rows });
+        });
+    },
+
+    update: function (req, res) {
+
+        image.findById(req.params.image_id, function (err, p) {
+            if (err) {
+                res.send(err);
+            }
+            //p.heading = req.body.heading;
+            //p.media = req.body.media;
+            //p.description = req.body.description;
+            //p.caption = req.body.caption;
+            //p.photographer = req.body.photographer;
+            p.heading = 'heading';
+            //p.media = objinfo.path;
+            p.description = 'description';
+            p.caption = 'caption';
+            p.photographer = 'photorapher';
+            p.usercreate = 'unknow';
+
+        //p.medialist.teaser = objinfo.teaser;
+        //p.medialist.searchResult = objinfo.searchResult;
+        //p.medialist.articlePreview = objinfo.articlePreview;
+
+            p.save(function (err) {
+                if (err)
+                    res.send(err);
+
+                res.json({ message: 'image updated!' });
+            });
+
+        });
+    },
+
+    delete: function (req, res) {
+        console.log('_id = ' + req.params.image_id)
+        image.remove({ _id: req.params.image_id }, function (err, prod) {
+            if (err) {
+                res.send(err);
+            }
+            res.json({ message: 'Successfully deleted' });
+        })
+    }
+
 };
