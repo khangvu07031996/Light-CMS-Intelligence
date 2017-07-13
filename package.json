@@ -13,6 +13,7 @@
     "bcrypt": "^1.0.2",
     "bcryptjs": "*",
     "body-parser": "*",
+    "bootstrap-datetimepicker-npm": "^4.17.37-npm",
     "connect-flash": "*",
     "cookie-parser": "^1.4.1",
     "ejs": "^2.5.6",
@@ -25,6 +26,7 @@
     "mongoose": "*",
     "passport": "*",
     "passport-http": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "save": "^2.3.1"
   }
 }

@@ -7,6 +7,9 @@ function showmessage(){
 		time: ''
 	});
 }
+function addSession(){
+    window.location.href = '/SessionForm/add';
+}
 $(function () {
 
     setTimeout(showmessage,2000);
