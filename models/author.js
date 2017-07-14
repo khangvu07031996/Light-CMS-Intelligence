@@ -14,13 +14,21 @@ var AuthorSchema = mongoose.Schema({
 		type: String
 	},
 	active: {
-		type: Boolean,
-		required:true
+		type: String
 	},
 	image: {
-		data: Buffer,
-		contentType: String 
+		type: String
+	},
+	date_update: {
+		type: Date,
+		"default" : Date.now
+	
+	},
+	date_created: {
+		type: Date,
+		"default" : Date.now
 	}
+	
 })
 
 var Author = module.exports = mongoose.model('Author', AuthorSchema);
@@ -32,8 +40,10 @@ module.exports = {
 		AuthorData.dob = new Date(req.body.dob);
 		AuthorData.email = req.body.email;
 		AuthorData.active = req.body.active;
-		AuthorData.image.data = fs.readFileSync(req.body.image);
-		AuthorData.image.contentType = "image/png";
+		AuthorData.image = req.body.image;
+		
+		AuthorData.date_update = new Date(req.body.date_update);
+		AuthorData.date_created = new Date(req.body.date_created);
 		AuthorData.save(function(err){
 			if(err){
 				response = {"error" : true,"message" : "Error adding data"};
@@ -101,8 +111,14 @@ module.exports = {
 				if(req.body.email !== undefined){
 					dataAuthor.email = req.body.email;
 				}
-				dataAuthor.image.data = fs.readFileSync(req.body.image);
-				dataAuthor.image.contentType = "image/png";
+				if(req.body.date_created !== undefined){
+					dataAuthor.date_created = new Date(req.body.date_created);
+				}
+				if(req.body.date_update !== undefined){
+					dataAuthor.date_update = new Date(req.body.date_update);
+				}
+				dataAuthor.image = req.body.image;
+			
 				dataAuthor.save(function(err){
 					if(err){
                          response = {"error" : true,"message" : "Error deleting data"};
