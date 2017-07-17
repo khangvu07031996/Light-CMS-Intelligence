@@ -110,7 +110,7 @@ module.exports = {
 				dataSession.save(function(err){
 					if(err){
 						response = {"error" : true,"message" : "Error updating data"};
-
+						
 					} else {
 						
 					}

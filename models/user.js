@@ -38,7 +38,7 @@ module.exports = {
 		if (errors) {
 			res.render('register', {
 				errors: errors
-			});
+			},{layout:false});
 		} else {
 			
 			var dbUser = new User();
@@ -54,7 +54,7 @@ module.exports = {
 				}
 			});
 			req.flash('success_msg', 'You are registered and can now login');
-			res.redirect('/login');
+			res.redirect('/login',{layout:false});
 		}
 	},
 	createUser : function(newUser,callback){

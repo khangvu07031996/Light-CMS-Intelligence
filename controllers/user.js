@@ -13,7 +13,7 @@ router.post('/register', Userdata.addUser);
 
 // Get Homepage
 router.get('/register', ensureAuthenticated2, function (req, res) {
-	res.render('register');
+	res.render('register',{layout:false});
 });
 function ensureAuthenticated2(req, res, next) {
 	if (req.isAuthenticated()) {
@@ -24,7 +24,7 @@ function ensureAuthenticated2(req, res, next) {
 	}
 }
 router.get('/404', function (req, res) {
-	res.render('404');
+	res.render('404',{layout:false});
 })
 router.get('/', userMiddleware.ensureAuthenticated, function (req, res) {
 	res.render('index');
@@ -33,7 +33,7 @@ router.get('/', userMiddleware.ensureAuthenticated, function (req, res) {
 
 router.get('/login', function (req, res) {
 
-	res.render('login');
+	res.render('login',{layout:false});
 });
 router.get('/profile', function (req, res) {
 
