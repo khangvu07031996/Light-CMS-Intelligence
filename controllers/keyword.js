@@ -2,12 +2,13 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var keywordData = require('../models/keyword');
-router.get('/keyWordForm',function(req,res){
-    res.render(keywordForm);
+
+router.get('/Keyword/add',function(req,res){
+    res.render('addKeyword');
 })
-router.post('/keyword',keywordData.addKeyWord);
-router.get('/keyword/:id',keywordData.getKeyWordById);
-router.put('/keyword/:id',keywordData.updateKeyWord);
-router.get('/keyword/',keywordData.getAllKeyWord);
-router.delete('/keyword/:id',keywordData.deleteKeyword);
+router.post('/Keyword/add',keywordData.addKeyWord);
+router.get('/Keyword/edit/:id',keywordData.getKeyWordById);
+router.post('/Keyword/edit/:id',keywordData.updateKeyWord);
+router.get('/KeywordForm',keywordData.getAllKeyWord);
+router.get('/Keyword/delete/:id',keywordData.deleteKeyword);
 module.exports = router;
