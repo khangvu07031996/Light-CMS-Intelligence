@@ -321,6 +321,7 @@
                             <li><a class="" href="/AuthorForm">AuthorForm</a></li>
                             <li><a class="" href="/SessionForm">SessionForm</a></li>
                             <li><a class="" href="/KeywordForm">KeywordForm</a></li>
+                            <li><a class="" href="/addArticles">ArticleForm</a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">
@@ -385,9 +386,9 @@
         <section id="main-content">
             <section class="wrapper">
                 <!--overview start-->
-                
+
                 <div class="row">
-                    <div class = "col-md-12">
+                    <div class="col-md-12">
                         {{{body}}}
                     </div>
                 </div>
@@ -449,15 +450,17 @@
         <script src="/js/charts.js"></script>
         <script src="/js/bootstrap-datepicker.min.js"></script>
         <script src="/js/jquery.slimscroll.min.js"></script>
-         <script src="/js/bootstrap-datepicker.min.js"></script>
-         <script src="/js/bootstrap-toggle.min.js"></script>
-     
+        <script src="/js/bootstrap-datepicker.min.js"></script>
+        <script src="/js/bootstrap-toggle.min.js"></script>
+        <script src="/js/tinymce/tinymce.min.js"></script>
+        <script>tinymce.init({ selector:'textarea' });</script>
+        
         <script>
-             $(function () {
+            $(function () {
                 $('#datetimepicker1').datepicker();
                 $('#datetimepicker2').datepicker();
                 $('#datetimepicker3').datepicker();
-             });
+            });
             //knob
             $(function () {
                 $(".knob").knob({

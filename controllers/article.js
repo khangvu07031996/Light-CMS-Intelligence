@@ -12,4 +12,7 @@ router.delete("/article/:id", ArticleData.deleteArticle);
 router.get("/article/:id", ArticleData.getArticleById);
 //update article
 router.put("/article/:id",ArticleData.updateArticle);
+router.get("/addArticles",function(req,res){
+    res.render("addArticles");
+})
 module.exports = router;
