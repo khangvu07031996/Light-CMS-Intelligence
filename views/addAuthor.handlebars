@@ -1,109 +1,111 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-files-o"></i> Form Validation</h3>
+        <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+            <li><i class="icon_document_alt"></i>Forms</li>
+            <li><i class="fa fa-files-o"></i>AddAuthors</li>
+        </ol>
+    </div>
+</div>
+<!-- Form validations -->
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+                Form validations
+            </header>
+            <div class="panel-body">
+                <div class="form">
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h3 class="page-header"><i class="fa fa-files-o"></i> Form Validation</h3>
-                        <ol class="breadcrumb">
-                            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                            <li><i class="icon_document_alt"></i>Forms</li>
-                            <li><i class="fa fa-files-o"></i>Form Validation</li>
-                        </ol>
-                    </div>
-                </div>
-                <!-- Form validations -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <section class="panel">
-                            <header class="panel-heading">
-                                Form validations
-                            </header>
-                            <div class="panel-body">
-                                <div class="form">
-
-                                    <form action="/author/upload" method="post" class="form-validate form-horizontal" enctype="multipart/form-data">
-                                        <div class = "form-group">
-                                            <label for="cname" class="control-label col-lg-2"> Name <span class="required">*</span></label>
-                                            <div class="col-lg-10">
-                                                <input class="form-control" id="cname" name="name" minlength="5" type="text" required />
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label for="cname" class="control-label col-lg-2"> Date Of Birth <span class="required">*</span></label>
-                                            <div class="col-lg-10">
-                                                <div class='input-group date' id='datetimepicker3'>
-                                                    <input type='text' class="form-control" name="dob" />
-                                                    <span class="input-group-addon">
+                    <form action="/author/upload" method="post" class="form-validate form-horizontal" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="cname" class="control-label col-lg-2"> Name <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="cname" name="name" minlength="5" type="text" required />
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> Date Of Birth <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <div class='input-group date' id='datetimepicker3'>
+                                    <input type='text' class="form-control" name="dob" />
+                                    <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label for="cname" class="control-label col-lg-2"> Date Created <span class="required">*</span></label>
-                                            <div class="col-lg-10">
-                                                <div class='input-group date' id='datetimepicker1'>
-                                                    <input type='text' class="form-control" name="date_created" />
-                                                    <span class="input-group-addon">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> Date Created <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <div class='input-group date' id='datetimepicker1'>
+                                    <input type='text' class="form-control" name="date_created" />
+                                    <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label for="cname" class="control-label col-lg-2"> Date Update <span class="required">*</span></label>
-                                            <div class="col-lg-10">
-                                                <div class='input-group date' id='datetimepicker2'>
-                                                    <input type='text' class="form-control" name="date_update" />
-                                                    <span class="input-group-addon">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> Date Update <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <div class='input-group date' id='datetimepicker2'>
+                                    <input type='text' class="form-control" name="date_update" />
+                                    <span class="input-group-addon">
                                                     <span class="glyphicon glyphicon-calendar"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="cname" class="control-label col-lg-2"> image <span class="required">*</span></label>
-                                            <div class="input-group image-preview col-lg-10" style="padding-left:15px ; padding-right:15px;">
-                                                <input type="text" class="form-control image-preview-filename" name="image">
-                                                <!-- don't give a name === doesn't send on POST/GET -->
-                                                <span class="input-group-btn">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cname" class="control-label col-lg-2"> image <span class="required">*</span></label>
+                            <div class="input-group image-preview col-lg-10" style="padding-left:15px ; padding-right:15px;">
+                                <input type="text" class="form-control image-preview-filename" name="image">
+                                <!-- don't give a name === doesn't send on POST/GET -->
+                                <span class="input-group-btn">
                                                     <!-- image-preview-clear button -->
                                                     <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
-                                                        <span class="glyphicon glyphicon-remove"></span>                                                Clear
-                                                </button>
-                                                <!-- image-preview-input -->
-                                                <div class="btn btn-default image-preview-input">
-                                                    <span class="glyphicon glyphicon-folder-open"></span>
-                                                    <span class="image-preview-input-title">Browse</span>
-                                                    <input type="file" accept="image/png, image/jpeg, image/gif" name="file" />
-                                                    <!-- rename it -->
-                                                </div>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1" class="control-label col-lg-2" >Email address</label>
-                                           
-                                            <div class="col-lg-10">
-                                                 <input class="form-control" id="exampleInputEmail1" type="email" name = 'email' placeholder="Enter email">
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
-                                            <div class="col-lg-10">
-                                                <input class="form-control" id="cname" name="active" minlength="5" type="text" required />
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <div class="col-lg-offset-2 col-lg-10">
-                                                <button class="btn btn-primary" type="submit">submit</button>
-
-                                            </div>
-                                        </div>
-                                    </form>
+                                                        <span class="glyphicon glyphicon-remove"></span>                                Clear
+                                </button>
+                                <!-- image-preview-input -->
+                                <div class="btn btn-default image-preview-input">
+                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                    <span class="image-preview-input-title">Browse</span>
+                                    <input type="file" accept="image/png, image/jpeg, image/gif" name="file" />
+                                    <!-- rename it -->
                                 </div>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="control-label col-lg-2">Email address</label>
+
+                            <div class="col-lg-10">
+                                <input class="form-control" id="exampleInputEmail1" type="email" name='email' placeholder="Enter email">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <select class="form-control" id="sel1" name = "active" >
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                    <option>Inprocess</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="btn btn-primary" type="submit">submit</button>
 
                             </div>
-                        </section>
-                    </div>
+                        </div>
+                    </form>
                 </div>
-                <!-- page end-->
-          
+
+            </div>
+        </section>
+    </div>
+</div>
+<!-- page end-->
