@@ -5,7 +5,16 @@ var KeywordSchema = mongoose.Schema({
     name :{
         type : String,
         index: true
-    }
+    },
+    date_update: {
+		type: Date,
+		"default": Date.now
+
+    },
+    date_created: {
+		type: Date,
+		"default": Date.now
+	}
 })
 var Keyword = module.exports = mongoose.model('Keyword', KeywordSchema);
 module.exports = {
@@ -14,13 +23,15 @@ module.exports = {
         var response = {};
         var KeywordData = new Keyword();
         KeywordData.name = req.body.name;
+        KeywordData.date_created = new Date(req.body.date_created);
+        KeywordData.date_update = new Date(req.body.date_update);
         KeywordData.save(function(err){
             if(err){
 				response = {"error" : true,"message" : "Error adding data"};
 			} else {
-				response = {"error" : false,"message" : "Data added"};
+				res.redirect('/keywordForm');
 			}
-			res.json(response);
+			
         })
     },
     //---------------------getAllKeyWord----------------------------
@@ -30,9 +41,9 @@ module.exports = {
              if(err) {
                 response = {"error" : true,"message" : "Error fetching data"};
             } else {
-                response = {"error" : false,"message" : data};
+                res.render('keywordForm',{keyword:data});
             }
-            res.json(response);
+           
         })
     },
     //--------------------getKeyWordById-------------------------
@@ -42,9 +53,9 @@ module.exports = {
             if(err) {
                 response = {"error" : true,"message" : "Error fetching data"};
             } else {
-                response = {"error" : false,"message" : data};
+                res.render('editKeyword',{keyword:data})
             }
-            res.json(response);
+            
         })
     },
     //-----------------------------deleteKeyWord---------------------
@@ -58,10 +69,9 @@ module.exports = {
                     if(err){
 						response = {"error" : true,"message" : "Error deleting data"};
 					} else {
-						response = {"error" : false ,"message" : "Data associated with "+req.params.id+"is deleted"};
+						res.redirect('/keywordForm')
 					}
-					 res.json(response);
-
+					 
                 })
             }
         })
@@ -76,13 +86,15 @@ module.exports = {
                 if(req.body.name !== undefined){
                     dataKeyword.name = req.body.name;
                 }
+                dataKeyword.date_created = req.body.date_created;
+                dataKeyword.date_update = req.body.date_update;
                 dataKeyword.save(function(err){
                     if(err){
                          response = {"error" : true,"message" : "Error deleting data"};
                     } else{
-                        response = {"error" : false,"message" : "Data is updated for "+req.params.id};
+                      res.redirect('/keywordForm');
                     }
-                    res.json(response);
+                    
                 })
             }
         })
