@@ -121,3 +121,6 @@ module.exports = {
 	}
 
 }
+module.exports.getAuthorNames = function(callback){
+	Author.find(callback);
+}

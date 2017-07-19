@@ -28,7 +28,11 @@
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> section <span class="required">*</span></label>
                             <div class="col-lg-10">
-                                <input class="form-control" id="cname" name="section" minlength="5" type="text" required />
+                                <select class="form-control" id="sel1" name = "author" >
+                                    {{#each Section}}
+                                    <option>{{name}}</option>
+                                    {{/each}}
+                                </select>
                             </div>
                         </div>
                         <div class="form-group ">
@@ -76,9 +80,9 @@
                             <label for="cname" class="control-label col-lg-2"> Author <span class="required">*</span></label>
                             <div class="col-lg-10">
                                 <select class="form-control" id="sel1" name = "author" >
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                    <option>Inprocess</option>
+                                    {{#each Author}}
+                                    <option>{{name}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -114,11 +118,13 @@
                          <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> CreateBy <span class="required">*</span></label>
                             <div class="col-lg-10">
+                                
                                 <select class="form-control" id="sel1" name = "createBy" >
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                    <option>Inprocess</option>
+                                    {{#each user }}
+                                    <option>{{name}}</option>
+                                    {{/each}}
                                 </select>
+                                
                             </div>
                         </div>
                         <div class="col-lg-offset-2 col-lg-10">

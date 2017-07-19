@@ -49,9 +49,9 @@ module.exports = {
             if(err){
                 response = {"error" : true,"message" : "Error deleting data"};
             }else{
-               response = { "error": false, "message": data };
+               res.render('addArticles',{articles:data});
             }
-            res.json(response);
+            
 
         })
     },

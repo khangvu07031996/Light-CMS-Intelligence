@@ -72,9 +72,9 @@ module.exports = {
 			if (err) {
 				response = { "error": true, "message": "Error fetching data" };
 			} else {
-				response = { "error": false, "message": data };
+				res.render('addArticles',{user:data});
 			}
-			res.json(response);
+			
 
 		})
 	},
@@ -160,4 +160,7 @@ module.exports = {
 	},
 	//-----------comparePassword--------------------
 
+}
+module.exports.getUserNames = function(callback){
+	User.find(callback);
 }
