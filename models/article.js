@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
+var section = require('../models/session');
+var userdata = require('../models/user');
+var Author = require('../models/author');
 var ArticleSchema = mongoose.Schema({
     headline :{
         type : String,
@@ -36,6 +39,9 @@ var ArticleSchema = mongoose.Schema({
         type: Date,
 		"default" : Date.now
     },
+    status : {
+        type:String
+    },
     CreateBy :{
         type : String
     }
@@ -49,7 +55,7 @@ module.exports = {
             if(err){
                 response = {"error" : true,"message" : "Error deleting data"};
             }else{
-               res.render('addArticles',{articles:data});
+               res.render('ArticleForm',{articles:data});
             }
             
 
@@ -68,14 +74,15 @@ module.exports = {
         dbArticle.widgets = req.body.widgets;
         dbArticle.date_created = new Date(req.body.date_created);
         dbArticle.publishDate = new Date(req.body.publishDate);
-        dbArticle.CreateBy = req.body.createBy;
+        dbArticle.CreateBy = req.body.CreateBy;
+        dbArticle.status = req.body.status;
         dbArticle.save(function(err){
             if(err){
                 response = {"error" : true,"message" : "Error deleting data"};
             } else {
-                response = { "error": false, "message": "data Added" };
+                res.redirect('/ArticleForm')
             }
-             res.json(response);
+             
         })
 
     },
@@ -90,9 +97,9 @@ module.exports = {
         
 						response = {"error" : true,"message" : "Error deleting data"};
                     } else {
-                        	response = { "error": false, "message": "Data associated with " + req.params.id + "is deleted" };
+                        res.redirect('/ArticleForm')
                     }
-                        res.json(response);
+                      
                 })
             }
         })
@@ -103,9 +110,20 @@ module.exports = {
             if(err){
                  response = {"error" : true,"message" : "Error fetching data"};
             } else {
-                 response = { "error": false, "message": data };
+                console.log(data.author);
+                var arr = [];
+                arr = data.author.split(",");
+                Author.getAuthorNames(function(err,dataA){
+                userdata.getUserNames(function(err,datauser){
+                section.getSectionNames(function(err,dataSection){
+                
+                 res.render('editArticles',{Author: dataA,Section:dataSection,article:data,arr})
+            })
+           
+        })  
+    })
             }
-             res.json(response);
+            
         })
     },
     updateArticle : function(req,res){
@@ -124,14 +142,15 @@ module.exports = {
                 dataArticle.widgets = req.body.widgets;
                 dataArticle.date_created = new Date(req.body.date_created);
                 dataArticle.publishDate = new Date(req.body.publishDate);
-                dataArticle.CreateBy = req.body.createBy;
+                dataArticle.CreateBy = req.body.CreateBy;
+                dataArticle.status = req.body.status;
                 dataArticle.save(function(err){
                     if(err){
                         response = {"error" : true,"message" : "Error updating data"};
                     } else{
-                        response = {"error" : false,"message" : "updating data success"};
+                        res.redirect('/ArticleForm')
                     }
-                     res.json(response);
+                     
                 })
             }
         })

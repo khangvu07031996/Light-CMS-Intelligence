@@ -86,8 +86,8 @@ module.exports = {
 			if (err) {
 				response = { "error": true, "message": "Error fetching data" };
 			} else {
-				res.render('index',{user:data});
-				res.send('AuthorForm',{user:data});
+				//res.render('layout',{user:data});
+					res.render('addArticles',{user:data});
 			}
 			
 

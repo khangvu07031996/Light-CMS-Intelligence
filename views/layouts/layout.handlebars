@@ -16,6 +16,7 @@
     <link href="/css/bootstrap-theme.css" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
+    <link href="/css/select2.min.css" rel="stylesheet" />
     <link href="/css/elegant-icons-style.css" rel="stylesheet" />
     <link href="/css/font-awesome.min.css" rel="stylesheet" />
     <!-- full calendar css-->
@@ -321,7 +322,8 @@
                             <li><a class="" href="/AuthorForm">AuthorForm</a></li>
                             <li><a class="" href="/SessionForm">SessionForm</a></li>
                             <li><a class="" href="/KeywordForm">KeywordForm</a></li>
-                            <li><a class="" href="/addArticles">ArticleForm</a></li>
+                            <li><a class="" href="/addArticles">ArticleFormAddPublish</a></li>
+                            <li><a class="" href="/ArticleForm">ArticleForm</a></li>
                         </ul>
                     </li>
                     <li class="sub-menu">
@@ -424,7 +426,7 @@
     <script src="/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
     <script src="/js/owl.carousel.js"></script>
     <!-- jQuery full calendar -->
-    <<script src="/js/fullcalendar.min.js"></script>
+    <script src="/js/fullcalendar.min.js"></script>
         <!-- Full Google Calendar - Calendar -->
         <script src="/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
         <!--script for this page only-->
@@ -453,8 +455,12 @@
         <script src="/js/bootstrap-datepicker.min.js"></script>
         <script src="/js/bootstrap-toggle.min.js"></script>
         <script src="/js/tinymce/tinymce.min.js"></script>
+         <script src="/js/select2.min.js"></script>
         <script>tinymce.init({ selector:'#body' });</script>
-        
+        <script type = "text/javascript" >
+            $("#author_selection").select2();
+             $("#section_selection").select2();
+            </script>
         <script>
             $(function () {
                 $('#datetimepicker1').datepicker();
