@@ -110,7 +110,7 @@ module.exports = {
             if(err){
                  response = {"error" : true,"message" : "Error fetching data"};
             } else {
-                console.log(data.author);
+               // console.log(data.author);
                 var arr = [];
                 arr = data.author.split(",");
                 Author.getAuthorNames(function(err,dataA){
