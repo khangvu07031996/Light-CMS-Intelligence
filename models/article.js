@@ -3,50 +3,74 @@ var bcrypt = require('bcryptjs');
 var section = require('../models/session');
 var userdata = require('../models/user');
 var Author = require('../models/author');
+var mongoosastic = require('mongoosastic');
 var ArticleSchema = mongoose.Schema({
     headline :{
         type : String,
-        index : true
+        es_indexed : true
     },
     section : {
         type : String,
-        
+        es_indexed : true
     },
     premble : {
-        type : String
+        type : String,
+        es_indexed : true
     },
     body : {
         type : String
+        
     },
     images :{
         type : String
+       
     },
     author :{
         type : String
+       
     },
     tags : {
         type : String
+       
     },
     widgets : {
         type : String
+        
     },
     date_created :{
         type: Date,
-		"default" : Date.now
+        "default" : Date.now,
+        es_indexed : true
 
     },
     publishDate : {
         type: Date,
-		"default" : Date.now
+        "default" : Date.now,
+       es_indexed : true
     },
     status : {
-        type:String
+        type:String,
+        es_indexed : true
     },
     CreateBy :{
-        type : String
+        type : String,
+        es_indexed : true
     }
 })
+ArticleSchema.plugin(mongoosastic,{
+        hosts : 'localhost:9200'
+}); 
+ 
 var article = module.exports = mongoose.model('Article',ArticleSchema);
+article.createMapping(function(err, mapping){
+  if(err){
+    console.log('error creating mapping (you can safely ignore this)');
+    console.log(err);
+  }else{
+    console.log('mapping created!');
+    console.log(mapping);
+  }
+});
 module.exports = {
     
     getAllArticle : function(req,res){
@@ -154,6 +178,19 @@ module.exports = {
                 })
             }
         })
+    }, 
+    searchArtical : function(req,res){
+        
+       var terms = req.body.terms;
+       article.search({query_string : {query:terms}} ,function(err,results){
+           if(err){
+               console.log("failed")
+           } else {
+            res.render('articleSearch',{articleResult:results.hits.hits})
+            console.log(results.hits.hits);
+           }
+            
+       })
     }
 
 
