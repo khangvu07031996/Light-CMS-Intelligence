@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html>
+
+<head runat="server">
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery-ui-1.10.2.min.js" type="text/javascript"></script>
+
+
+    <link href="/Scripts/Content/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/css/image.css" rel="stylesheet">
+
+    <script src="/Scripts/bootstrap.min.js" type="text/javascript"></script>
+
+     <script src="/Scripts/img.js" type="text/javascript"></script>
+
+
+</head>
+
+<body>
+    <butt id="button">Click</input>
+        <p id="console"></p>
+
+        <h2>Drag and Drop</h2>
+      
+
+        <form action="#" method="post" enctype="multipart/form-data">
+
+            Files: <input type="file" id="files" name="files" multiple accept="image/*" >
+            <br/>
+
+            <br />
+			<div id="divimg"></div>
+            <div id="imgtab" class="tabcontent">
+                <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                 <form action="/image/save" method="post" enctype = "multipart/form-data" >
+                            <div class="form-group">
+                                <label for="heading">Heading:</label>
+                                <input type="text" class="form-control"  name="heading">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description:</label>
+                                <input type="text" class="form-control"  name="description">
+                            </div>
+                            <div class="form-group">
+                                <label for="photographer">Photographer:</label>
+                                <input type="tel" class="form-control"  name="photographer">
+                            </div>
+                            
+                            <div class="form-group">
+                                 <div class="">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                            
+                                    <button type="reset" class="btn btn-default">Reset</button>
+                                 </div>
+                            </div>
+
+
+                </form>
+            </div>
+
+			
+            <button type="button" id = "btnPopup">GetData</button>
+            <!-- Trigger the modal with a button -->
+
+            <button type="button" id = "btnPopup2" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+</button>
+
+            
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <button type="reset" class="btn btn-default">Reset</button>
+
+
+        </form>
+        <label>--</label>
+        <br />
+
+        <!-- Trigger the modal with a button -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg" style="width:100% !important; height:100% !important">
+                <div class="modal-content" style="width:100% !important; height:100% !important">
+                    <div class="modal-header" style="width:100% !important; height:15% !important">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+
+                    </div>
+                    <div class="modal-body" style="width:100% !important; height: 70%; overfolw: auto;">
+
+
+                        <div id="cart_container">
+
+                            <div id="cart_toolbar">
+                                <div id="cart_items" class="back">
+
+                                </div>
+                            </div>
+                            <div id="navigate">
+                                <div id="nav_left">
+                                    <a href="" id="btn_prev"><</a>
+                                    <a href="" id="btn_next">></a>
+                                    <a href="" id="btn_clear">Clear</a>
+                                </div>
+                                
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+                        <div id="item_container">
+
+
+                            {{#each data}}
+                            <div class="item" id="div_{{_id}}" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <img src="{{media}}/{{medialist.articlePreview}}" draggable="true"  id="{{_id}}"
+                                    style="width : 75px; height : 70px">
+                            </div>
+                            {{/each}}
+
+                            <div class="clear"></div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="modal-footer" style="width:100% !important; height:15% !important">
+                        <button id="btnOk" type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p>Click on the x button in the top right corner to close the current tab:</p>
+
+        <div class="tab">
+            <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">London</button>
+            <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
+            <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+        </div>
+
+        <div id="London" class="tabcontent">
+            <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+            <h3>London</h3>
+            <p>London is the capital city of England.</p>
+        </div>
+
+        <div id="Paris" class="tabcontent">
+            <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+            <h3>Paris</h3>
+            <p>Paris is the capital of France.</p>
+        </div>
+
+        <div id="Tokyo" class="tabcontent">
+            <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+            <h3>Tokyo</h3>
+            <p>Tokyo is the capital of Japan.</p>
+        </div>
+
+
+
+        <script>
+            function openCity(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+
+
+
+            //Sự kiện click Image: btnPopup
+                
+                $(document).on('click', 'img', function(evt) { 
+                    alert("hey!" + this.id);
+                    document.getElementById('imgtab').style.display = "block";
+
+                });
+
+                 $(document).on('click', '#btnPopup2', function(evt) { 
+                    alert("hey!" + this.id);
+                    getData();
+
+                });
+
+                
+        </script>
+
+
+
+</body>
+
+</html>

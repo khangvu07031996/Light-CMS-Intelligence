@@ -49,9 +49,22 @@ var image = db.model('image', imageSchema);
 
 
 module.exports = {
-    getAll: function (req, res) {
+    all: function (req, res, cb) {
         var result;
         console.log("This is image model");
+        console.log('get all');
+        image.find(function (err, rows) {
+            
+           cb(rows);
+           
+        });
+        
+        
+       
+    },
+    getAll: function (req, res, cb) {
+        //var result;
+        //console.log("This is image model");
         console.log('get all');
         image.find(function (err, rows) {
             if (err) {
@@ -59,49 +72,52 @@ module.exports = {
             }
             //console.log(rows);
             //res.json(rows);
-            result = rows;
+            //result = rows;
            // console.log('result0 ' + result);
 
             console.log(rows);
+
+            cb(rows);
             
-            res.render('image1', { data: rows, layout: false});
+            res.render('image2', { data: rows, layout: false});
             //res.render('image0');
     
             //res.render('products', { title: "RESTful Crud Example", data: rows });
         });
-        console.log('result1 ' + result);
+        //console.log('result1 ' + result);
         
        
     },
 
     
 
-
-    upload: function (req, res) {
-
-        
-        console.log(req.file);
-        console.log('path = ' + req.file.path);
-        //res.send("Upload successful");
-    },
-
-    insert: function (req, res, objinfo, cb) {
+    insert: function (req, res, objinfo, obj, cb) {
         console.log("in add");
         var p = new image();
-        p.heading = req.body.heading;
+        //p.heading = req.body.heading;
         //p.media = req.body.media;
-        p.description = req.body.description;        
-        p.photographer = req.body.photographer;
+        //p.description = req.body.description;        
+        //p.photographer = req.body.photographer;
+        if (objinfo == null) {
+            p.media = obj.path;
+            p.heading = '';       
+            p.description = '';        
+            p.photographer = '';
+            p.usercreate = 'unknow';
 
-        p.media = objinfo.path;
-        //p.heading = 'heading';       
-        //p.description = 'description';        
-        //p.photographer = 'photorapher';
-        p.usercreate = 'unknow';
-
-        p.medialist.teaser = objinfo.teaser;
-        p.medialist.searchResult = objinfo.searchResult;
-        p.medialist.articlePreview = objinfo.articlePreview;
+            p.medialist.teaser = "";
+            p.medialist.searchResult = "";
+            p.medialist.articlePreview = obj.articlePreview;
+        } else {
+            p.heading = req.body.heading;
+            p.media = objinfo.path;
+            p.description = req.body.description;        
+            p.photographer = req.body.photographer;
+            p.medialist.teaser = objinfo.teaser;
+            p.medialist.searchResult = objinfo.searchResult;
+            p.medialist.articlePreview = objinfo.articlePreview;
+        }
+        
 
         p.save(function (err) {
             if (err) {

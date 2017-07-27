@@ -87,16 +87,37 @@ function createDirectory() {
 
 var multer = require('multer');
 
+//Tạo thư mục:
+router.get('/image/createDirectory', function(req, res) {
+    createDirectory();
+    res.send("Created Directory");
+})
+
+router.get('/image/data', function (req, res) {   
+    
+    image.all(req, res, function(result) {
+        console.log('result------ = ' + result);
+        res.send(result);
+    });
+});
+
 
 router.get('/image', function (req, res) {
     
     createDirectory();
 
-    image.getAll(req, res);     
+    
+    image.getAll(req, res, function(result) {
+        console.log('result0000000000 = ' + result);
+        //res.send(result);
 
+    });  
+    
+    
 });
    
-
+var arrPath = [];
+var count = 0;
 var storage = multer.diskStorage({
 
     destination: function (req, file, cb) {
@@ -105,21 +126,24 @@ var storage = multer.diskStorage({
 
         cb(null, destDirectory);
     },
-    filename: function (req, file, cb) {
-        var strDate = moment + '.jpg';
+    
+    filename: function(req, file, cb) {
+        var strDate = moment;
+        strDate += strDate + '_' + count + '.jpg';
+        count++;
         //var strDate1 = getDateTimeObject().toString() + '.jpg';
 
+        //original = 'Original_' + strDate + '_' + file.originalname;
         original = 'Original_' + strDate;
-        teaser = 'Teaser_' + strDate;
-        searchResult = 'SearchResul_' + strDate;
-        articlePreview = 'ArticlePreview_' + strDate;
+        // teaser = 'Teaser_' + strDate ;
+        // searchResult = 'SearchResul_' + strDate;
+        // articlePreview = 'ArticlePreview_' + strDate;
 
-        cb(null, original);
-
-        cb(null, teaser);
-        cb(null, searchResult);
-        cb(null, articlePreview);
-        //cb(null, 'testname_' + strDate1);
+        arrPath.push(original);
+        
+        cb(null, original);              
+       
+        //cb(null, Date.now().toString() + '-' + file.originalname);
 
     }
 
@@ -127,30 +151,31 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-router.post('/image/upload', upload.single("file"), function (req, res) {
+router.post('/image/upload', upload.any(), function (req, res) {
 
-    
-
-    var objinfo = {
-        teaser: teaser,
-        searchResult: searchResult,
-        articlePreview: articlePreview,
-        path: virtualDir
-    };
-    console.log(objinfo);
-
-    
-    createDirectory();
-   
-    //upload.single("file");
-
+ 
     //console.log(req.file);
     //res.send("Upload successful");
     //image.upload(req, res);
-    image.insert(req, res, objinfo, function (err, img) {
-        console.log('inserted!');
-    });
+    //console.log('length = ' + arrPath.length);
+    //image.insert(req, res, function (err, img) {
+        //console.log('inserted!');
+    //});
+    
+
+    console.log(arrPath);
+    for (var i = 0; i < arrPath.length; i++) {
+        var obj = {
+       
+            articlePreview: arrPath[i],
+            path: virtualDir
+        };
+        image.insert(req, res, null, obj, function (err, img) {
+            console.log('inserted!');
+        });
+    }
     res.send("Upload successful");
+    //res.redirect('/AuthorForm')
 });
 
 router.route('/image/:image_id').get(function (req, res) {

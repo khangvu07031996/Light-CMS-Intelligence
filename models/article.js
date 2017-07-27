@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var image = require('../models/image');
 var bcrypt = require('bcryptjs');
 var ArticleSchema = mongoose.Schema({
     headline :{
@@ -41,6 +42,7 @@ var ArticleSchema = mongoose.Schema({
     }
 })
 var article = module.exports = mongoose.model('Article',ArticleSchema);
+//var image = mongoose.model('image',  { name: String });
 module.exports = {
     
     getAllArticle : function(req,res){
@@ -49,9 +51,13 @@ module.exports = {
             if(err){
                 response = {"error" : true,"message" : "Error deleting data"};
             }else{
-               response = { "error": false, "message": data };
+               //response = { "error": false, "message": data };
             }
-            res.json(response);
+            //res.json(response);
+            image.all(req, res, function(rows) {
+                res.render('addArticles', { data: rows});
+            });
+             
 
         })
     },

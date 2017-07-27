@@ -54,12 +54,15 @@ module.exports = {
 	//------------------getAllAuthor------------------------
 	getAllAuthor: function (req, res) {
 		var response = {};
+		//var result;
 		Author.find(function (err, data) {
 			if (err) {
 				response = { "error": true, "message": "Error fetching data" };
 			} else {
 				res.render('AuthorForm', { Author: data })
+				result = data;
 			}
+			
 		})
 	},
 	//-----------------------getAuthorById-------------------------------

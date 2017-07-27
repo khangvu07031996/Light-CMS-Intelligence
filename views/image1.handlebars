@@ -12,14 +12,221 @@
     <script src="/Scripts/bootstrap.min.js" type="text/javascript"></script>
 
     <style type="text/css">
-        #divimg {
+        body {
+            font-family: Arial, "Free Sans";
+            margin: 0;
+            padding: 0;
+        }
 
+        #main {
+            background: #0099cc;
+            margin-top: 0;
+            padding: 2px 0 4px 0;
+            text-align: center;
+        }
+
+        #main a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            font-family: Arial;
+        }
+
+        #main a:hover {
+            text-decoration: underline;
+        }
+
+        #item_container {
+            width: 100%;
+            margin: 0 auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .item {
+            background: #fff;
+            float: left;
+            padding: 5px;
+            margin: 5px;
+            cursor: move;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+            -webkit-border-radius: .5em;
+            -moz-border-radius: .5em;
+            border-radius: .5em;
+            z-index: 5;
+        }
+
+        .title,
+        .price {
+            display: block;
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: -1px;
+            font-weight: bold;
+            cursor: move;
+        }
+
+        .title {
+            color: #333;
+        }
+
+        .price {
+            color: #0099cc;
+            margin-top: 5px;
+            -webkit-border-radius: .5em;
+            -moz-border-radius: .5em;
+            border-radius: .5em;
+        }
+
+        .icart,
+        .icart label {
+            cursor: e-resize;
+        }
+
+        .divrm {
+            text-align: right;
+        }
+
+        .remove {
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 20px;
+            position: relative;
+            top: -7px;
+        }
+
+        .remove:hover {
+            color: #999;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        #cart_container {
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        #cart_title span {
+            border: 8px solid #666;
+            border-bottom-width: 0;
+            background: #333;
+            display: block;
+            float: left;
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 5px 10px;
+            -webkit-border-radius: .5em .5em 0 0;
+            -moz-border-radius: .5em .5em 0 0;
+            border-radius: .5em .5em 0 0;
+        }
+
+        #cart_toolbar {
+            overflow: hidden;
+            border: 8px solid #666;
+            height: 190px;
+            z-index: -2;
+            width: 100%;
+            -webkit-border-radius: 0 .5em 0 0;
+            -moz-border-radius: 0 .5em 0 0;
+            border-radius: 0 .5em 0 0;
+            background: #ffffff;
+        }
+
+        #cart_items {
+            height: 190px;
+            width: 90%;
+            position: relative;
+            padding: 0 0 0 2px;
+            z-index: 0;
+            cursor: e-resize;
+            border-width: 0 2px;
+        }
+
+        .back {
+            background: #e9e9e9;
+        }
+
+        #navigate {
+            width: 100%;
+            margin: 0 auto;
+            border: 8px solid #666;
+            border-top-width: 0;
+            -webkit-border-radius: 0 0 .5em .5em;
+            -moz-border-radius: 0 0 .5em .5em;
+            border-radius: 0 0 .5em .5em;
+            padding: 10px;
+            font-size: 14px;
+            background: #333;
+            font-weight: bold;
+        }
+
+        #nav_left {
+            float: left;
+        }
+
+        #nav_left a {
+            padding: 4px 8px;
+            background: #fff;
+            -webkit-border-radius: .5em;
+            -moz-border-radius: .5em;
+            border-radius: .5em;
+            text-decoration: none;
+            color: #0099cc;
+        }
+
+        #nav_left a:hover {
+            background: #666;
+            color: #fff;
+        }
+
+        #nav_right {
+            float: right;
+        }
+
+        .sptext {
+            background: #ffffff;
+            padding: 4px 8px;
+            margin-left: 8px;
+            -webkit-border-radius: .5em;
+            -moz-border-radius: .5em;
+            border-radius: .5em;
+            color: #666;
+        }
+
+        .count {
+            color: #0099cc;
+        }
+
+        .drop-active {
+            background: #ffff99;
+        }
+
+        .drop-hover {
+            background: #ffff66;
+        }
+
+
+
+        #divimg {
+            float: left;
             width: 100%;
             height: 100px;
+            overflow: auto;
             margin: 10px;
             padding: 10px;
             border: 1px solid black;
         }
+    </style>
+
+    <style type="text/css">
+        
 
 
         #div1,
@@ -109,7 +316,7 @@
     </style>
 
     <script type="text/javascript">
-      
+        /*
         function allowDrop(ev) {
             ev.preventDefault();
         }
@@ -140,72 +347,177 @@
             $.ajax('url', {
                 data: //posts array
             });
-            */
+            
         });
+        */
 
-
+        //Sự kiện click button:
         $(document).ready(function () {
             var selDiv = "";
             selDiv = document.querySelector("#divimg");
             $("#btnOk").click(function () {
                 alert('button clicked');
-
-                $('#div4').children().each(function (i) {
-                    var id = $(this).attr('id'),
-                        src0 = $(this).attr('src'),
-                        order = $(this).index() + 1;
-
-                    // Instead of echoing this, build a real array
-                    $('#console').html($('#console').html() + 'posts[' + id + '] = ' + order
-                        + ' ' + src0 + '<br>');
-
-                    var html = "<img src=\"" + $(this).attr('src') + "\" " + " weight = 75px height = 70px" + ">";
-                    selDiv.innerHTML += html;
+                console.log('leng of array = ' + arrImgs.length);
+                console.log(arrImgObjs);
+               
+                arrImgs.forEach( function(i) {                    
+                  
+                     // Instead of echoing this, build a real array
+                    $('#console').html($('#console').html() + ' ' + i + ' ');
+                    var html = $('#console').html();
+                   
+                   
+                    selDiv.innerHTML += ' ' + i;
+                });
 
                     //alert(src0);
                 });
-            });
 
+                
+           
 
         });
+        
     </script>
 
     <script>
-            var selDiv = "";
+        //Sự kiện duyệt file:
+        var selDiv = "";
 
-            document.addEventListener("DOMContentLoaded", init, false);
+        document.addEventListener("DOMContentLoaded", init, false);
 
-            function init() {
-                document.querySelector('#files').addEventListener('change', handleFileSelect, false);
-                selDiv = document.querySelector("#divimg");
-            }
+        function init() {
+            document.querySelector('#files').addEventListener('change', handleFileSelect, false);
+            selDiv = document.querySelector("#divimg");
+        }
 
-            function handleFileSelect(e) {
+        function handleFileSelect(e) {
 
-                if (!e.target.files || !window.FileReader) return;
+            if (!e.target.files || !window.FileReader) return;
 
-                //selDiv.innerHTML = "";
+            uploadfile();
 
-                var files = e.target.files;
-                var filesArr = Array.prototype.slice.call(files);
-                filesArr.forEach(function (f) {
-                    //var f = files[i];
-                    if (!f.type.match("image.*")) {
-                        return;
-                    }
+            //selDiv.innerHTML = "";
 
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var html = "<img src=\"" + e.target.result + "\" " + " weight = 75px height = 70px" + ">";
-                        selDiv.innerHTML += html;
-                    }
-                    reader.readAsDataURL(f);
+            var files = e.target.files;
+            var filesArr = Array.prototype.slice.call(files);
+            filesArr.forEach(function (f) {
+                //var f = files[i];
+                if (!f.type.match("image.*")) {
+                    return;
+                }
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var html = "<img src=\"" + e.target.result + "\" " + " weight = 75px height = 70px" + ">";
+                    selDiv.innerHTML += html;
+                }
+                reader.readAsDataURL(f);
+            });
+
+        }
+    </script>
+
+
+    <script type="text/javascript">
+            var arrImgs = [];
+            var arrImgObjs = [];
+            var total_items = 0;
+           
+            $(document).ready(function () {
+
+                $(".item").draggable({
+                    revert: true
+                    //remove()
+                });
+                $("#cart_items").draggable({
+                    axis: "x"
                 });
 
+                $("#cart_items").droppable({
+                    accept: ".item",
+                    activeClass: "drop-active",
+                    hoverClass: "drop-hover",
+                    drop: function (event, ui) {
+                        var item = ui.draggable.html();
+                        var itemid = ui.draggable.attr("id");
+                        var html = '<div class="item icart">';
+                        html = html + '<div class="divrm">';
+                        html = html + '<a onclick="remove(this)" class="remove ' + itemid + '">&times;</a>';
+                        html = html + '<div/>' + item + '</div>';
+                        $("#cart_items").append(html);    
+
+                        
+                        
+                        //console.log('src = '  + item.attr("src")); //ui.draggable.attr("id");
+                        console.log('currentSrc = ' + ui.draggable[0].firstElementChild.currentSrc);
+                        let strsrc = ui.draggable[0].firstElementChild.currentSrc.replace("http://localhost:3000", "");
+                        console.log('currentSrc = ' + strsrc);
+
+                        arrImgs.push(item);
+                        arrImgObjs.push({
+                            id: 0,
+                            path: strsrc
+                        });
+                        console.log('lenght arrImags = ' + arrImgs.length);
+                        console.log('lenght arrImgObjs = ' + arrImgObjs.length);
+                                  
+                        
+
+                        // update total items
+                        total_items++;
+                        $("#citem").html(total_items);
+
+                        // expand cart items
+                        if (total_items > 4) {
+                            $("#cart_items").animate({ width: "+=120" }, 'slow');
+                        }
+                    }
+                });
+
+
+                $("#btn_next").click(function () {
+                    $("#cart_items").animate({ left: "-=100" }, 100);
+                    return false;
+                });
+                $("#btn_prev").click(function () {
+                    $("#cart_items").animate({ left: "+=100" }, 100);
+                    return false;
+                });
+                $("#btn_clear").click(function () {
+                    $("#cart_items").fadeOut("2000", function () {
+                        $(this).html("").fadeIn("fast").css({ left: 0 });
+                    });
+                    $("#citem").html("0");
+                    $("#cprice").html("$ 0");
+                    total_items = 0;
+                    total_price = 0;
+                    return false;
+                });
+            });
+            function remove(el) {
+                $(el).hide();
+                $(el).parent().parent().effect("highlight", { color: "#ff0000" }, 10);
+                $(el).parent().parent().fadeOut('1');
+                setTimeout(function () {
+                    $(el).parent().parent().remove();
+                    // collapse cart items
+                    if (total_items > 3) {
+                        $("#cart_items").animate({ width: "-=120" }, 'normal');
+                    }
+                }, 1100);
+
+                // update total item
+                total_items--;
+                $("#citem").html(total_items);
+
+                // update totl price
+
+                
             }
     </script>
 
-    
+
 
 
 </head>
@@ -215,27 +527,49 @@
         <p id="console"></p>
 
         <h2>Drag and Drop</h2>
-        <p>Drag the image back and forth between the two div elements.</p>
-
-        <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <img src="img_w3slogo.gif" draggable="true" ondragstart="drag(event)" id="drag1" width="88" height="31">
-        </div>
-
-        <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-
-
-
+      
 
         <form action="#" method="post" enctype="multipart/form-data">
 
-            Files: <input type="file" id="files" name="files" multiple accept="image/*"><br/>
+            Files: <input type="file" id="files" name="files" multiple accept="image/*" >
+            <br/>
 
             <br />
+			<div id="divimg"></div>
+            <div id="imgtab" class="tabcontent">
+                <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                 <form action="/image/save" method="post" enctype = "multipart/form-data" >
+                            <div class="form-group">
+                                <label for="heading">Heading:</label>
+                                <input type="text" class="form-control"  name="heading">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description:</label>
+                                <input type="text" class="form-control"  name="description">
+                            </div>
+                            <div class="form-group">
+                                <label for="photographer">Photographer:</label>
+                                <input type="tel" class="form-control"  name="photographer">
+                            </div>
+                            
+                            <div class="form-group">
+                                 <div class="">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                            
+                                    <button type="reset" class="btn btn-default">Reset</button>
+                                 </div>
+                            </div>
+
+
+                </form>
+            </div>
+
+			
             <!-- Trigger the modal with a button -->
 
             <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+</button>
 
-            <div id="divimg"></div>
+            
 
             <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -259,16 +593,36 @@
                     </div>
                     <div class="modal-body" style="width:100% !important; height: 70%; overfolw: auto;">
 
-                        <div id="div4" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+                        <div id="cart_container">
+
+                            <div id="cart_toolbar">
+                                <div id="cart_items" class="back">
+
+                                </div>
+                            </div>
+                            <div id="navigate">
+                                <div id="nav_left">
+                                    <a href="" id="btn_prev"><</a>
+                                    <a href="" id="btn_next">></a>
+                                    <a href="" id="btn_clear">Clear</a>
+                                </div>
+                                
+                                <div class="clear"></div>
+                            </div>
                         </div>
-                        <div id="div3" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+                        <div id="item_container">
 
 
                             {{#each data}}
+                            <div class="item" id="div_{{_id}}" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <img src="{{media}}/{{medialist.articlePreview}}" draggable="true"  id="{{_id}}"
+                                    style="width : 75px; height : 70px">
+                            </div>
+                            {{/each}}
 
-                            <img src="{{media}}/{{medialist.articlePreview}}" draggable="true" ondragstart="drag(event)" id="{{medialist.articlePreview}}"
-                                style="width : 75px; height : 70px"> {{/each}}
-
+                            <div class="clear"></div>
                         </div>
 
 
@@ -281,10 +635,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
 
         <p>Click on the x button in the top right corner to close the current tab:</p>
 
@@ -315,7 +665,6 @@
 
 
         <script>
-         
             function openCity(evt, cityName) {
                 var i, tabcontent, tablinks;
                 tabcontent = document.getElementsByClassName("tabcontent");
@@ -332,8 +681,59 @@
 
             // Get the element with id="defaultOpen" and click on it
             document.getElementById("defaultOpen").click();
-          
-    </script>
+
+
+
+            //Sự kiện click Image:
+                
+                $(document).on('click', 'img', function(evt) { 
+                    alert("hey!" + this.id);
+                    document.getElementById('imgtab').style.display = "block";
+
+                });
+
+
+
+                function uploadfile() {
+                        //debugger;
+                        if (window.FormData !== undefined) {
+                            var fileUpload = $("#files").get(0);
+                            var files = fileUpload.files;
+                            //Tạo một đối tượng form data
+                            var filedata = new FormData();
+                           
+                           //alert(files.length);
+
+                            for (var i = 0; i < files.length; i++) {
+                                var file = files[i];
+                                filedata.append('pictures', file, file.name);
+                            }
+                            $.ajax(
+                                {
+                                    url: '/image/upload',
+                                    type: 'POST',
+                                    contentType: false,
+                                    processData: false,
+                                    data: filedata,
+                                    success: function (result) {
+                                        //$("#Picture").val(result);
+                                       
+                                        alert(result);
+                                        console.log(result);
+                                        //window.location.reload();
+                                        
+                                    }, error: function (err) {
+                                        alert(err.statusText);
+                                    }
+                                }
+                            );
+
+                        }
+                        else {
+                            alert("FormData không hỗ trợ");
+                        }
+                    }
+        </script>
 
 
 
