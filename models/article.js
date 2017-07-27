@@ -22,20 +22,20 @@ var ArticleSchema = mongoose.Schema({
         
     },
     images :{
-        type : String
-       
+        type : String,
+       es_indexed : true
     },
     author :{
-        type : String
-       
+        type : String,
+       es_indexed : true
     },
     tags : {
-        type : String
-       
+        type : String,
+       es_indexed : true
     },
     widgets : {
-        type : String
-        
+        type : String,
+        es_indexed : true
     },
     date_created :{
         type: Date,
@@ -121,12 +121,14 @@ module.exports = {
         
 						response = {"error" : true,"message" : "Error deleting data"};
                     } else {
+                        
                         res.redirect('/ArticleForm')
                     }
                       
                 })
             }
         })
+
     },
     getArticleById : function(req,res){
         var response = {};
@@ -187,7 +189,6 @@ module.exports = {
                console.log("failed")
            } else {
             res.render('articleSearch',{articleResult:results.hits.hits})
-            console.log(results.hits.hits);
            }
             
        })

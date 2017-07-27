@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var fs = require('fs');
+
 var AuthorSchema = mongoose.Schema({
 	name: {
 		type: String,
@@ -54,13 +55,19 @@ module.exports = {
 	//------------------getAllAuthor------------------------
 	getAllAuthor: function (req, res) {
 		var response = {};
+		var x;
 		Author.find(function (err, data) {
 			if (err) {
 				response = { "error": true, "message": "Error fetching data" };
 			} else {
 				res.render('AuthorForm', { Author: data })
+				
+				
 			}
+
 		})
+		
+		
 	},
 	//-----------------------getAuthorById-------------------------------
 	getAuthorById: function (req, res) {

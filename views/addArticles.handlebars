@@ -15,9 +15,9 @@
             <header class="panel-heading">
             </header>
             <div class="panel-body">
-                <div class="form">
+                <div class="form" >
                    
-                    <form method="POST" action="/article/add" class="form-validate form-horizontal" id="feedback_form">
+                    <form method="POST" action="/article/add" class="form-validate form-horizontal save" id = "save">
                          <div class = "col-lg-9">
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Headline <span class="required">*</span></label>
@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> section <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Section <span class="required">*</span></label>
                             <div class="col-lg-10">
                                 <select class="form-control" id="section_selection" name = "section" >
                                     {{#each Section}}
@@ -36,20 +36,20 @@
                             </div>
                         </div>
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2">  premble <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2">  Premble <span class="required">*</span></label>
                             <div class="col-lg-10">
                                 <textarea class="col-lg-12" name = "premble"> </textarea>
                             </div>
                         </div>
                    
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2">  body <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2">  Body <span class="required">*</span></label>
                             <div class="col-lg-10">
-                                <textarea id="body" name = "body"></textarea>
+                                <textarea class = "body" id="source" name = "body"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="cname" class="control-label col-lg-2"> image <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Image <span class="required">*</span></label>
                             <div class="input-group image-preview col-lg-10" style="padding-left:15px ; padding-right:15px;">
                                 <input type="text" class="form-control image-preview-filename" name="images">
                                 <!-- don't give a name === doesn't send on POST/GET -->
@@ -82,9 +82,10 @@
                     </div>
                     <div class="col-lg-3">
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> tags <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Tags <span class="required">*</span></label>
                             <div class="col-lg-10">
-                                <input class="form-control" id="cname" name="tags" minlength="5" type="text" required />
+                               <button class="btn btn-info col-lg-4" id = "press_me">generator</button>
+                                <input class = "form-control col-lg-8" type="text" data-role="tagsinput"  id ="result" value="" data-role="" name = "tags"/>
                             </div>
                         </div>
                         <div class="form-group ">
@@ -99,7 +100,7 @@
                         </div>
                          
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> widgets <span class="required">*</span></label>
+                            <label class="control-label col-lg-2"> Widgets </label>
                             <div class="col-lg-10">
                                 <input class="form-control" id="cname" name="widgets" minlength="5" type="text" required />
                             </div>
@@ -110,7 +111,7 @@
                                 <div class='input-group date' id='datetimepicker2'>
                                     <input type='text' class="form-control" name="date_created" />
                                     <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                        <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
                             </div>
@@ -129,14 +130,13 @@
                         </div>
                         
                          <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> CreateBy <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> CreateBy<span class="required">*</span></label>
                             <div class="col-lg-10">
                                  <input class="form-control" id="cname" name="CreateBy" value= "{{user.username}}" minlength="5" type="text" required />
-                                
                             </div>
                         </div>
-                        <div class="col-lg-offset-2 col-lg-10">
-                            <button class="btn btn-primary" type="submit" style="width: 50%;">Save</button>
+                        <div class="col-lg-offset-2 col-lg-10" >
+                            <button   class="btn btn-primary" type="submit" style="width: 50%;" >Save</button>
                              <button class="btn btn-success" type="submit" style="width: 49%;">Publish</button>
                         </div>
                     </div>
