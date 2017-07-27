@@ -1,3 +1,5 @@
+
+
 function showmessage(){
 	$.gritter.add({
 		title: 'You Have Message!',
@@ -6,6 +8,9 @@ function showmessage(){
 		sticky: false,
 		time: ''
 	});
+}
+function addSession(){
+    window.location.href = '/SessionForm/add';
 }
 $(function () {
 

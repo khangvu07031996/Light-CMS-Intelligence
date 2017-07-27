@@ -21,6 +21,20 @@ var SessionSchema = mongoose.Schema({
 var Session = module.exports = mongoose.model('Session', SessionSchema);
 
 module.exports = {
+	
+	getAllSession : function(req,res){
+		var response = {};
+		Session.find(function(err,data){
+			 if(err) {
+				console.log("getAll");
+                response = {"error" : true,"message" : "Error fetching data"};
+            } else {
+				
+               res.render('SessionForm',{Session:data});
+            }
+           
+		})
+	},
 	addSession: function(req,res){
 		var dbSession  = new Session(); 
 		var response = {};
@@ -30,22 +44,12 @@ module.exports = {
 		dbSession.date_update = new Date(req.body.date_update);
 		dbSession.save(function(err){
 			if(err){
+				console.log("add");
 				response = {"error" : true,"message" : "Error adding data"};
 			} else {
-				response = {"error" : false,"message" : "Data added"};
+				res.redirect('/SessionForm');
 			}
-			res.json(response);
-		})
-	},
-	getAllSession : function(req,res){
-		var response = {};
-		Session.find(function(err,data){
-			 if(err) {
-                response = {"error" : true,"message" : "Error fetching data"};
-            } else {
-                response = {"error" : false,"message" : data};
-            }
-            res.json(response);
+			
 		})
 	},
 	//---------------------deleteSession--------------------
@@ -57,11 +61,14 @@ module.exports = {
 			} else {
 				Session.remove({_id:req.params.id},function(err){
 					if(err){
+						console.log("delete");
 						response = {"error" : true,"message" : "Error deleting data"};
 					} else {
-						response = {"error" : false ,"message" : "Data associated with "+req.params.id+"is deleted"};
+						
+						res.redirect('/sessionForm');
 					}
-					 res.json(response);
+
+					
 				})
 			}
 		})
@@ -71,11 +78,13 @@ module.exports = {
 		var response = {};
 		Session.findById({_id : req.params.id}, function(err,data){
 			 if(err) {
+				
                 response = {"error" : true,"message" : "Error fetching data"};
             } else {
-                response = {"error" : false,"message" : data};
+				res.render('editSession',{Sessiondata:data})
+               
             }
-            res.json(response);
+          
 		})
 	},
 	// ---------------------updateSession------------------
@@ -83,6 +92,7 @@ module.exports = {
 		var response = {};
 		Session.findById(req.params.id,function(err,dataSession){
 			if(err){
+				console.log("update");
 				response = {"error" : true,"message" : "Error fetching data"};
 			} else {
 				if(req.body.name !== undefined){
@@ -100,14 +110,17 @@ module.exports = {
 				dataSession.save(function(err){
 					if(err){
 						response = {"error" : true,"message" : "Error updating data"};
-
+						
 					} else {
-						response = {"error" : false,"message" : "Data is updated for "+req.params.id};
+						
 					}
-					 res.json(response);
+					res.redirect('/sessionForm');
 				})
 			}
 		})
 	}
 
+}
+module.exports.getSectionNames = function(callback){
+	Session.find(callback);
 }
