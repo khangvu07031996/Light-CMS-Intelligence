@@ -46,7 +46,7 @@ function handleFileSelect(e) {
         uploadfile();
     }    
     //load dữ liệu ảnh trong cơ sở dữ liệu:
-    getData();
+    getDataByIds();
 
     //selDiv.innerHTML = "";
 
@@ -257,8 +257,8 @@ function getDataByIds() {
                     console.log(result);
                     data0 = result;
                     //window.location.reload();
-                    console.log('length = ' + data.length);
-                        data.forEach(function (f) {
+                    console.log('length = ' + data0.length);
+                        data0.forEach(function (f) {
                         var path = f.media + '/' + f.medialist.articlePreview;        
                         var html = "<img src=\"" + path + "\" " + " weight = 75px height = 70px" + ">";
                         selDiv.innerHTML += html;
