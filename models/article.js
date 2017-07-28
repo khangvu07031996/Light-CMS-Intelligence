@@ -1,48 +1,76 @@
 var mongoose = require('mongoose');
-var image = require('../models/image');
 var bcrypt = require('bcryptjs');
+var section = require('../models/session');
+var userdata = require('../models/user');
+var Author = require('../models/author');
+var mongoosastic = require('mongoosastic');
 var ArticleSchema = mongoose.Schema({
     headline :{
         type : String,
-        index : true
+        es_indexed : true
     },
     section : {
         type : String,
-        
+        es_indexed : true
     },
     premble : {
-        type : String
+        type : String,
+        es_indexed : true
     },
     body : {
         type : String
+        
     },
     images :{
-        type : String
+        type : String,
+       es_indexed : true
     },
     author :{
-        type : String
+        type : String,
+       es_indexed : true
     },
     tags : {
-        type : String
+        type : String,
+       es_indexed : true
     },
     widgets : {
-        type : String
+        type : String,
+        es_indexed : true
     },
     date_created :{
         type: Date,
-		"default" : Date.now
+        "default" : Date.now,
+        es_indexed : true
 
     },
     publishDate : {
         type: Date,
-		"default" : Date.now
+        "default" : Date.now,
+       es_indexed : true
+    },
+    status : {
+        type:String,
+        es_indexed : true
     },
     CreateBy :{
-        type : String
+        type : String,
+        es_indexed : true
     }
 })
+ArticleSchema.plugin(mongoosastic,{
+        hosts : 'localhost:9200'
+}); 
+ 
 var article = module.exports = mongoose.model('Article',ArticleSchema);
-//var image = mongoose.model('image',  { name: String });
+article.createMapping(function(err, mapping){
+  if(err){
+    console.log('error creating mapping (you can safely ignore this)');
+    console.log(err);
+  }else{
+    console.log('mapping created!');
+    console.log(mapping);
+  }
+});
 module.exports = {
     
     getAllArticle : function(req,res){
@@ -51,13 +79,9 @@ module.exports = {
             if(err){
                 response = {"error" : true,"message" : "Error deleting data"};
             }else{
-               //response = { "error": false, "message": data };
+               res.render('ArticleForm',{articles:data});
             }
-            //res.json(response);
-            image.all(req, res, function(rows) {
-                res.render('addArticles', { data: rows});
-            });
-             
+            
 
         })
     },
@@ -74,14 +98,15 @@ module.exports = {
         dbArticle.widgets = req.body.widgets;
         dbArticle.date_created = new Date(req.body.date_created);
         dbArticle.publishDate = new Date(req.body.publishDate);
-        dbArticle.CreateBy = req.body.createBy;
+        dbArticle.CreateBy = req.body.CreateBy;
+        dbArticle.status = req.body.status;
         dbArticle.save(function(err){
             if(err){
                 response = {"error" : true,"message" : "Error deleting data"};
             } else {
-                response = { "error": false, "message": "data Added" };
+                res.redirect('/ArticleForm')
             }
-             res.json(response);
+             
         })
 
     },
@@ -96,12 +121,14 @@ module.exports = {
         
 						response = {"error" : true,"message" : "Error deleting data"};
                     } else {
-                        	response = { "error": false, "message": "Data associated with " + req.params.id + "is deleted" };
+                        
+                        res.redirect('/ArticleForm')
                     }
-                        res.json(response);
+                      
                 })
             }
         })
+
     },
     getArticleById : function(req,res){
         var response = {};
@@ -109,9 +136,20 @@ module.exports = {
             if(err){
                  response = {"error" : true,"message" : "Error fetching data"};
             } else {
-                 response = { "error": false, "message": data };
+               // console.log(data.author);
+                var arr = [];
+                arr = data.author.split(",");
+                Author.getAuthorNames(function(err,dataA){
+                userdata.getUserNames(function(err,datauser){
+                section.getSectionNames(function(err,dataSection){
+                
+                 res.render('editArticles',{Author: dataA,Section:dataSection,article:data,arr})
+            })
+           
+        })  
+    })
             }
-             res.json(response);
+            
         })
     },
     updateArticle : function(req,res){
@@ -130,17 +168,30 @@ module.exports = {
                 dataArticle.widgets = req.body.widgets;
                 dataArticle.date_created = new Date(req.body.date_created);
                 dataArticle.publishDate = new Date(req.body.publishDate);
-                dataArticle.CreateBy = req.body.createBy;
+                dataArticle.CreateBy = req.body.CreateBy;
+                dataArticle.status = req.body.status;
                 dataArticle.save(function(err){
                     if(err){
                         response = {"error" : true,"message" : "Error updating data"};
                     } else{
-                        response = {"error" : false,"message" : "updating data success"};
+                        res.redirect('/ArticleForm')
                     }
-                     res.json(response);
+                     
                 })
             }
         })
+    }, 
+    searchArtical : function(req,res){
+        
+       var terms = req.body.terms;
+       article.search({query_string : {query:terms}} ,function(err,results){
+           if(err){
+               console.log("failed")
+           } else {
+            res.render('articleSearch',{articleResult:results.hits.hits})
+           }
+            
+       })
     }
 
 

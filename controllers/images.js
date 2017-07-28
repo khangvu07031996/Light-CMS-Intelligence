@@ -81,6 +81,7 @@ function createDirectory() {
             fs.mkdirSync(destDir4);
         
     });
+   
 }
 
 
@@ -129,7 +130,7 @@ var storage = multer.diskStorage({
     
     filename: function(req, file, cb) {
         var strDate = moment;
-        strDate += strDate + '_' + count + '.jpg';
+        strDate = strDate + '_' + count + '.jpg';
         count++;
         //var strDate1 = getDateTimeObject().toString() + '.jpg';
 
@@ -174,6 +175,10 @@ router.post('/image/upload', upload.any(), function (req, res) {
             console.log('inserted!');
         });
     }
+
+    //reset:
+    arrPath = [];
+    count = 0;
     res.send("Upload successful");
     //res.redirect('/AuthorForm')
 });

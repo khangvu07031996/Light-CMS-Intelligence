@@ -1283,6 +1283,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     offset.left = offset.left + marginLeft
 
     $tip
+    
       .offset(offset)
       .addClass('in')
 

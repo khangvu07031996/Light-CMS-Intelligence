@@ -1,0 +1,157 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header"><i class="fa fa-files-o"></i> Add Article</h3>
+        <ol class="breadcrumb">
+            <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+            <li><i class="icon_document_alt"></i>Forms</li>
+            <li><i class="fa fa-files-o"></i>AddArticle</li>
+        </ol>
+    </div>
+</div>
+<!-- Form validations -->
+<div class="row">
+    <div class="col-lg-12">
+        <section class="panel">
+            <header class="panel-heading">
+            </header>
+            <div class="panel-body">
+                <div class="form">
+                   
+                    <form method="post" action="/Article/edit/{{article.id}}" class="form-validate form-horizontal save">
+                         <div class = "col-lg-9">
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> Headline <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="cname" name="headline" minlength="5" type="text" value="{{article.headline}}" required />
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> section <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <select class="form-control" id="section_selection" name = "section" >
+                                    {{#each Section}}
+                                    <option>{{name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2">  premble <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <textarea class="col-lg-12" name = "premble"> {{article.premble}}</textarea>
+                            </div>
+                        </div>
+                   
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2">  body <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <textarea class="body" name = "body">{{article.body}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cname" class="control-label col-lg-2"> image <span class="required">*</span></label>
+                            <div class="input-group image-preview col-lg-10" style="padding-left:15px ; padding-right:15px;">
+                                <input type="text" class="form-control image-preview-filename" name="images" value="{{article.images}}">
+                                <!-- don't give a name === doesn't send on POST/GET -->
+                                <span class="input-group-btn">
+                                                    <!-- image-preview-clear button -->
+                                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+                                            <span class="glyphicon glyphicon-remove"></span>Clear
+                                    </button>
+                                <!-- image-preview-input -->
+                                <div class="btn btn-default image-preview-input">
+                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                    <span class="image-preview-input-title">Browse</span>
+                                    <input type="file" accept="image/png, image/jpeg, image/gif" name="file" />
+                                    <!-- rename it -->
+                                </div>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <select class="form-control" id="sel1" name = "status" >
+                                    <option>Save Draft</option>
+                                    <option>Published</option>
+                                    
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> tags <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="cname" name="tags" value="{{article.tags}}" minlength="5" type="text" data-role = "tagsinput" required />
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> Author <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <select class="form-control" id="author_selection" name = "author" multiple="multiple">
+                                    {{#each Author}}
+                                    <option>{{name}}</option>
+                                    {{/each}}
+                                    {{#each arr}}
+                                    <option selected="selected">{{this}}</option>
+                                    {{/each}}
+                                </select>
+                        
+                            </div>
+                        </div>
+                         
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> widgets <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="cname" name="widgets" minlength="5" value="{{article.widgets}}" type="text" required />
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> Date Created <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <div class='input-group date' id='datetimepicker2'>
+                                    <input type='text' class="form-control" name="date_created" value="{{article.date_created}}"/>
+                                    <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> Date Publish <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <div class='input-group date' id='datetimepicker3'>
+                                    <input type='text' class="form-control" name="publishDate" value="{{article.publishDate}}"/>
+                                    <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                         <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> CreateBy <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                 <input class="form-control" id="cname" name="CreateBy" value= "{{user.username}}" minlength="5" type="text" required />
+                                
+                            </div>
+                        </div>
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <button class="btn btn-primary" type="submit" style="width: 50%;">Save</button>
+                             <button class="btn btn-success" type="submit" style="width: 49%;">Publish</button>
+                        </div>
+                    </div>
+                    
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+</div>
+
+<!-- page end-->

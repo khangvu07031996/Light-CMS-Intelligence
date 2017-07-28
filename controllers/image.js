@@ -65,7 +65,7 @@ module.exports = {
     getAll: function (req, res, cb) {
         //var result;
         //console.log("This is image model");
-        console.log('get all and view');
+        console.log('get all');
         image.find(function (err, rows) {
             if (err) {
                 res.send(err);

@@ -121,3 +121,6 @@ module.exports = {
 	}
 
 }
+module.exports.getSectionNames = function(callback){
+	Session.find(callback);
+}

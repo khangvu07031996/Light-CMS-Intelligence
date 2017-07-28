@@ -42,11 +42,10 @@ function handleFileSelect(e) {
 
     if (!e.target.files || !window.FileReader) return;
 
-    if (createDirectory()) {
-        uploadfile();
-    }    
+   
+    createDirectory();   
     //load dữ liệu ảnh trong cơ sở dữ liệu:
-    getDataByIds();
+    //getDataByIds();
 
     //selDiv.innerHTML = "";
 
@@ -175,10 +174,7 @@ function remove(el) {
 
 
 }
-
-
-  
-                                
+                              
 
 
     //Sự kiện click Image:
@@ -206,7 +202,7 @@ function uploadfile() {
         //Tạo một đối tượng form data
         var filedata = new FormData();
 
-        //alert(files.length);
+        alert('file.lenght = ' + files.length);
 
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
@@ -224,10 +220,11 @@ function uploadfile() {
 
                     alert(result);
                     console.log(result);
+                    getDataByIds();
                     //window.location.reload();
 
                 }, error: function (err) {
-                    alert(err.statusText);
+                    alert('0 ' + err);
                 }
             }
         );
@@ -253,8 +250,8 @@ function getDataByIds() {
                 success: function (result) {
                     //$("#Picture").val(result);
 
-                    alert(result);
-                    console.log(result);
+                    alert('getdata0 ' + result);
+                    console.log('data0 = ' + result);
                     data0 = result;
                     //window.location.reload();
                     console.log('length = ' + data0.length);
@@ -266,12 +263,12 @@ function getDataByIds() {
                     });
 
                 }, error: function (err) {
-                    alert(err.statusText);
+                    alert(err);
                 }
             }
         );
 
-    console.log('length = ' + data0.length);
+    //console.log('length = ' + data0.length);
 }
 
 //hàm lấy tập hợp dữ liệu:
@@ -288,7 +285,7 @@ function getData() {
                 success: function (result) {
                     //$("#Picture").val(result);
 
-                    alert(result);
+                    alert('getdata: ' + result);
                     console.log(result);
                     data = result;
                     //window.location.reload();
@@ -296,7 +293,7 @@ function getData() {
                         
 
                 }, error: function (err) {
-                    alert(err.statusText);
+                    alert('0 ' + err);
                 }
             }
         );
@@ -308,6 +305,7 @@ function getData() {
 //hàm tạo thư mục:
 function createDirectory() {
     //debugger;
+    alert('creating directory');
    
         $.ajax(
             {
@@ -319,17 +317,18 @@ function createDirectory() {
                 success: function (result) {
                     //$("#Picture").val(result);
 
-                    alert(result);
+                    alert('create dir' + result);
                     console.log(result);
-                    
+                    uploadfile();
                     //window.location.reload();
 
                 }, error: function (err) {
-                    alert(err.statusText);
+                    alert(err);
                 }
             }
         );
-
-    return true;
+    
+    // run function callback:    
+    //cb();
 }
 
