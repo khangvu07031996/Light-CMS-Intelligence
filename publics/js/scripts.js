@@ -1,3 +1,8 @@
+ // ignore enter submit
+$('.save').keypress(function(e){
+                
+        if ( e.which == 13 ) e.preventDefault();
+}); 
 $(document).on('click', '#close-preview', function(){ 
     $('.image-preview').popover('hide');
     // Hover befor close the preview
@@ -10,7 +15,23 @@ $(document).on('click', '#close-preview', function(){
         }
     );    
 });
+//auto generator keyword
+ $('.press_me').click(function(){
+                var sLength=tinyMCE.activeEditor.getContent().length;
+                if(sLength<500) {
+                    alert('Source length must be more or equal than 500 symbols');
+                } else {
+        //			if(sLength>5000) {
+        //				alert('Source length must be at less or equal than 5000 symbols');
+        //			} else {
 
+                        var myKeywords=getKeywords(tinyMCE.activeEditor.getContent());
+                     $('#result').tagsinput('add', myKeywords);
+                        
+                      //  console.log(myKeywords);
+        
+                }
+            });
 $(function() {
     // Create the close button
     var closebtn = $('<button/>', {

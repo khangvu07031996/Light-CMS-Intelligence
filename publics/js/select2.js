@@ -2033,6 +2033,7 @@ S2.define('select2/selection/search',[
 
     var width = '';
 
+
     if (this.$search.attr('placeholder') !== '') {
       width = this.$selection.find('.select2-selection__rendered').innerWidth();
     } else {
@@ -5142,6 +5143,7 @@ S2.define('select2/core',[
       $container.css('width', width);
     }
   };
+
 
   Select2.prototype._resolveWidth = function ($element, method) {
     var WIDTH = /^width:(([-+]?([0-9]*\.)?[0-9]+)(px|em|ex|%|in|cm|mm|pt|pc))/i;
