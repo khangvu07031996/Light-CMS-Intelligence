@@ -18,7 +18,7 @@
                 <div class="form">
                    
                     <form method="post" action="/Article/edit/{{article.id}}" class="form-validate form-horizontal save">
-                         <div class = "col-lg-9">
+                         <div class = "col-lg-8">
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Headline <span class="required">*</span></label>
                             <div class="col-lg-10">
@@ -80,13 +80,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> tags <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Tags <span class="required">*</span></label>
                             <div class="col-lg-10">
-                                <input class="form-control" id="cname" name="tags" value="{{article.tags}}" minlength="5" type="text" data-role = "tagsinput" required />
+                               <button class="btn btn-info col-lg-4" id = "press_me" type="button">generator</button>
+                                <input class = "form-control col-lg-8" type="text" data-role="tagsinput"  id ="result" value="{{article.tags}}"  data-role="" name = "tags"/>
                             </div>
                         </div>
+                        
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Author <span class="required">*</span></label>
                             <div class="col-lg-10">
