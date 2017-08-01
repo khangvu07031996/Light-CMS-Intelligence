@@ -28,6 +28,7 @@ var imageSchema = new Schema({
         type: Date,
         "default": Date.now
     },
+    moment: String
 });
 
 
@@ -62,6 +63,30 @@ module.exports = {
         
        
     },
+    getDataByID: function (req, res, cb) {
+        //var result;
+        console.log("This is image model");
+        console.log('get by id with req.body.id = ' + req.body.id);
+        console.log('get by id with req.params.id = ' + req.params.id);
+        //image.find({_id: "597b0ced4cafbb18cc90e7dc"}, function (err, rows) {
+        image.find({_id: req.body.id}, function (err, rows) {
+            
+           cb(rows);
+           
+        });
+        
+        
+       
+    },
+    //getDataByMoment
+    getDataByMoment: function (req, res, cb) {
+        image.find({moment: req.body.moment}, function (err, rows) {
+            
+           cb(rows);
+           
+        });
+    },
+
     getAll: function (req, res, cb) {
         //var result;
         //console.log("This is image model");
@@ -105,6 +130,8 @@ module.exports = {
             p.photographer = '';
             p.usercreate = 'unknow';
 
+            p.moment = obj.moment;
+
             p.medialist.teaser = "";
             p.medialist.searchResult = "";
             p.medialist.articlePreview = obj.articlePreview;
@@ -147,27 +174,29 @@ module.exports = {
             if (err) {
                 res.send(err);
             }
-            //p.heading = req.body.heading;
-            //p.media = req.body.media;
-            //p.description = req.body.description;
+            p.heading = req.body.heading;
+            
+            p.description = req.body.description;
             //p.caption = req.body.caption;
-            //p.photographer = req.body.photographer;
-            p.heading = 'heading';
+            p.photographer = req.body.photographer;
+            //p.heading = 'heading';
             //p.media = objinfo.path;
-            p.description = 'description';
-           
-            p.photographer = 'photorapher';
+            //p.description = 'description';           
+            //p.photographer = 'photorapher';
             p.usercreate = 'unknow';
 
         //p.medialist.teaser = objinfo.teaser;
         //p.medialist.searchResult = objinfo.searchResult;
         //p.medialist.articlePreview = objinfo.articlePreview;
 
-            p.save(function (err) {
-                if (err)
+            p.save(function (err, img) {
+                if (err) {
                     res.send(err);
+                }
+                    
 
-                res.json({ message: 'image updated!' });
+                //res.json({ message: 'image updated!' });
+                res.send(img);
             });
 
         });

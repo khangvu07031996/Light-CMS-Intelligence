@@ -47,37 +47,70 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div style="display: flex;">
+                            <div class="col-md-12">
+                                <label class="" for="cname" class="control-label"> file : <span class="required">*</span></label>
+                                <div class="">
+                                     <input style="display: block;" type="file" id="files" name="files" multiple accept="image/*">
+                                </div>
+                              
+                            </div>
+                            <br />
+                            <div class="col-md-2">
                                 <button type="button" id = "btnPopup2" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+</button>
-                               &nbsp Files: <input style="display: block;" type="file" id="files" name="files" multiple accept="image/*">
-                           </div>                               
-                                <div id="divimg"></div>
-                                <div id="imgtab" class="tabcontent">
+                                
+                           </div >
+                                <div class="col-md-10">                               
+                                <div class="col-md-12" id="divimg"></div>
+                                </div>
+                              
+                                
+                        </div>   
+                        
+                         <div class="form-group">
+                            <div class="col-md-2"></div>
+
+                            <div class="col-md-10">
+                                <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
                                     <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                                    <br />
+                                    <div>
+                                        <img id = "imgsrc" src="" weight = "100%" height = "150px"></img>
+                                    </div>
+                                    <div>
+                                        <input type="hidden" id = "imgid" name="imgid" value="">
+                                    </div>
+                                    
                                     <div >
-                                        <div class="form-group">
+                                        <div >
                                             <label for="heading">Heading:</label>
-                                            <input type="text" class="form-control" name="heading">
+                                            <input id = "heading" type="text" class="form-control" name="heading">
                                         </div>
-                                        <div class="form-group">
+                                        <div >
                                             <label for="description">Description:</label>
-                                            <input type="text" class="form-control" name="description">
+                                            ​<textarea id="description" rows="5"  class="col-md-12"></textarea>
                                         </div>
-                                        <div class="form-group">
+                                        <div>
                                             <label for="photographer">Photographer:</label>
-                                            <input type="tel" class="form-control" name="photographer">
+                                            <input id = "photographer" type="tel" class="form-control" name="photographer">
                                         </div>
 
-                                        <div class="form-group">
-                                            <div class="">
-                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            <br />
+                                            <div class="pull-right">
+                                                <button id = "btnImgInfo" type="button" class="btn btn-primary">Save</button>
 
-                                                <button type="reset" class="btn btn-default">Reset</button>
+                                                
                                             </div>
-                                        </div>
+                                        
                                     </div>
                                 </div>
-                        </div>   
+                            </div>
+
+                             
+                         </div>
+
+
+
+
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2">  Body <span class="required">*</span></label>
                             <div class="col-lg-10">
@@ -120,7 +153,7 @@
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Tags <span class="required">*</span></label>
                             <div class="col-lg-10">
-                               <button class="btn btn-info col-lg-4" id = "press_me">generator</button>
+                               <button class="btn btn-info col-lg-4" id = "press_me" type = "button">generator</button>
                                 <input class = "form-control col-lg-8" type="text" data-role="tagsinput"  id ="result" value="" data-role="" name = "tags"/>
                             </div>
                         </div>
@@ -173,7 +206,7 @@
                         </div>
                         <div class="col-lg-offset-2 col-lg-10" >
                             <button   class="btn btn-primary" type="submit" style="width: 50%;" >Save</button>
-                             <button class="btn btn-success" type="submit" style="width: 49%;">Publish</button>
+                             <button class="btn btn-success" type="submit" style="width: 48%;">Publish</button>
                         </div>
                     </div>
                     
@@ -243,17 +276,3 @@
     </div>
 </div>
 
-<img height="100" width="80" id="1" data-toggle="modal" data-target="#myModal2" src='/img/avatar1.jpg' alt='Text dollar code part one.' />
-
-<div id="myModal2" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <img class="img-responsive" src="" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>

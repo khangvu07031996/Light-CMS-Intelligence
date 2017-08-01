@@ -97,7 +97,23 @@ router.get('/image/createDirectory', function(req, res) {
 router.get('/image/data', function (req, res) {   
     
     image.all(req, res, function(result) {
-        console.log('result------ = ' + result);
+        //console.log('result------ = ' + result);
+        res.send(result);
+    });
+});
+
+router.post('/image/dataByMoment', function (req, res) {   
+    
+    image.getDataByMoment(req, res, function(result) {
+        //console.log('result------ = ' + result);
+        res.send(result);
+    });
+});
+
+router.post('/image/databyid', function (req, res) {   
+    
+    image.getDataByID(req, res, function(result) {
+        console.log('result by id = ' + result);
         res.send(result);
     });
 });
@@ -165,11 +181,13 @@ router.post('/image/upload', upload.any(), function (req, res) {
     
 
     console.log(arrPath);
+    console.log("moment..... = " + moment);
     for (var i = 0; i < arrPath.length; i++) {
         var obj = {
        
             articlePreview: arrPath[i],
-            path: virtualDir
+            path: virtualDir,
+            moment: moment
         };
         image.insert(req, res, null, obj, function (err, img) {
             console.log('inserted!');
@@ -179,8 +197,9 @@ router.post('/image/upload', upload.any(), function (req, res) {
     //reset:
     arrPath = [];
     count = 0;
-    res.send("Upload successful");
+    //res.send("Upload successful");
     //res.redirect('/AuthorForm')
+    res.send(moment);
 });
 
 router.route('/image/:image_id').get(function (req, res) {

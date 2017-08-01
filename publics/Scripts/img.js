@@ -1,4 +1,4 @@
-//Sự kiện click button:
+//Sự kiện click button trên Popup:
 $(document).ready(function () {
     var selDiv = "";
     selDiv = document.querySelector("#divimg");
@@ -14,7 +14,7 @@ $(document).ready(function () {
             var html = $('#console').html();
 
 
-            selDiv.innerHTML += ' ' + i;
+            selDiv.innerHTML += '  ' + i;
         });
 
         //alert(src0);
@@ -24,8 +24,6 @@ $(document).ready(function () {
 
 
 });
-
-
 
 
 //Sự kiện duyệt file:
@@ -44,45 +42,22 @@ function handleFileSelect(e) {
 
    
     createDirectory();   
-    //load dữ liệu ảnh trong cơ sở dữ liệu:
-    //getDataByIds();
-
-    //selDiv.innerHTML = "";
+    
 
     var files = e.target.files;
     var filesArr = Array.prototype.slice.call(files);
-    /*
-    filesArr.forEach(function (f) {
-        //var f = files[i];
-        if (!f.type.match("image.*")) {
-            return;
-        }
-
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            var html = "<img src=\"" + e.target.result + "\" " + " weight = 75px height = 70px" + ">";
-            selDiv.innerHTML += html;
-        }
-        reader.readAsDataURL(f);
-    });
-
-    */
     
-    // data.forEach(function (f) {
-    //     var path = f.media + '/' + f.medialist.articlePreview;        
-    //     var html = "<img src=\"" + path + "\" " + " weight = 75px height = 70px" + ">";
-    //     selDiv.innerHTML += html;
-      
-    // });
+    
 }
 
 
 
-
+//Các biến lưu thông tin về ảnh:
 var arrImgs = [];
 var arrImgObjs = [];
 var total_items = 0;
 
+//Xử lý sự kiện kéo thả ảnh trên Popup:
 $(document).ready(function () {
 
     $(".item").draggable({
@@ -170,18 +145,18 @@ function remove(el) {
     total_items--;
     $("#citem").html(total_items);
 
-    // update totl price
-
+  
 
 }
                               
 
 
-    //Sự kiện click Image:
+    //Sự kiện click :
 
     $(document).on('click', 'img', function (evt) {
         alert("hey!" + this.id + "--" + this.src);
         document.getElementById('imgtab').style.display = "block";
+        getDataByID(this.id);
 
     });
 
@@ -190,7 +165,16 @@ function remove(el) {
         getData();
 
     });
-                            
+    //btnImgInfo
+    $(document).on('click', '#btnImgInfo', function (evt) {
+        alert("This is button of img tab");
+        let data = getImageInfo();
+        updateImageInfo(data);
+
+        //View paths of images:
+        console.log("paths of imgs: " + arrImgObjs);
+        console.log(arrImgObjs);
+    });         
 
 
 //hàm upload files:
@@ -220,7 +204,7 @@ function uploadfile() {
 
                     alert(result);
                     console.log(result);
-                    getDataByIds();
+                    getDataByMoment(result);
                     //window.location.reload();
 
                 }, error: function (err) {
@@ -237,16 +221,20 @@ function uploadfile() {
 
 var data0;
 //hàm lấy tập hợp dữ liệu:
-function getDataByIds() {
+function getDataByMoment(moment) {
     //debugger;
-   
+        var data = {
+            moment: moment
+        }
         $.ajax(
             {
-                url: '/image/data',
-                type: 'GET',
-                contentType: false,
-                processData: false,
-                data: null,
+                url: '/image/dataByMoment',
+                
+                type: 'POST',  
+                data: JSON.stringify(data),                
+                contentType: "application/json",
+                //contentType: "application/x-www-form-urlencoded",
+                dataType:'json',
                 success: function (result) {
                     //$("#Picture").val(result);
 
@@ -255,11 +243,18 @@ function getDataByIds() {
                     data0 = result;
                     //window.location.reload();
                     console.log('length = ' + data0.length);
-                        data0.forEach(function (f) {
-                        var path = f.media + '/' + f.medialist.articlePreview;        
-                        var html = "<img src=\"" + path + "\" " + " weight = 75px height = 70px" + ">";
-                        selDiv.innerHTML += html;
-                
+
+                    //selDiv.innerHTML = "<br />";
+                    data0.forEach(function (f) {
+                    var path = f.media + '/' + f.medialist.articlePreview;        
+                    var html = "<img src=\"" + path + "\" " + "id = \"" + f._id + "\"" + " style= \"" + "width : 75px; height : 70px \"" + ">  ";
+                    selDiv.innerHTML += html;
+
+                    arrImgObjs.push({
+                        id: 0,
+                        path: path
+                    });
+            
                     });
 
                 }, error: function (err) {
@@ -268,7 +263,7 @@ function getDataByIds() {
             }
         );
 
-    //console.log('length = ' + data0.length);
+    
 }
 
 //hàm lấy tập hợp dữ liệu:
@@ -287,9 +282,9 @@ function getData() {
 
                     alert('getdata: ' + result);
                     console.log(result);
-                    data = result;
+                    
                     //window.location.reload();
-                    console.log('length = ' + data.length);
+                  
                         
 
                 }, error: function (err) {
@@ -298,9 +293,106 @@ function getData() {
             }
         );
 
-    //console.log('length = ' + data.length);
+    
 }
 
+//Lấy dữ liệu theo id;
+function getDataByID(id) {
+    //debugger;
+
+        var data = {id: id};
+        //alert('id = ' + id);
+   
+        $.ajax(
+            {
+                url: '/image/databyid',
+                type: 'POST',               
+               
+                data: JSON.stringify(data),                
+                contentType: "application/json",
+                //contentType: "application/x-www-form-urlencoded",
+                dataType:'json',
+                success: function (result) {
+                    //$("#Picture").val(result);
+
+                    alert('get data by id: ' + result[0]._id);
+                    console.log(result);
+                   
+                    //window.location.reload();
+                    
+                    initImageTabcontent(result[0]);
+                        
+
+                }, error: function (err) {
+                    alert(err);
+                }
+            }
+        );
+
+   
+}
+
+//Hàm cập nhật thông tin của ảnh:
+function updateImageInfo(imgdata) {
+    //var data = {id: id};
+        //alert('id = ' + id);
+   
+        $.ajax(
+            {
+                url: '/image/' + imgdata.id,
+                type: 'PUT',               
+               
+                data: JSON.stringify(imgdata),                
+                contentType: "application/json",
+                //contentType: "application/x-www-form-urlencoded",
+                dataType:'json',
+                success: function (result) {
+                   
+                    console.log("update: " + result);
+                    alert('Updated ' + result);
+                    //window.location.reload();                   
+                    
+
+                }, error: function (err) {
+                    alert(err);
+                }
+            }
+        );
+
+
+}
+
+//hàm khởi tạo tab thể hiện thông tin của ảnh:
+function initImageTabcontent(imgdata) {
+    let src = imgdata.media + "/" + imgdata.medialist.articlePreview;
+    $("#description").val(imgdata._id);
+    $("#heading").val(imgdata.heading);
+    $("#photographer").val(imgdata.photographer);
+    $("#imgsrc").attr('src', src);
+    $("#imgid").val(imgdata._id);
+
+}
+
+//Hàm lấy thông về ảnh, trên tab:
+function getImageInfo() {
+    let imgdata = {};
+    imgdata.id = $("#imgid").val();
+    imgdata.description = $("#description").val();
+    imgdata.heading = $("#heading").val();
+    imgdata.photographer =  $("#photographer").val();
+    
+    return imgdata;
+
+}
+ 
+//Hàm reset tab thông tin ảnh:
+function resetImageTabcontent() {
+    $("#description").val("");
+    $("#heading").val("");
+    $("#photographer").val("");
+    $("#imgsrc").attr('src', "");
+    $("#imgid").val("");
+}
 
 //hàm tạo thư mục:
 function createDirectory() {
