@@ -73,18 +73,19 @@ article.createMapping(function(err, mapping){
 });
 module.exports = {
     
-    getAllArticle : function(req,res){
-        var response = {};
-        article.find(function(err,data){
-            if(err){
-                response = {"error" : true,"message" : "Error deleting data"};
-            }else{
-               res.render('ArticleForm',{articles:data});
-            }
+    // getAllArticle : function(req,res){
+    //     var response = {};
+    //     article.find(function(err,data){
+    //         if(err){
+    //             response = {"error" : true,"message" : "Error deleting data"};
+    //         }else{
+    //           // res.render('ArticleForm',{articles:data});
+    //           res.send(data);
+    //         }
             
 
-        })
-    },
+    //     })
+    // },
     addArticle : function(req,res){
         var response = {};
         var dbArticle = new article();
@@ -195,4 +196,50 @@ module.exports = {
     }
 
 
+}
+module.exports.getAllArticleApi = function(callback){
+    article.find(callback);
+}
+module.exports.getArticleByIdApi = function(id,callback){
+    article.findById({_id: id},callback);
+}
+module.exports.addArticleApi = function(articles){
+
+    return new article(articles).save();
+}
+module.exports.deleteArticleApi = function(id,callback){
+    article.findById({_id:id},function(err){
+        if(!err){
+            article.remove({_id:id},callback);
+        }
+    })
+}
+module.exports.updateArticleApi = function(req,res){
+    var response = {};
+        article.findById(req.params.id,function(err,dataArticle){
+            if(err){
+               response = {"error" : true,"message" : "Error fetching data"};
+            } else {
+                dataArticle.headline = req.body.headline;
+                dataArticle.section = req.body.section;
+                dataArticle.premble = req.body.premble;
+                dataArticle.body = req.body.body;
+                dataArticle.images = req.body.images;
+                dataArticle.author = req.body.author;
+                dataArticle.tags = req.body.tags;
+                dataArticle.widgets = req.body.widgets;
+                dataArticle.date_created = new Date(req.body.date_created);
+                dataArticle.publishDate = new Date(req.body.publishDate);
+                dataArticle.CreateBy = req.body.CreateBy;
+                dataArticle.status = req.body.status;
+                dataArticle.save(function(err){
+                    if(err){
+                        response = {"error" : true,"message" : "Error updating data"};
+                    } else{
+                        res.send("updated")
+                    }
+                     
+                })
+            }
+        })
 }
