@@ -36,7 +36,7 @@ $(document).ready(function () {
         //alert(src0);
     });
 
-
+    
 
 
 });
@@ -50,6 +50,13 @@ document.addEventListener("DOMContentLoaded", init, false);
 function init() {
     document.querySelector('#files').addEventListener('change', handleFileSelect, false);
     selDiv = document.querySelector("#divimg");
+
+     //Reset Cancas:
+    
+    //ctx.beginPath();
+    var myCanvas = document.getElementById('myCanvas');
+    var ctx = myCanvas.getContext('2d');
+    clearCanvas(myCanvas, ctx);
 }
 
 function handleFileSelect(e) {
@@ -65,6 +72,7 @@ function handleFileSelect(e) {
     
     
 }
+
 
 
 
@@ -181,10 +189,10 @@ function remove(el) {
         document.getElementById('imgtab').style.display = "block";
         getDataByID(this.id);
 
-        detectFaces();
-
-       
-
+        //detectFaces();
+        var myCanvas = document.getElementById('myCanvas');
+        var ctx = myCanvas.getContext('2d');
+        //clearCanvas(myCanvas, ctx);
     });
 
     $(document).on('click', '#btnPopup2', function(evt) { 
@@ -201,9 +209,8 @@ function remove(el) {
         //View paths of images:
         console.log("paths of imgs: " + arrImgObjs);
         console.log(arrImgObjs);
-    });         
-
-
+    });   
+    
 //hàm upload files:
 function uploadfile() {
     //debugger;
@@ -302,71 +309,45 @@ function getDataByMoment(moment) {
 
 //hàm lấy tập hợp dữ liệu:
 function getData() {
-    //debugger;
-   
-        $.ajax(
-            {
-                url: '/image/data',
-                type: 'GET',
-                contentType: false,
-                processData: false,
-                data: null,
-                success: function (result) {
-                    //$("#Picture").val(result);
-
-                    //alert('getdata: ' + result);
-                    console.log(result);
-                    
-                    //window.location.reload();
-                  
-                        
-
-                }, error: function (err) {
-                    alert('0 ' + err);
-                }
+    $.ajax(
+        {
+            url: '/image/data',
+            type: 'GET',
+            contentType: false,
+            processData: false,
+            data: null,
+            success: function (result) {
+                console.log(result);
+            }, error: function (err) {
+                alert('0 ' + err);
             }
-        );
-
-    
+        }
+    );
 }
 
 //Lấy dữ liệu theo id;
 function getDataByID(id) {
-    //debugger;
-
-        var data = {id: id};
-        //alert('id = ' + id);
-   
-        $.ajax(
-            {
-                url: '/image/databyid',
-                type: 'POST',               
-               
-                data: JSON.stringify(data),                
-                contentType: "application/json",
-                //contentType: "application/x-www-form-urlencoded",
-                dataType:'json',
-                success: function (result) {
-                    //$("#Picture").val(result);
-                    if (result !== null && result != 'undefined') {
-                        //alert('get data by id: ' + result[0]._id);
-                        console.log(result);
-                   
-                        //window.location.reload();
-                    
-                        initImageTabcontent(result[0]);
-                    }
-
-                    
-                        
-
-                }, error: function (err) {
-                    alert(err);
+    var data = {id: id};
+    $.ajax(
+        {
+            url: '/image/databyid',
+            type: 'POST',               
+            data: JSON.stringify(data),                
+            contentType: "application/json",
+            //contentType: "application/x-www-form-urlencoded",
+            dataType:'json',
+            success: function (result) {
+                //$("#Picture").val(result);
+                if (result !== null && result != 'undefined') {
+                    //alert('get data by id: ' + result[0]._id);
+                    console.log(result);
+                    initImageTabcontent(result[0]);
                 }
+            }, error: function (err) {
+                console.log(err);
             }
-        );
-
-   
+        }
+    );   
 }
 
 //Hàm cập nhật thông tin của ảnh:
@@ -408,11 +389,14 @@ function initImageTabcontent(imgdata) {
     $("#photographer").val(imgdata.photographer);
     //$("#imgsrc0").attr('src', src);
     $("#imgid").val(imgdata._id);
-
     var img = document.getElementById("imgsrc0");
-
+    //Clear Canvas:
     //var myCanvas = document.getElementById('myCanvas');
     //var ctx = myCanvas.getContext('2d');
+
+    //context.clearRect(0, 0, myCanvas.width, canvas.height);
+    // bind event handler to clear button
+ 
     img.onload = function() {
            //ctx.drawImage(img,0,0); // Or at whatever offset you like
             //var img = document.getElementById('imgsrc0');
@@ -420,6 +404,7 @@ function initImageTabcontent(imgdata) {
             tracker.setStepSize(1.7);
             tracking.track(img, tracker);
             tracker.on('track', function (event) {
+                $(".demo-container2").empty();
                 event.data.forEach(function (rect) {
                     window.plot(rect.x, rect.y, rect.width, rect.height);
                 });
@@ -433,47 +418,13 @@ function initImageTabcontent(imgdata) {
                 rect.style.left = (img.offsetLeft + x) + 'px';
                 rect.style.top = (img.offsetTop + y) + 'px';
             };
-
-           
-    
 		};
-		img.src = src;
-        
-    
+        img.src = src;
+}
 
-    /*
-    var myCanvas = document.getElementById('myCanvas');
-		var ctx = myCanvas.getContext('2d');
-		var img = new Image;
-		
-		img.onload = function(){
-            //ctx.drawImage(img,0,0); // Or at whatever offset you like
-            //var img = document.getElementById('myCanvas');
-            var tracker = new tracking.ObjectTracker(['face']);
-            tracker.setStepSize(1.7);
-            tracking.track(img, tracker);
-            tracker.on('track', function (event) {
-                event.data.forEach(function (rect) {
-                    window.plot(rect.x, rect.y, rect.width, rect.height);
-                });
-            });
-            window.plot = function (x, y, w, h) {
-                var rect = document.createElement('div');
-                document.querySelector('.demo-container2').appendChild(rect);
-                rect.classList.add('rect');
-                rect.style.width = w + 'px';
-                rect.style.height = h + 'px';
-                rect.style.left = (img.offsetLeft + x) + 'px';
-                rect.style.top = (img.offsetTop + y) + 'px';
-            };
-
-            ctx.drawImage(img,0,0); // Or at whatever offset you like
-    
-		};
-		img.src = src;
-        */
-    //detectFaces();
-
+function clearCanvas(canvas,ctx) {
+    event.preventDefault();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 //Hàm lấy thông về ảnh, trên tab:
