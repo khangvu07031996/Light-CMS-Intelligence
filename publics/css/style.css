@@ -366,7 +366,9 @@ table tr th { color: #688a7e;}
 
 }
 
-
+.control-label.col-lg-2{
+    white-space: nowrap;
+}
 
 .login-form p {
 
