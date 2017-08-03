@@ -48,6 +48,7 @@ app.use(bodyParser.urlencoded({"extended" : false}));
 //view engine
 app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'ejs');
+//app.set('view engine', 'ejs');
 
 var user = require('./models/user');
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
