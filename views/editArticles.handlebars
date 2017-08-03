@@ -18,7 +18,11 @@
                 <div class="form">
                    
                     <form method="post" action="/Article/edit/{{article.id}}" class="form-validate form-horizontal save">
+<<<<<<< HEAD
                          <div class = "col-lg-8 col-md-8">
+=======
+                         <div class = "col-lg-8">
+>>>>>>> feature
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2 col-md-2"> Headline <span class="required">*</span></label>
                             <div class="col-lg-10 col-md-10">
@@ -82,12 +86,20 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group ">
+<<<<<<< HEAD
                             <label for="cname" class="control-label col-lg-2 col-md-2"> tags <span class="required">*</span></label>
                             <div class="col-lg-10 col-md-10">
                                   <button class="btn btn-info press_me" style = "width:30%" type="button" >generator</button>
                                 <input class="form-control" id="result" name="tags" value="{{article.tags}}" minlength="5" type="text" data-role = "tagsinput" required />
+=======
+                            <label for="cname" class="control-label col-lg-2"> Tags <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                               <button class="btn btn-info col-lg-4" id = "press_me" type="button">generator</button>
+                                <input class = "form-control col-lg-8" type="text" data-role="tagsinput"  id ="result" value="{{article.tags}}"  data-role="" name = "tags"/>
+>>>>>>> feature
                             </div>
                         </div>
+                        
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2 col-md-2"> Author <span class="required">*</span></label>
                             <div class="col-lg-10 col-md-10">

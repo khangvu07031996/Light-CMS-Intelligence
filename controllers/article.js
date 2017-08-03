@@ -16,10 +16,9 @@ var storage = multer.diskStorage({
 
 });
 var upload = multer({storage:storage});
-//add article
 router.post("/article/add",upload.single('file'),ArticleData.addArticle);
 // get all article
-router.get("/ArticleForm", ArticleData.getAllArticle);
+//router.get("/ArticleForm",ArticleData.getAllArticle);
 // delete article
 router.get("/Article/delete/:id", ArticleData.deleteArticle);
 //get article by id
@@ -40,5 +39,11 @@ function getallName(req,res){
       
     
 }
+function datagot(req,res){
+    ArticleData.getAllArticleApi(function(err,data){
+        res.render('ArticleForm',{articles:data});
+    })
+}
+router.get("/ArticleForm",datagot);
 router.get("/addArticles",getallName)
 module.exports = router;

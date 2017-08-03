@@ -11,6 +11,25 @@ var express =require('express'),
  var flash = require('connect-flash');
  var localStrategy = require('passport-local').Strategy;
  var exphbs = require('express-handlebars'); 
+ var swaggerJSDoc = require('swagger-jsdoc');
+ var swaggerDefinition = {
+   info:{
+     title: 'Node Swagger API',
+     version: '1.0.0',
+     description: 'Demonstrating how to describe a RESTFUL API with Swagger'
+   },
+    host: 'localhost:3000',
+    basepath: '/',
+ };
+  var options = {
+    swaggerDefinition : swaggerDefinition,
+    apis: ['./api/*.js'],
+  };
+  var swaggerSpec = swaggerJSDoc(options);
+  app.get('/swagger.json', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 //app.use(cookieParser());
 app.use(expressValidator({
   errorFormatter: function(param, msg, value) {
@@ -66,6 +85,7 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(require('./controllers'))
+app.use(require('./api'))
 mongoose.connect('mongodb://localhost:27017/intelligenceCms',function(err){
 if (err) {
     console.log('Unable to connect to Mongo.')
