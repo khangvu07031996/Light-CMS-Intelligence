@@ -3,7 +3,8 @@ $(document).ready(function () {
     var selDiv = "";
     selDiv = document.querySelector("#divimg");
     $("#btnOk").click(function () {
-        alert('button clicked');
+        //alert('button clicked');
+        console.log('button btnOK clicked');
         console.log('leng of array = ' + arrImgs.length);
         console.log(arrImgObjs);
 
@@ -16,6 +17,21 @@ $(document).ready(function () {
 
             selDiv.innerHTML += '  ' + i;
         });
+
+
+      //Cập nhật đường dẫn các ảnh được chọn:
+        arrImgObjs.forEach(function(i) {
+            arrPaths.push(i.path);
+        });
+        $("#imgPaths").val(arrPaths);
+
+        //Reset:
+         $("#cart_items").fadeOut("2000", function () {
+            $(this).html("").fadeIn("fast").css({ left: 0 });
+        });
+        $("#citem").html("0");
+        
+        total_items = 0;
 
         //alert(src0);
     });
@@ -55,6 +71,8 @@ function handleFileSelect(e) {
 //Các biến lưu thông tin về ảnh:
 var arrImgs = [];
 var arrImgObjs = [];
+var arrPaths = [];
+
 var total_items = 0;
 
 //Xử lý sự kiện kéo thả ảnh trên Popup:
@@ -123,12 +141,17 @@ $(document).ready(function () {
             $(this).html("").fadeIn("fast").css({ left: 0 });
         });
         $("#citem").html("0");
-        $("#cprice").html("$ 0");
+        
         total_items = 0;
-        total_price = 0;
+        
         return false;
     });
+
+    //Trackingjs:
+     detectFaces();
+
 });
+
 function remove(el) {
     $(el).hide();
     $(el).parent().parent().effect("highlight", { color: "#ff0000" }, 10);
@@ -154,20 +177,24 @@ function remove(el) {
     //Sự kiện click :
 
     $(document).on('click', 'img', function (evt) {
-        alert("hey!" + this.id + "--" + this.src);
+        //alert("hey!" + this.id + "--" + this.src);
         document.getElementById('imgtab').style.display = "block";
         getDataByID(this.id);
+
+        detectFaces();
+
+       
 
     });
 
     $(document).on('click', '#btnPopup2', function(evt) { 
-        alert("hey!");
+        //alert("hey!");
         getData();
 
     });
     //btnImgInfo
     $(document).on('click', '#btnImgInfo', function (evt) {
-        alert("This is button of img tab");
+        //alert("This is button of img tab");
         let data = getImageInfo();
         updateImageInfo(data);
 
@@ -186,7 +213,7 @@ function uploadfile() {
         //Tạo một đối tượng form data
         var filedata = new FormData();
 
-        alert('file.lenght = ' + files.length);
+        //alert('file.lenght = ' + files.length);
 
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
@@ -202,7 +229,7 @@ function uploadfile() {
                 success: function (result) {
                     //$("#Picture").val(result);
 
-                    alert(result);
+                    //alert(result);
                     console.log(result);
                     getDataByMoment(result);
                     //window.location.reload();
@@ -238,7 +265,7 @@ function getDataByMoment(moment) {
                 success: function (result) {
                     //$("#Picture").val(result);
 
-                    alert('getdata0 ' + result);
+                    //alert('getdata0 ' + result);
                     console.log('data0 = ' + result);
                     data0 = result;
                     //window.location.reload();
@@ -246,16 +273,23 @@ function getDataByMoment(moment) {
 
                     //selDiv.innerHTML = "<br />";
                     data0.forEach(function (f) {
-                    var path = f.media + '/' + f.medialist.articlePreview;        
-                    var html = "<img src=\"" + path + "\" " + "id = \"" + f._id + "\"" + " style= \"" + "width : 75px; height : 70px \"" + ">  ";
-                    selDiv.innerHTML += html;
+                        var path = f.media + '/' + f.medialist.articlePreview;
+                        var html = "<img src=\"" + path + "\" " + "id = \"" + f._id + "\"" + " style= \"" + "width : 75px; height : 70px \"" + ">  ";
+                        selDiv.innerHTML += html;
 
-                    arrImgObjs.push({
-                        id: 0,
-                        path: path
+                        arrImgObjs.push({
+                            id: 0,
+                            path: path
+                        });
+
                     });
-            
+
+                    //cập nhật path của các ảnh được chọn:
+                    arrImgObjs.forEach(function(i) {
+                        arrPaths.push(i.path);
                     });
+                    $("#imgPaths").val(arrPaths);
+
 
                 }, error: function (err) {
                     alert(err);
@@ -280,7 +314,7 @@ function getData() {
                 success: function (result) {
                     //$("#Picture").val(result);
 
-                    alert('getdata: ' + result);
+                    //alert('getdata: ' + result);
                     console.log(result);
                     
                     //window.location.reload();
@@ -314,13 +348,16 @@ function getDataByID(id) {
                 dataType:'json',
                 success: function (result) {
                     //$("#Picture").val(result);
-
-                    alert('get data by id: ' + result[0]._id);
-                    console.log(result);
+                    if (result !== null && result != 'undefined') {
+                        //alert('get data by id: ' + result[0]._id);
+                        console.log(result);
                    
-                    //window.location.reload();
+                        //window.location.reload();
                     
-                    initImageTabcontent(result[0]);
+                        initImageTabcontent(result[0]);
+                    }
+
+                    
                         
 
                 }, error: function (err) {
@@ -340,7 +377,7 @@ function updateImageInfo(imgdata) {
         $.ajax(
             {
                 url: '/image/' + imgdata.id,
-                type: 'PUT',               
+                type: 'POST',               
                
                 data: JSON.stringify(imgdata),                
                 contentType: "application/json",
@@ -349,8 +386,9 @@ function updateImageInfo(imgdata) {
                 success: function (result) {
                    
                     console.log("update: " + result);
-                    alert('Updated ' + result);
-                    //window.location.reload();                   
+                    alert('Updated successful');
+                    //window.location.reload();     
+                    document.getElementById('imgtab').style.display = "none";              
                     
 
                 }, error: function (err) {
@@ -368,8 +406,73 @@ function initImageTabcontent(imgdata) {
     $("#description").val(imgdata._id);
     $("#heading").val(imgdata.heading);
     $("#photographer").val(imgdata.photographer);
-    $("#imgsrc").attr('src', src);
+    //$("#imgsrc0").attr('src', src);
     $("#imgid").val(imgdata._id);
+
+    var img = document.getElementById("imgsrc0");
+
+    //var myCanvas = document.getElementById('myCanvas');
+    //var ctx = myCanvas.getContext('2d');
+    img.onload = function() {
+           //ctx.drawImage(img,0,0); // Or at whatever offset you like
+            //var img = document.getElementById('imgsrc0');
+            var tracker = new tracking.ObjectTracker(['face']);
+            tracker.setStepSize(1.7);
+            tracking.track(img, tracker);
+            tracker.on('track', function (event) {
+                event.data.forEach(function (rect) {
+                    window.plot(rect.x, rect.y, rect.width, rect.height);
+                });
+            });
+            window.plot = function (x, y, w, h) {
+                var rect = document.createElement('div');
+                document.querySelector('.demo-container2').appendChild(rect);
+                rect.classList.add('rect');
+                rect.style.width = w + 'px';
+                rect.style.height = h + 'px';
+                rect.style.left = (img.offsetLeft + x) + 'px';
+                rect.style.top = (img.offsetTop + y) + 'px';
+            };
+
+           
+    
+		};
+		img.src = src;
+        
+    
+
+    /*
+    var myCanvas = document.getElementById('myCanvas');
+		var ctx = myCanvas.getContext('2d');
+		var img = new Image;
+		
+		img.onload = function(){
+            //ctx.drawImage(img,0,0); // Or at whatever offset you like
+            //var img = document.getElementById('myCanvas');
+            var tracker = new tracking.ObjectTracker(['face']);
+            tracker.setStepSize(1.7);
+            tracking.track(img, tracker);
+            tracker.on('track', function (event) {
+                event.data.forEach(function (rect) {
+                    window.plot(rect.x, rect.y, rect.width, rect.height);
+                });
+            });
+            window.plot = function (x, y, w, h) {
+                var rect = document.createElement('div');
+                document.querySelector('.demo-container2').appendChild(rect);
+                rect.classList.add('rect');
+                rect.style.width = w + 'px';
+                rect.style.height = h + 'px';
+                rect.style.left = (img.offsetLeft + x) + 'px';
+                rect.style.top = (img.offsetTop + y) + 'px';
+            };
+
+            ctx.drawImage(img,0,0); // Or at whatever offset you like
+    
+		};
+		img.src = src;
+        */
+    //detectFaces();
 
 }
 
@@ -397,7 +500,8 @@ function resetImageTabcontent() {
 //hàm tạo thư mục:
 function createDirectory() {
     //debugger;
-    alert('creating directory');
+    //alert('creating directory');
+    console.log('created diẻctory');
    
         $.ajax(
             {
@@ -409,8 +513,8 @@ function createDirectory() {
                 success: function (result) {
                     //$("#Picture").val(result);
 
-                    alert('create dir' + result);
-                    console.log(result);
+                    //alert('create dir' + result);
+                    console.log('creat dir ' + result);
                     uploadfile();
                     //window.location.reload();
 
@@ -424,3 +528,29 @@ function createDirectory() {
     //cb();
 }
 
+//Xử lý của thư viện Trackingjs:
+
+//Function detect faces:
+function detectFaces() {
+    
+        var img = document.getElementById('imgsrc0');
+        var tracker = new tracking.ObjectTracker(['face']);
+        tracker.setStepSize(1.7);
+       // tracking.track('#imgsrc0', tracker);
+        tracking.track(img, tracker);
+        tracker.on('track', function (event) {
+            event.data.forEach(function (rect) {
+                window.plot(rect.x, rect.y, rect.width, rect.height);
+            });
+        });
+        window.plot = function (x, y, w, h) {
+            var rect = document.createElement('div');
+            document.querySelector('.demo-container').appendChild(rect);
+            rect.classList.add('rect');
+            rect.style.width = w + 'px';
+            rect.style.height = h + 'px';
+            rect.style.left = (img.offsetLeft + x) + 'px';
+            rect.style.top = (img.offsetTop + y) + 'px';
+        };
+    
+}
