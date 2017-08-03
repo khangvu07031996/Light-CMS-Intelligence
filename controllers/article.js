@@ -40,7 +40,7 @@ function getallName(req,res){
     
 }
 function datagot(req,res){
-    ArticleData.getAllArticle2(function(err,data){
+    ArticleData.getAllArticleApi(function(err,data){
         res.render('ArticleForm',{articles:data});
     })
 }

@@ -22,7 +22,6 @@
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
-    "file-manager-js": "git+https://github.com/itexussoft/file-manager-js.git",
     "handlebars-loop": "^1.0.3",
     "mongodb": "*",
     "mongoosastic": "^4.3.0",
