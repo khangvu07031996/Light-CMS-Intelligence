@@ -1,6 +1,7 @@
 
 
-var db = require('../db');
+//var db = require('../db');
+var db = require('mongoose');
 //var bodyParser = require('body-parser');
 
 var _ = require('lodash');
@@ -24,6 +25,10 @@ var imageSchema = new Schema({
         ratio: String
     },
     usercreate: String,
+    datecreate: {
+        type: Date,
+        "default": Date.now
+    },
     datecreate: {
         type: Date,
         "default": Date.now
@@ -95,19 +100,12 @@ module.exports = {
             if (err) {
                 res.send(err);
             }
+           
             //console.log(rows);
-            //res.json(rows);
-            //result = rows;
-           // console.log('result0 ' + result);
-
-            console.log(rows);
 
             cb(rows);
             
-            res.render('image2', { data: rows, layout: false});
-            //res.render('image0');
-    
-            //res.render('products', { title: "RESTful Crud Example", data: rows });
+            
         });
         //console.log('result1 ' + result);
         
@@ -119,10 +117,7 @@ module.exports = {
     insert: function (req, res, objinfo, obj, cb) {
         console.log("in add");
         var p = new image();
-        //p.heading = req.body.heading;
-        //p.media = req.body.media;
-        //p.description = req.body.description;        
-        //p.photographer = req.body.photographer;
+        
         if (objinfo == null) {
             p.media = obj.path;
             p.heading = '';       
@@ -140,9 +135,12 @@ module.exports = {
             p.media = objinfo.path;
             p.description = req.body.description;        
             p.photographer = req.body.photographer;
-            p.medialist.teaser = objinfo.teaser;
-            p.medialist.searchResult = objinfo.searchResult;
+            p.medialist.teaser = "";
+            p.medialist.searchResult = "";
             p.medialist.articlePreview = objinfo.articlePreview;
+
+            p.usercreate = 'unknow';
+            p.moment = objinfo.moment;
         }
         
 
@@ -157,14 +155,12 @@ module.exports = {
         });
     },
 
-    edit: function (req, res) {
+    edit: function (req, res, cb) {
 
 
-        image.findById(req.params.image_id, function (err, rows) {
-            if (err)
-                res.send(err);
-            //res.json(rows);
-            res.render('edit', { title: "Edit image", data: rows });
+        image.findById(req.params.image_id, function (err, row) {
+            
+            cb(err, row);
         });
     },
 
@@ -185,9 +181,7 @@ module.exports = {
             //p.photographer = 'photorapher';
             p.usercreate = 'unknow';
 
-        //p.medialist.teaser = objinfo.teaser;
-        //p.medialist.searchResult = objinfo.searchResult;
-        //p.medialist.articlePreview = objinfo.articlePreview;
+            console.log('description: ' + req.body.description);
 
             p.save(function (err, img) {
                 if (err) {
@@ -202,13 +196,12 @@ module.exports = {
         });
     },
 
-    delete: function (req, res) {
+    delete: function (req, res, cb) {
         console.log('_id = ' + req.params.image_id)
         image.remove({ _id: req.params.image_id }, function (err, prod) {
-            if (err) {
-                res.send(err);
-            }
-            res.json({ message: 'Successfully deleted' });
+            
+
+            cb(err, prod);
         })
     }
 

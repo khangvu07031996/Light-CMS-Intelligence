@@ -3,14 +3,8 @@ var express = require('express')
 var fs = require('fs');
 const path = require('path');
 var image = require('../models/image');
+//const cv = require('opencv');
 
-
-/*
-var strDateTime = getDateTimeObject().toString();
-var dtObj = getDateTimeObject();
-var destDirectory = "";
-var moment = Date.now().toString();
-*/
 var strDateTime;
 var dtObj;
 var destDirectory = "";
@@ -22,7 +16,7 @@ var bn = false;
 
 
 function createDirectory() {
-    console.log('-------------------------createDir');
+    //console.log('-------------------------createDir');
     strDateTime = getDateTimeObject().toString();
     dtObj = getDateTimeObject();
     destDirectory = "";
@@ -122,11 +116,12 @@ router.post('/image/databyid', function (req, res) {
 router.get('/image', function (req, res) {
     
     createDirectory();
-
     
     image.getAll(req, res, function(result) {
-        console.log('result0000000000 = ' + result);
+      //  console.log('image form result: ' + result);
         //res.send(result);
+        res.render('imageForm', { images: result});        
+        
 
     });  
     
@@ -170,15 +165,6 @@ var upload = multer({ storage: storage });
 
 router.post('/image/upload', upload.any(), function (req, res) {
 
- 
-    //console.log(req.file);
-    //res.send("Upload successful");
-    //image.upload(req, res);
-    //console.log('length = ' + arrPath.length);
-    //image.insert(req, res, function (err, img) {
-        //console.log('inserted!');
-    //});
-    
 
     console.log(arrPath);
     console.log("moment..... = " + moment);
@@ -202,19 +188,73 @@ router.post('/image/upload', upload.any(), function (req, res) {
     res.send(moment);
 });
 
-router.route('/image/:image_id').get(function (req, res) {
+router.post('/image/upload2', upload.any(), function (req, res) {
 
-    image.edit(req, res);
+
+    console.log(arrPath);
+    console.log("/image/upload2 moment..... = " + moment);
+    for (var i = 0; i < arrPath.length; i++) {
+        var objinfo = {
+       
+            articlePreview: arrPath[i],
+            path: virtualDir,
+            moment: moment
+        };
+        image.insert(req, res, objinfo, null, function (err, img) {
+            console.log('inserted!');
+        });
+    }
+
+    //reset:
+    arrPath = [];
+    count = 0;
+    //res.send("Upload successful");
+    //res.send(moment);
+    res.redirect('/image');
+    
 });
 
-router.route('/image/:image_id').put(function (req, res) {
+
+router.get("/image/add",function(req,res){
+    res.render('addImage');
+})
+
+router.route('/image/:image_id').get(function (req, res) {
+
+    image.edit(req, res, function(err, row) {
+        if (err)   res.send(err);
+            //res.json(rows);
+        console.log('image: ');
+        console.log(row);
+        res.render('editImage', {image: row });
+    });
+});
+
+router.route('/image/:image_id').post(function (req, res) {
+    console.log(req.body.heading);
+    console.log(req.body.description);
     image.update(req, res);
 
 });
 
-router.route('/image/:image_id').delete(function (req, res) {
+//Test post data:
+router.route('/image/testpost').post(function (req, res) {
+    console.log('heading = ' + req.body.heading);
+    console.log('description = ' + req.body.description);
+    console.log('description = ' + req.description);
+    //image.update(req, res);
+    //image.update(req, res);
+
+});
+
+router.route('/image/delete/:image_id').get(function (req, res) {
     console.log('_id = ' + req.params.image_id)
-    image.delete(req, res);
+    image.delete(req, res, function(err, result) {
+        if (err) {
+                res.send(err);
+            }
+        res.json({ message: 'Successfully deleted' });
+    });
 }); 
 
 
