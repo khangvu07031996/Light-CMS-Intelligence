@@ -132,7 +132,7 @@ module.exports = {
     },
     getArticleById : function(req,res){
         var response = {};
-        article.findById({_id : req.params.id},function(err,data){
+        article.findById({_id : req.params.id},function(err,data){vb   
             if(err){
                  response = {"error" : true,"message" : "Error fetching data"};
             } else {
@@ -178,6 +178,7 @@ module.exports = {
                     }
                      
 
+                    
                 })
             }
         })

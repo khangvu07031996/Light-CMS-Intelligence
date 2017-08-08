@@ -1,0 +1,19 @@
+/*$BN-HEADER-BGR:#010101;*/
+/*$BN-LEFT-COLUMN-BGR:#e9e9e9;*/
+.content-navigation {
+  border-color: #3bbfce;
+  color: #2ca2af; }
+
+.border {
+  padding: 8px;
+  margin: 8px;
+  border-color: #3bbfce; }
+
+.text {
+  color: #2b9eab;
+  text-align: center;
+  font-size: 100px; }
+
+.logo {
+  height: 100px;
+  width: 100px; }

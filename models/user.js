@@ -40,7 +40,7 @@ module.exports = {
 				errors: errors
 			});
 		} else {
-			
+
 			var dbUser = new User();
 			dbUser.username = username;
 			dbUser.password = password;
@@ -57,13 +57,13 @@ module.exports = {
 			res.redirect('/login');
 		}
 	},
-	createUser : function(newUser,callback){
-		bcrypt.genSalt(10, function(err, salt) {
-	    bcrypt.hash(newUser.password, salt, function(err, hash) {
-	        newUser.password = hash;
-	        newUser.save(callback);
-	    });
-	});
+	createUser: function (newUser, callback) {
+		bcrypt.genSalt(10, function (err, salt) {
+			bcrypt.hash(newUser.password, salt, function (err, hash) {
+				newUser.password = hash;
+				newUser.save(callback);
+			});
+		});
 	},
 	// ----------------------get All Users -------------------------------
 	getAllUser: function (req, res) {
@@ -72,14 +72,14 @@ module.exports = {
 			if (err) {
 				response = { "error": true, "message": "Error fetching data" };
 			} else {
-				res.render('addArticles',{user:data});
+				res.render('addArticles', { user: data });
 			}
-			
+
 
 		})
 	},
 	// -----------------getUserById-------------------------------------
-	
+
 	getUserByIdDone: function (req, res) {
 		var response = {};
 		User.findById({ _id: req.params.id }, function (err, data) {
@@ -87,9 +87,9 @@ module.exports = {
 				response = { "error": true, "message": "Error fetching data" };
 			} else {
 				//res.render('layout',{user:data});
-					res.render('addArticles',{user:data});
+				res.render('addArticles', { user: data });
 			}
-			
+
 
 		})
 
@@ -155,12 +155,12 @@ module.exports = {
 		User.findOne(query, callback);
 
 	},
-	getUserById : function(id,callback){
-		User.findById(id,callback);
+	getUserById: function (id, callback) {
+		User.findById(id, callback);
 	},
 	//-----------comparePassword--------------------
 
 }
-module.exports.getUserNames = function(callback){
+module.exports.getUserNames = function (callback) {
 	User.find(callback);
 }
