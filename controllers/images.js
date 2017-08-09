@@ -1,9 +1,8 @@
 var express = require('express')
-    , router = express.Router();
-var fs = require('fs');
+    , router = express.Router()
+    , fs = require('fs');
 const path = require('path');
 var image = require('../models/image');
-//const cv = require('opencv');
 
 var strDateTime;
 var dtObj;
@@ -14,128 +13,121 @@ var moment;
 var original, teaser, searchResult, articlePreview;
 var bn = false;
 
-
-
 function createDirectory() {
-    //console.log('-------------------------createDir');
+    //console.log('---createDir');
     strDateTime = getDateTimeObject().toString();
     dtObj = getDateTimeObject();
     destDirectory = "";
     moment = Date.now().toString();
-
     var path = require('path');
     var appDir = path.dirname(require.main.filename);
 
-    console.log(appDir);
-    
+    console.log(appDir);    
 
-    let destDir = path.join(appDir, 'publics');
-    //console.log("---" + destDir);
-    //console.log(dtObj);
+    let destDir = path.join(appDir, 'publics');    
+    let dirVpp = path.join(destDir, 'vpp');
+    let dirYear = path.join(dirVpp, dtObj.year);
+    let dirMonth = path.join(dirYear, dtObj.month);
+    let dirDay = path.join(dirMonth, dtObj.day);
+    let dirMoment = path.join(dirDay, moment);
 
-    let destDir0 = path.join(destDir, 'vpp');
-    let destDir1 = path.join(destDir0, dtObj.year);
-    let destDir2 = path.join(destDir1, dtObj.month);
-    let destDir3 = path.join(destDir2, dtObj.day);
-    let destDir4 = path.join(destDir3, moment);
-
-    destDirectory = destDir4;
+    destDirectory = dirMoment;
     virtualDir = '/vpp' + '/' + dtObj.year + '/' + dtObj.month + '/' + dtObj.day + '/' + moment;
-    
 
     fs.access(destDir, (err) => {
         if (err)
             fs.mkdirSync(destDir);
 
     });
-    fs.access(destDir0, (err) => {
+    fs.access(dirVpp, (err) => {
         if (err)
-            fs.mkdirSync(destDir0);
+            fs.mkdirSync(dirVpp);
 
     });
-    fs.access(destDir1, (err) => {
+    fs.access(dirYear, (err) => {
         if (err)
-            fs.mkdirSync(destDir1);
+            fs.mkdirSync(dirYear);
 
     });
-    fs.access(destDir2, (err) => {
+    fs.access(dirMonth, (err) => {
         if (err)
-            fs.mkdirSync(destDir2);
+            fs.mkdirSync(dirMonth);
     });
-    fs.access(destDir3, (err) => {
+    fs.access(dirDay, (err) => {
         if (err)
-            fs.mkdirSync(destDir3);
+            fs.mkdirSync(dirDay);
 
     });
-    fs.access(destDir4, (err) => {
+    fs.access(dirMoment, (err) => {
         if (err)
-            fs.mkdirSync(destDir4);
+            fs.mkdirSync(dirMoment);
         
     });
    
 }
 
 
-
-var multer = require('multer');
-
-//Tạo thư mục:
+//function create directory:
 router.get('/image/createDirectory', function(req, res) {
     createDirectory();
     res.send("Created Directory");
 });
 
+//Get only all data:
 router.get('/image/data', function (req, res) {   
     
-    image.all(req, res, function(result) {
-        //console.log('result------ = ' + result);
+    image.getAll(req, res, function(err, result) {  
+        if (err) {
+            res.send(err);
+        }     
         res.send(result);
     });
 });
 
 router.post('/image/dataByMoment', function (req, res) {  
  
-    image.getDataByMoment(req, res, function(result) {
-        //console.log('result------ = ' + result);
+    image.getDataByMoment(req, res, function(err, result) {
+        if (err) {
+            res.send(err);
+        }        
         res.send(result);
     });
 });
 
-router.post('/image/databyid', function (req, res) {   
+router.post('/image/databyid', function (req, res) {  
     
-    image.getDataByID(req, res, function(result) {
-        
+    image.getDataByID(req, res, function(err, result) {  
+        if (err) {
+            res.send(err);
+        }       
         res.send(result);
     });
 });
 
-
+//Get all data and render view:
 router.get('/image', function (req, res) {
     
     createDirectory();
     
-    image.getAll(req, res, function(result) {
-      //  console.log('image form result: ' + result);
-        //res.send(result);
-        res.render('imageForm', { images: result});        
-        
-
+    image.getAll(req, res, function(err, result) {  
+        if (err) {
+            res.send(err);
+        }   
+        res.render('imageForm', { images: result});      
+      
     });  
-    
-    
+  
 });
 
 
 
-   
+var multer = require('multer');
 var arrPath = [];
 var count = 0;
 var storage = multer.diskStorage({
 
     destination: function (req, file, cb) {
-
         //createDirectory();
-
         cb(null, destDirectory);
     },
     
@@ -143,17 +135,14 @@ var storage = multer.diskStorage({
         var strDate = moment;
         strDate = strDate + '_' + count + '.jpg';
         count++;
-        //var strDate1 = getDateTimeObject().toString() + '.jpg';
-
-        //original = 'Original_' + strDate + '_' + file.originalname;
+      
         original = 'Original_' + strDate;
         // teaser = 'Teaser_' + strDate ;
         // searchResult = 'SearchResul_' + strDate;
         // articlePreview = 'ArticlePreview_' + strDate;
 
-        arrPath.push(original);
-        
-        cb(null, original);              
+        arrPath.push(original);        
+        cb(null, original);         
        
         //cb(null, Date.now().toString() + '-' + file.originalname);
 
@@ -163,8 +152,8 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-router.post('/image/upload', upload.any(), function (req, res) {
-
+//Upload with ajax:
+router.post('/image/ajaxUpload', upload.any(), function (req, res) {
 
     console.log(arrPath);
     console.log("moment..... = " + moment);
@@ -183,16 +172,12 @@ router.post('/image/upload', upload.any(), function (req, res) {
     //reset:
     arrPath = [];
     count = 0;
-    //res.send("Upload successful");
-    //res.redirect('/AuthorForm')
+ 
     res.send(moment);
 });
 
-router.post('/image/upload2', upload.any(), function (req, res) {
+router.post('/image/upload', upload.any(), function (req, res) {
 
-
-    console.log(arrPath);
-    console.log("/image/upload2 moment..... = " + moment);
     for (var i = 0; i < arrPath.length; i++) {
         var objinfo = {
        
@@ -208,8 +193,7 @@ router.post('/image/upload2', upload.any(), function (req, res) {
     //reset:
     arrPath = [];
     count = 0;
-    //res.send("Upload successful");
-    //res.send(moment);
+   
     res.redirect('/image');
     
 });
@@ -257,7 +241,7 @@ router.route('/image/delete/:image_id').get(function (req, res) {
     });
 }); 
 
-
+//Get data about year, month, day:
 function getDateTimeObject() {
 
     var date = new Date();

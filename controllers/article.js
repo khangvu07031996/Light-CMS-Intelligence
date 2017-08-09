@@ -32,7 +32,7 @@ function getallName(req,res){
     Author.getAuthorNames(function(err,data){
         userdata.getUserNames(function(err,datauser){
             section.getSectionNames(function(err,dataSection){
-                image.all(req, res, function(rows) {                
+                image.getAll(req, res, function(err, rows) {                
                  res.render('addArticles',{Author: data,Section:dataSection, data: rows});
                 });
             })

@@ -139,32 +139,35 @@ module.exports = {
             } else {
                 // console.log(data.author);
                 var arr = [], arrPath = [];
-				var arrImg = [];
+				var arrImg = [], arrLab = [];
 				
                 arr = data.author.split(",");
                 arrPath = data.images.split(',');
 				
 				//Delete item is string empty:
-				for (let i = 0; i < arrPath.length; i++) {
+				for (let i = 0; i < arrPath.length; i += 2) {
 					if (arrPath[i] == '') {
 						arrPath.splice(i, 1);						
 					}
 				}
                
-				for (let i = 0; i < arrPath.length; i++) {
-					arrImg.push({src: arrPath[i], id: 0});
+				for (let i = 0; i < arrPath.length; i += 2) {
+                    arrImg.push({id: arrPath[i], src: arrPath[i+1]});
+                    arrLab.push({id: arrPath[i], src: arrPath[i+1]});
                 }
                 console.log(data.images);
                 console.log('arrImg = ' + arrImg);
                 console.log(arrImg);
                 console.log(arrPath);
+                console.log('---')
+                console.log(arrLab);
 				
                 Author.getAuthorNames(function (err, dataA) {
                     userdata.getUserNames(function (err, datauser) {
                         section.getSectionNames(function (err, dataSection) {
 
                             //res.render('editArticles', { Author: dataA, Section: dataSection, article: data, arr })
-							image.all(req, res, function(rows) {                
+							image.getAll(req, res, function(err, rows) {                
 								res.render('editArticles', { Author: dataA, Section: dataSection, article: data, images: rows, arr: arr, arrImg: arrImg});
 							});
                         })

@@ -1,3 +1,5 @@
 node_modules/*
 publics/vpp/
-publics/img/Russ.png
+publics/img/
+/node_modules/
+/.idea/

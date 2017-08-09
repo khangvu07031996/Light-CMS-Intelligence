@@ -1,7 +1,42 @@
-//Sự kiện click button trên Popup:
+//event click button trên Popup:
 $(document).ready(function () {
     var selDiv = "";
     selDiv = document.querySelector("#divimg");
+
+    //get all tag img in div divimg:
+    var divimg = $('#divimg');
+    //Children of divimg:
+    var divimgItems = divimg.children();
+    //array tags img of divimg:
+    var arrTagImg = [];
+
+    arrTagImg = divimgItems.find('img');
+    //Display images on div of selected images on popup:
+    $("#cart_items").children = divimgItems;
+    for (let i = 0; i < arrTagImg.length; i++) {
+        console.log(arrTagImg[i]);
+        let html = '<div class="item icart">';
+        html = html + '<div class="divrm">';
+        html = html + '<a onclick="remove(this)" class="remove ' + '">&times;</a>';
+        html = html + '</div>' + arrTagImg[i].outerHTML + '</div>';
+        $("#cart_items").append(html);
+        //alert(arrTagImg[i].toString());
+    }
+
+    let divcart = $("#cart_items");
+
+    //Update arrImgID and arrPaths:
+    for (let i = 0; i < arrTagImg.length; i++) {
+        arrImgID[i] = arrTagImg[i].id;
+        arrPaths[i] = arrTagImg[i].currentSrc.replace("http://localhost:3000", "");
+    }
+
+    for (let i = 0; i < arrPaths.length; i++) {
+        arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i];
+    }
+    $("#imgPaths").val(arrPathAndID);
+    arrPathAndID = [];
+
     //Event click on button OK:
     $("#btnOk").click(function () {
         //alert('button clicked');
@@ -10,49 +45,43 @@ $(document).ready(function () {
         console.log(arrImgObjs);
 
         arrImgs.forEach(function (i) {
-			var html = '<div class="item icart">';
+            let html = '<div class="item icart">';
             html = html + '<div class="divrm">';
             html = html + '<a onclick="removeSelectedImage(this)" class="remove ' + '">&times;</a>';
             html = html + '</div>' + i.tag + '</div>';
 
             //selDiv.innerHTML += '  ' + i;		
-			selDiv.innerHTML += html;			
-			
+            selDiv.innerHTML += html;
+
             $("#images_items").append(html);
         });
-		//Reset arrImgs:
-		arrImgs = [];
+        //Reset arrImgs:
+        arrImgs = [];
 
-		//fruits.splice(0, length);
-        //Cập nhật đường dẫn các ảnh được chọn:
-        
+        //Update path selected images:
         addItemToPathArray();
-       
-        $("#imgPaths").val(arrPaths);
-
+        for (let i = 0; i < arrPaths.length; i++) {
+            arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i];
+        }
+        $("#imgPaths").val(arrPathAndID);
         //Reset:
         $("#cart_items").fadeOut("2000", function () {
             $(this).html("").fadeIn("fast").css({ left: 0 });
         });
         //$("#citem").html("0");
+        //total_items = 0;
 
-        total_items = 0;
-
-       
     });
-
 
     //even click on button Cancel:
     $("#btnCancel").click(function () {
         arrImgObjs = [];
     });
 
-
-
 });
 
 
-//Sự kiện duyệt file:
+//event browse file:
 var selDiv = "";
 
 document.addEventListener("DOMContentLoaded", init, false);
@@ -67,9 +96,7 @@ function handleFileSelect(e) {
 
     if (!e.target.files || !window.FileReader) return;
 
-
     createDirectory();
-
 
     var files = e.target.files;
     var filesArr = Array.prototype.slice.call(files);
@@ -77,14 +104,16 @@ function handleFileSelect(e) {
 
 }
 
-//Các biến lưu thông tin về ảnh:
+//variable contain data of image:
 var arrImgs = [];
 var arrImgObjs = [];
 var arrPaths = [];
+var arrImgID = [];
+var arrPathAndID = [];
 
 var total_items = 0;
 
-//Xử lý sự kiện kéo thả ảnh trên Popup:
+//Handle event drag-drop image on  Popup:
 $(document).ready(function () {
 
     $(".item").draggable({
@@ -94,46 +123,38 @@ $(document).ready(function () {
     $("#cart_items").draggable({
         axis: "x"
     });
-	
-	//----------------------------------
-	 $("#images_items").draggable({
-        axis: "x"
-    });
 
-    
 
     $("#cart_items").droppable({
         accept: ".item",
         activeClass: "drop-active",
         hoverClass: "drop-hover",
         drop: function (event, ui) {
-            var item = ui.draggable.html();
-            var itemid = ui.draggable.attr("id");
-            var html = '<div class="item icart">';
+            let item = ui.draggable.html();
+            let itemid = ui.draggable.attr("id");
+            let html = '<div class="item icart">';
             html = html + '<div class="divrm">';
             html = html + '<a onclick="remove(this)" class="remove ' + itemid + '">&times;</a>';
             html = html + '</div>' + item + '</div>';
-			console.log(html);
+            console.log(html);
             $("#cart_items").append(html);
 
             //console.log('src = '  + item.attr("src")); //ui.draggable.attr("id");
             console.log('currentSrc = ' + ui.draggable[0].firstElementChild.currentSrc);
             let strsrc = ui.draggable[0].firstElementChild.currentSrc.replace("http://localhost:3000", "");
-			let imgID = ui.draggable[0].firstElementChild.id;
+            let imgID = ui.draggable[0].firstElementChild.id;
             console.log('currentSrc = ' + strsrc);
-			console.log('imgID = ' + imgID);
+            console.log('imgID = ' + imgID);
 
             arrImgs.push({
-				tag: item,
-				id: imgID
-			});
-            
+                tag: item,
+                id: imgID
+            });
+
             arrImgObjs.push({
                 id: imgID,
                 path: strsrc
             });
-            
-            
 
             // update total items
             total_items++;
@@ -162,10 +183,10 @@ $(document).ready(function () {
         $("#citem").html("0");
 
         total_items = 0;
-		
-		//Reset:
-		arrImgObjs = [];
-		arrImgs = [];
+
+        //Reset:
+        arrImgObjs = [];
+        arrImgs = [];
 
         return false;
     });
@@ -177,14 +198,14 @@ $(document).ready(function () {
 
 //Remove on the popup:
 function remove(el) {
-	//alert($(el).parent().parent());
-	let divimg = $(el).parent().parent();
-	let img = divimg.find('img')[0];
-	let path = img.currentSrc;
-	//alert(img.currentSrc);
-	console.log(divimg);
-	path = path.replace("http://localhost:3000", "");
-	console.log(path);
+    //alert($(el).parent().parent());
+    let divOfImg = $(el).parent().parent();
+    let img = divOfImg.find('img')[0];
+    let path = img.currentSrc;
+    //alert(img.currentSrc);
+    console.log(divOfImg);
+    path = path.replace("http://localhost:3000", "");
+    console.log(path);
     $(el).hide();
     $(el).parent().parent().effect("highlight", { color: "#ff0000" }, 10);
     $(el).parent().parent().fadeOut('1');
@@ -198,10 +219,10 @@ function remove(el) {
 
     //Remove path of image removed:
     removeItemOfPathTempArray(path);
-	
-	//removed item of array tags img:
-	let id = img.id;
-	for (let i = 0; i < arrImgs.length; i++) {
+
+    //removed item of array tags img:
+    let id = img.id;
+    for (let i = 0; i < arrImgs.length; i++) {
         if (arrImgs[i].id == id) {
             arrImgs.splice(i, 1);
             break;
@@ -216,14 +237,14 @@ function remove(el) {
 
 //Remove on the div selected images:
 function removeSelectedImage(el) {
-	//alert($(el).parent().parent());
-	let divimg = $(el).parent().parent();
-	let myDivUL = divimg.find('img')[0];
-	let path = myDivUL.currentSrc;
-	//alert(myDivUL.currentSrc);
-	console.log(divimg);
-	path = path.replace("http://localhost:3000", "");
-	console.log(path);
+    //alert($(el).parent().parent());
+    let divOfImg = $(el).parent().parent();
+    let myDivUL = divOfImg.find('img')[0];
+    let path = myDivUL.currentSrc;
+    //alert(myDivUL.currentSrc);
+    console.log(divOfImg);
+    path = path.replace("http://localhost:3000", "");
+    console.log(path);
     $(el).hide();
     $(el).parent().parent().effect("highlight", { color: "#ff0000" }, 10);
     $(el).parent().parent().fadeOut('1');
@@ -237,21 +258,26 @@ function removeSelectedImage(el) {
 
     //Remove path of image removed:
     removeItemOfPathArray(path);
-	
-	//hidden tab:
-	document.getElementById('imgtab').style.display = "none";
+    arrPathAndID = [];
+    for (let i = 0; i < arrPaths.length; i++) {
+        arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i];
+    }
+    $("#imgPaths").val(arrPathAndID);
+
+    //hidden tab:
+    document.getElementById('imgtab').style.display = "none";
 
 }
 
 
-//Sự kiện click :
+//evnet click :
 
 $(document).on('click', '#divimg img', function (evt) {
     //alert("hey!" + this.id + "--" + this.src);
     document.getElementById('imgtab').style.display = "block";
     getDataByID(this.id);
 
-    
+
 });
 
 $(document).on('click', '#btnPopup2', function (evt) {
@@ -270,13 +296,13 @@ $(document).on('click', '#btnImgInfo', function (evt) {
     console.log(arrImgObjs);
 });
 
-//hàm upload files:
+//funstion upload files:
 function uploadfile() {
     //debugger;
     if (window.FormData !== undefined) {
         var fileUpload = $("#files").get(0);
         var files = fileUpload.files;
-        //Tạo một đối tượng form data
+
         var filedata = new FormData();
 
         for (var i = 0; i < files.length; i++) {
@@ -285,12 +311,12 @@ function uploadfile() {
         }
         $.ajax(
             {
-                url: '/image/upload',
+                url: '/image/ajaxUpload',
                 type: 'POST',
                 contentType: false,
                 processData: false,
                 data: filedata,
-                success: function (result) {                 
+                success: function (result) {
                     //alert(result);
                     console.log(result);
                     getDataByMoment(result);
@@ -308,8 +334,8 @@ function uploadfile() {
     }
 }
 
-var data0;
-//hàm lấy tập hợp dữ liệu:
+
+//get images just insert path into database:
 function getDataByMoment(moment) {
     //debugger;
     let data = {
@@ -325,28 +351,32 @@ function getDataByMoment(moment) {
             //contentType: "application/x-www-form-urlencoded",
             dataType: 'json',
             success: function (result) {
-                              
+
 
                 //selDiv.innerHTML = "<br />";
                 result.forEach(function (f) {
                     let path = f.media + '/' + f.medialist.articlePreview;
                     let img = "<img src=\"" + path + "\" " + "id = \"" + f._id + "\"" + " style= \"" + "width : 75px; height : 70px \"" + ">  ";
-                    
-					
-					let html = '<div class="item icart">';
-					html = html + '<div class="divrm">';
-					html = html + '<a onclick="removeSelectedImage(this)" class="remove ' + '">&times;</a>';
-					html = html + '</div>' + img + '</div>';
-					
-					selDiv.innerHTML += html;
+
+
+                    let html = '<div class="item icart">';
+                    html = html + '<div class="divrm">';
+                    html = html + '<a onclick="removeSelectedImage(this)" class="remove ' + '">&times;</a>';
+                    html = html + '</div>' + img + '</div>';
+
+                    selDiv.innerHTML += html;
                     //Update array image path:
                     arrPaths.push(path);
-                   
+                    arrImgID.push(f._id);
+
 
                 });
 
-                //cập nhật path của các ảnh được chọn:               
-                $("#imgPaths").val(arrPaths);
+                //update path of selected images:   
+                for (let i = 0; i < arrPaths.length; i++) {
+                    arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i];
+                }
+                $("#imgPaths").val(arrPathAndID);
 
 
             }, error: function (err) {
@@ -358,7 +388,7 @@ function getDataByMoment(moment) {
 
 }
 
-//hàm lấy tập hợp dữ liệu:
+//function get data:
 function getData() {
     $.ajax(
         {
@@ -376,7 +406,7 @@ function getData() {
     );
 }
 
-//Lấy dữ liệu theo id;
+//get data by id;
 function getDataByID(id) {
     var data = { id: id };
     $.ajax(
@@ -401,9 +431,9 @@ function getDataByID(id) {
     );
 }
 
-//Hàm cập nhật thông tin của ảnh:
+//update data of image:
 function updateImageInfo(imgdata) {
-    
+
     $.ajax(
         {
             url: '/image/ajax/' + imgdata.id,
@@ -430,7 +460,7 @@ function updateImageInfo(imgdata) {
 
 }
 
-//hàm khởi tạo tab thể hiện thông tin của ảnh:
+//function init tab content include data of image:
 function initImageTabcontent(imgdata) {
     let src = imgdata.media + "/" + imgdata.medialist.articlePreview;
     $("#description").val(imgdata._id);
@@ -446,9 +476,6 @@ function initImageTabcontent(imgdata) {
     //var ctx = myCanvas.getContext('2d');
 
     img.onload = function () {
-        //$(".demo-container").empty();
-        //ctx.drawImage(img,0,0); // Or at whatever offset you like
-        //var img = document.getElementById('imgsrc0');
         var tracker = new tracking.ObjectTracker(['face']);
         tracker.setStepSize(1.7);
         tracking.track(img, tracker);
@@ -477,7 +504,7 @@ function clearCanvas(canvas, ctx) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-//Hàm lấy thông về ảnh, trên tab:
+//get data on tab content of image:
 function getImageInfo() {
     let imgdata = {};
     imgdata.id = $("#imgid").val();
@@ -489,7 +516,7 @@ function getImageInfo() {
 
 }
 
-//Hàm reset tab thông tin ảnh:
+//reset tab content:
 function resetImageTabcontent() {
     $("#description").val("");
     $("#heading").val("");
@@ -498,7 +525,7 @@ function resetImageTabcontent() {
     $("#imgid").val("");
 }
 
-//hàm tạo thư mục:
+//function create directory:
 function createDirectory() {
     //debugger;
     //alert('creating directory');
@@ -529,20 +556,18 @@ function createDirectory() {
     //cb();
 }
 
-//Add item to temp array of image path:
-
-
 //Add item to array of image path:
 function addItemToPathArray() {
     arrImgObjs.forEach(function (i) {
-            arrPaths.push(i.path);
+        arrPaths.push(i.path);
+        arrImgID.push(i.id);
     });
     arrImgObjs = [];
 }
 
 //Delete item of temp array of image path:
 function removeItemOfPathTempArray(path) {
-    for (let i = 0; i < arrImgObjs.length; i++ ) {
+    for (let i = 0; i < arrImgObjs.length; i++) {
         if (arrImgObjs[i].path == path) {
             arrImgObjs.splice(i, 1);
         }
@@ -554,15 +579,16 @@ function removeItemOfPathArray(obj) {
         //alert((arrPaths[i] == obj));
         if (arrPaths[i] == obj) {
             arrPaths.splice(i, 1);
+            arrImgID.splice(i, 1);
             break;
         }
-       
+
     }
 }
 
 
 
-//Xử lý của thư viện Trackingjs:
+//Trackingjs:
 
 //Function detect faces:
 function detectFaces() {
