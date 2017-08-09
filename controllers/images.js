@@ -15,6 +15,7 @@ var original, teaser, searchResult, articlePreview;
 var bn = false;
 
 
+
 function createDirectory() {
     //console.log('-------------------------createDir');
     strDateTime = getDateTimeObject().toString();
@@ -26,11 +27,7 @@ function createDirectory() {
     var appDir = path.dirname(require.main.filename);
 
     console.log(appDir);
-    console.log(require.main.filename);
-
-    console.log('-----' + moment);
-    console.log('obj.toString = ' + dtObj.toString());
-
+    
 
     let destDir = path.join(appDir, 'publics');
     //console.log("---" + destDir);
@@ -44,7 +41,7 @@ function createDirectory() {
 
     destDirectory = destDir4;
     virtualDir = '/vpp' + '/' + dtObj.year + '/' + dtObj.month + '/' + dtObj.day + '/' + moment;
-    console.log('log = ' + virtualDir);
+    
 
     fs.access(destDir, (err) => {
         if (err)
@@ -86,7 +83,7 @@ var multer = require('multer');
 router.get('/image/createDirectory', function(req, res) {
     createDirectory();
     res.send("Created Directory");
-})
+});
 
 router.get('/image/data', function (req, res) {   
     
@@ -96,8 +93,8 @@ router.get('/image/data', function (req, res) {
     });
 });
 
-router.post('/image/dataByMoment', function (req, res) {   
-    
+router.post('/image/dataByMoment', function (req, res) {  
+ 
     image.getDataByMoment(req, res, function(result) {
         //console.log('result------ = ' + result);
         res.send(result);
@@ -107,7 +104,7 @@ router.post('/image/dataByMoment', function (req, res) {
 router.post('/image/databyid', function (req, res) {   
     
     image.getDataByID(req, res, function(result) {
-        console.log('result by id = ' + result);
+        
         res.send(result);
     });
 });
@@ -127,6 +124,9 @@ router.get('/image', function (req, res) {
     
     
 });
+
+
+
    
 var arrPath = [];
 var count = 0;
@@ -231,21 +231,20 @@ router.route('/image/:image_id').get(function (req, res) {
 });
 
 router.route('/image/:image_id').post(function (req, res) {
-    console.log(req.body.heading);
-    console.log(req.body.description);
+   
     image.update(req, res);
+    res.redirect('/image');
 
 });
 
-//Test post data:
-router.route('/image/testpost').post(function (req, res) {
-    console.log('heading = ' + req.body.heading);
-    console.log('description = ' + req.body.description);
-    console.log('description = ' + req.description);
-    //image.update(req, res);
-    //image.update(req, res);
+//Ajax update:
+router.route('/image/ajax/:image_id').post(function (req, res) {
+  
+    image.ajaxUpdate(req, res);
 
+    
 });
+
 
 router.route('/image/delete/:image_id').get(function (req, res) {
     console.log('_id = ' + req.params.image_id)
@@ -253,7 +252,8 @@ router.route('/image/delete/:image_id').get(function (req, res) {
         if (err) {
                 res.send(err);
             }
-        res.json({ message: 'Successfully deleted' });
+        //res.json({ message: 'Successfully deleted' });
+         res.redirect('/image');
     });
 }); 
 
@@ -293,11 +293,11 @@ function getDateTimeObject() {
         sec: sec,
 
         toString: function () {
-            console.log('this is to string of obj');
+            //console.log('this is to string of obj');
             return strDate;
         }
     };
-    console.log(obj);
+    //console.log(obj);
     return obj;
 
 }

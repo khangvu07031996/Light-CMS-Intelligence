@@ -3,6 +3,7 @@ var bcrypt = require('bcryptjs');
 var section = require('../models/session');
 var userdata = require('../models/user');
 var Author = require('../models/author');
+var image = require('../models/image');
 var mongoosastic = require('mongoosastic');
 var ArticleSchema = mongoose.Schema({
     headline :{
@@ -130,26 +131,48 @@ module.exports = {
         })
 
     },
-    getArticleById : function(req,res){
+    getArticleById: function (req, res) {
         var response = {};
-        article.findById({_id : req.params.id},function(err,data){
-            if(err){
-                 response = {"error" : true,"message" : "Error fetching data"};
+        article.findById({ _id: req.params.id }, function (err, data) {
+            if (err) {
+                response = { "error": true, "message": "Error fetching data" };
             } else {
-               // console.log(data.author);
-                var arr = [];
+                // console.log(data.author);
+                var arr = [], arrPath = [];
+				var arrImg = [];
+				
                 arr = data.author.split(",");
-                Author.getAuthorNames(function(err,dataA){
-                userdata.getUserNames(function(err,datauser){
-                section.getSectionNames(function(err,dataSection){
-                
-                 res.render('editArticles',{Author: dataA,Section:dataSection,article:data,arr})
-            })
-           
-        })  
-    })
+                arrPath = data.images.split(',');
+				
+				//Delete item is string empty:
+				for (let i = 0; i < arrPath.length; i++) {
+					if (arrPath[i] == '') {
+						arrPath.splice(i, 1);						
+					}
+				}
+               
+				for (let i = 0; i < arrPath.length; i++) {
+					arrImg.push({src: arrPath[i], id: 0});
+                }
+                console.log(data.images);
+                console.log('arrImg = ' + arrImg);
+                console.log(arrImg);
+                console.log(arrPath);
+				
+                Author.getAuthorNames(function (err, dataA) {
+                    userdata.getUserNames(function (err, datauser) {
+                        section.getSectionNames(function (err, dataSection) {
+
+                            //res.render('editArticles', { Author: dataA, Section: dataSection, article: data, arr })
+							image.all(req, res, function(rows) {                
+								res.render('editArticles', { Author: dataA, Section: dataSection, article: data, images: rows, arr: arr, arrImg: arrImg});
+							});
+                        })
+
+                    })
+                })
             }
-            
+
         })
     },
     updateArticle : function(req,res){
@@ -162,7 +185,7 @@ module.exports = {
                 dataArticle.section = req.body.section;
                 dataArticle.premble = req.body.premble;
                 dataArticle.body = req.body.body;
-                dataArticle.images = req.body.images;
+                dataArticle.images = req.body.imgPaths;
                 dataArticle.author = req.body.author;
                 dataArticle.tags = req.body.tags;
                 dataArticle.widgets = req.body.widgets;

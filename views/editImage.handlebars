@@ -1,10 +1,14 @@
+
+
+
+
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header"><i class="fa fa-files-o"></i> Form Validation</h3>
         <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
             <li><i class="icon_document_alt"></i>Forms</li>
-            <li><i class="fa fa-files-o"></i>Editimages</li>
+            <li><i class="fa fa-files-o"></i>Addimages</li>
         </ol>
     </div>
 </div>
@@ -17,48 +21,39 @@
             </header>
             <div class="panel-body">
                 <div class="form">
-                    <form action="/image/{{image._id}}" method="post" class="form-horizontal" enctype="multipart/form-data">
-                        <div class="form-group">
+
+                    <form action="/image/{{image._id}}" method="post" class="form-horizontal" >
+                         <div class="form-group">
                             <div class="col-md-12">
-                                <label class="" for="cname" class="control-label"> file : <span class="required">*</span></label>
-                                <div class="">
-                                    <input style="display: block;" type="file" id="files" name="files" multiple accept="image/*">
-                                </div>
-
+                                <img src = "{{image.media}}/{{image.medialist.articlePreview}}" style="width : 200px; height : 200px"></img>
+                              
                             </div>
-                            <br />
-
-                            <div class="col-md-2"></div>
-
-                            <div class="col-md-10">
-                                <div class="col-md-12" id="divimg"></div>
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="form-group">
+                            
+                                
+                        </div>   
+                        
+						
+						<div class="form-group">
                             <label for="cname" class="control-label col-lg-2"> Heading <span class="required">*</span></label>
                             <div class="col-lg-10">
-                                <input id="heading" type="text" class="form-control" name="heading" value="{{image.heading}}">
+                                <input id = "heading" type="text" class="form-control" name="heading" value="{{image.heading}}">
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Description <span class="required">*</span></label>
                             <div class="col-lg-10">
-                                <textarea id="description" name="description" rows="5" class="col-md-12" value="{{image.heading}}"></textarea>
+                                <textarea id="description" name="description" rows="5"  class="col-md-12" value = "">{{image.description}}</textarea>
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Photographer <span class="required">*</span></label>
                             <div class="col-lg-10">
-                                <input id="photographer" type="tel" class="form-control" name="photographer" value="{{image.heading}}">
+                                <input id = "photographer" type="tel" class="form-control" name="photographer" value="{{image.photographer}}">
                             </div>
                         </div>
-
-
-
+                       
+                       
+                        
                         <div class="form-group ">
                             <div class="col-lg-offset-2 col-lg-10">
                                 <button class="btn btn-primary" type="submit">submit</button>
@@ -66,8 +61,8 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
+
             </div>
         </section>
     </div>

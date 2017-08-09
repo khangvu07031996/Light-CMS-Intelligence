@@ -1,3 +1,12 @@
+<link href="/css/image.css" rel="stylesheet">
+
+<script src="/Scripts/img.js" type="text/javascript"></script>
+
+<script src="/build/tracking-min.js"></script>
+<script src="/build/data/face-min.js"></script>
+
+
+
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header"><i class="fa fa-files-o"></i> Add Article</h3>
@@ -18,7 +27,7 @@
                 <div class="form">
                    
                     <form method="post" action="/Article/edit/{{article.id}}" class="form-validate form-horizontal save">
-                         <div class = "col-lg-9">
+                         <div class = "col-lg-8">
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Headline <span class="required">*</span></label>
                             <div class="col-lg-10">
@@ -41,6 +50,97 @@
                                 <textarea class="col-lg-12" name = "premble"> {{article.premble}}</textarea>
                             </div>
                         </div>
+						
+						 <div class="form-group">
+                           <div class="col-lg-2">
+                                 <div class="col-lg-12 col-md-offset-5" style="">
+                                    <label class="" for="cname" class="control-label"> File : <span class="required">*</span></label>
+                                </div>
+                                <div class="col-lg-12 col-md-offset-5">
+                                            <div class="btn btn-info image-preview-input">
+                                            <span class="glyphicon glyphicon-folder-open"></span>
+                                            {{!-- <input type="file" multiple accept="image/png, image/jpeg, image/gif" name="file" /> --}}
+                                            <input style="display: block; margin:0px ;width:50px;" type="file" id="files" name="files" multiple accept="image/*">
+                                            <!-- rename it -->
+                                        </div> 
+                                </div>
+                                <button type="button" id = "btnPopup2" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal" style="font-size: 15px;margin-top: 7px;">+</button>
+                               
+                           </div >
+                                <div class="col-md-10">                               
+									<div class="col-md-12" id="divimg">
+										{{#each arrImg}}
+                                            <div class="item icart">
+                                                <div class="divrm">
+                                                    <a onclick="removeSelectedImage(this)" class="remove ' + '">&times;</a>
+                                                </div>
+                                                <img src="{{src}}" draggable="true" style="width : 75px; height : 70px">
+                                            </div>
+										{{/each}}
+
+										<div class="clear"></div>
+									</div>
+									<input type="hidden" id = "imgPaths" name="imgPaths" value="">
+									
+									
+									
+                                </div>
+                              
+                                
+                        </div>   
+						
+						<div class="form-group">
+                            <div class="col-md-2"></div>
+
+                            <div class="col-md-10">
+                                <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
+                                    <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                                    <br />
+                                    <div>
+                                        
+                                         
+                                        <div class="demo-container">
+                                           
+                                             <img id = "imgsrc0" src="" style = "width : 300px; height:auto"></img> 
+                                            
+                                        </div>
+
+                                        <div class="demo-container2" style = " height: 5px">
+                                            
+                                        </div> 
+                                        
+                                    </div>
+                                    <div>
+                                        <input type="hidden" id = "imgid" name="imgid" value="">
+                                    </div>
+                                    
+                                    <div >
+                                        <div >
+                                            <label for="heading">Heading:</label>
+                                            <input id = "heading" type="text" class="form-control" name="heading">
+                                        </div>
+                                        <div >
+                                            <label for="description">Description:</label>
+                                            ​<textarea id="description" rows="5"  class="col-md-12"></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="photographer">Photographer:</label>
+                                            <input id = "photographer" type="tel" class="form-control" name="photographer">
+                                        </div>
+
+                                            <br />
+                                            <div class="pull-right">
+                                                <button id = "btnImgInfo" type="button" class="btn btn-primary">Save</button>
+
+                                                
+                                            </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                             
+                         </div>
                    
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2">  body <span class="required">*</span></label>
@@ -68,6 +168,8 @@
                                 </span>
                             </div>
                         </div>
+						
+						
                         
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
@@ -80,7 +182,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> tags <span class="required">*</span></label>
                             <div class="col-lg-10">
@@ -132,16 +234,15 @@
                             </div>
                         </div>
                         
-                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> CreateBy <span class="required">*</span></label>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-2"> CreateBy<span class="required">*</span></label>
                             <div class="col-lg-10">
                                  <input class="form-control" id="cname" name="CreateBy" value= "{{user.username}}" minlength="5" type="text" required />
-                                
                             </div>
                         </div>
-                        <div class="col-lg-offset-2 col-lg-10">
-                            <button class="btn btn-primary" type="submit" style="width: 50%;">Save</button>
-                             <button class="btn btn-success" type="submit" style="width: 49%;">Publish</button>
+                        <div class="col-lg-offset-2 col-lg-10" >
+                            <button   class="btn btn-primary" type="submit" style="width: 50%;" >Save</button>
+                             <button class="btn btn-success" type="submit" style="width: 48%;">Publish</button>
                         </div>
                     </div>
                     
@@ -155,3 +256,84 @@
 </div>
 
 <!-- page end-->
+
+<label>--</label>
+<br />
+
+<!-- Trigger the modal with a button -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg" style="width:100% !important; height:100% !important">
+        <div class="modal-content" style="width:100% !important; height:100% !important">
+            
+            <div class="modal-body" style="width:100% !important; height: 81%; overfolw: auto;">
+
+
+                <div id="cart_container">
+
+                    <div id="cart_toolbar">
+                        <div id="cart_items" class="back">
+
+                        </div>
+                    </div>
+                    <div id="navigate">
+                        <div id="nav_left">
+                            <a href="" id="btn_prev">
+                                <</a>
+                                    <a href="" id="btn_next">></a>
+                                    <a href="" id="btn_clear">Clear</a>
+                        </div>
+
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+                <div id="item_container">
+
+
+                    {{#each images}}
+                    <div class="item" id="div_{{_id}}" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <img src="{{media}}/{{medialist.articlePreview}}" draggable="true" id="{{_id}}" style="width : 75px; height : 70px">
+                    </div>
+                    {{/each}}
+
+                    <div class="clear"></div>
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer" style="width:100% !important; height:9% !important">
+                <button id="btnOk" type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                <button id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /*
+    window.onload = function () {
+        var img = document.getElementById('imgsrc');
+        var tracker = new tracking.ObjectTracker(['face']);
+        tracker.setStepSize(1.7);
+        tracking.track('#imgsrc', tracker);
+        tracker.on('track', function (event) {
+            event.data.forEach(function (rect) {
+                window.plot(rect.x, rect.y, rect.width, rect.height);
+            });
+        });
+        window.plot = function (x, y, w, h) {
+            var rect = document.createElement('div');
+            document.querySelector('.demo-container').appendChild(rect);
+            rect.classList.add('rect');
+            rect.style.width = w + 'px';
+            rect.style.height = h + 'px';
+            rect.style.left = (img.offsetLeft + x) + 'px';
+            rect.style.top = (img.offsetTop + y) + 'px';
+        };
+    };
+    */
+</script>
+

@@ -72,7 +72,7 @@ module.exports = {
         //var result;
         console.log("This is image model");
         console.log('get by id with req.body.id = ' + req.body.id);
-        console.log('get by id with req.params.id = ' + req.params.id);
+       
         //image.find({_id: "597b0ced4cafbb18cc90e7dc"}, function (err, rows) {
         image.find({_id: req.body.id}, function (err, rows) {
             
@@ -181,13 +181,43 @@ module.exports = {
             //p.photographer = 'photorapher';
             p.usercreate = 'unknow';
 
-            console.log('description: ' + req.body.description);
+           
 
             p.save(function (err, img) {
                 if (err) {
                     res.send(err);
-                }
-                    
+                }                   
+
+                //res.json({ message: 'image updated!' });
+                //res.send(img);
+            });
+
+        });
+    },
+    
+    //Ajax update:
+    ajaxUpdate: function (req, res) {
+
+        image.findById(req.params.image_id, function (err, p) {
+            if (err) {
+                res.send(err);
+            }
+            p.heading = req.body.heading;
+            
+            p.description = req.body.description;
+            //p.caption = req.body.caption;
+            p.photographer = req.body.photographer;
+            //p.heading = 'heading';
+            //p.media = objinfo.path;
+            //p.description = 'description';           
+            //p.photographer = 'photorapher';
+            p.usercreate = 'unknow';
+
+           
+            p.save(function (err, img) {
+                if (err) {
+                    res.send(err);
+                }                   
 
                 //res.json({ message: 'image updated!' });
                 res.send(img);
@@ -195,7 +225,7 @@ module.exports = {
 
         });
     },
-
+   
     delete: function (req, res, cb) {
         console.log('_id = ' + req.params.image_id)
         image.remove({ _id: req.params.image_id }, function (err, prod) {
@@ -206,3 +236,5 @@ module.exports = {
     }
 
 };
+
+

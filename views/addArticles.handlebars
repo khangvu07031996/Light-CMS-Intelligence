@@ -5,16 +5,7 @@
 <script src="/build/tracking-min.js"></script>
 <script src="/build/data/face-min.js"></script>
 
-<style>
-        .rect {
-            border: 2px solid #a64ceb;
-            left: -1000px;
-            position: absolute;
-            top: -1000px;
-        }
 
-       
-    </style>
 
     
 
@@ -36,11 +27,7 @@
             <header class="panel-heading">
             </header>
 
-            <div class="demo-container">
-                <span id="photo"><img id="imgsrc" src="/face4.jpg" style="width : 600px; height:auto"></img>
-                </span>
-            </div>
-
+           
             <div class="panel-body">
                 <div class="form" >
                    
@@ -69,21 +56,27 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-12">
-                                <label class="" for="cname" class="control-label"> file : <span class="required">*</span></label>
-                                <div class="">
-                                     <input style="display: block;" type="file" id="files" name="files" multiple accept="image/*">
+                           <div class="col-lg-2">
+                                 <div class="col-lg-12 col-md-offset-5" style="">
+                                    <label class="" for="cname" class="control-label"> File : <span class="required">*</span></label>
                                 </div>
-                              
-                            </div>
-                            <br />
-                            <div class="col-md-2">
-                                <button type="button" id = "btnPopup2" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+</button>
-                                
+                                <div class="col-lg-12 col-md-offset-5">
+                                            <div class="btn btn-info image-preview-input">
+                                            <span class="glyphicon glyphicon-folder-open"></span>
+                                            {{!-- <input type="file" multiple accept="image/png, image/jpeg, image/gif" name="file" /> --}}
+                                            <input style="display: block; margin:0px ;width:50px;" type="file" id="files" name="files" multiple accept="image/*">
+                                            <!-- rename it -->
+                                        </div> 
+                                </div>
+                                <button type="button" id = "btnPopup2" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal" style="font-size: 15px;margin-top: 7px;">+</button>
+                               
                            </div >
                                 <div class="col-md-10">                               
 									<div class="col-md-12" id="divimg"></div>
 									<input type="hidden" id = "imgPaths" name="imgPaths" value="">
+									
+									
+									
                                 </div>
                               
                                 
@@ -106,9 +99,6 @@
                                         </div>
 
                                         <div class="demo-container2" style = " height: 5px">
-                                            <canvas id="myCanvas"  >
-                                                 
-                                            </canvas>                                            
                                             
                                         </div> 
                                         
@@ -154,26 +144,7 @@
                                 <textarea class = "body" id="source" name = "body"></textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="cname" class="control-label col-lg-2"> Image <span class="required">*</span></label>
-                            <div class="input-group image-preview col-lg-10" style="padding-left:15px ; padding-right:15px;">
-                                <input type="text" class="form-control image-preview-filename" name="images">
-                                <!-- don't give a name === doesn't send on POST/GET -->
-                                <span class="input-group-btn">
-                                                    <!-- image-preview-clear button -->
-                                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
-                                            <span class="glyphicon glyphicon-remove"></span>Clear
-                                    </button>
-                                <!-- image-preview-input -->
-                                <div class="btn btn-default image-preview-input">
-                                    <span class="glyphicon glyphicon-folder-open"></span>
-                                    <span class="image-preview-input-title">Browse</span>
-                                    <input type="file" multiple accept="image/png, image/jpeg, image/gif" name="file" />
-                                    <!-- rename it -->
-                                </div>
-                                </span>
-                            </div>
-                        </div>
+                        
                         
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
@@ -307,14 +278,14 @@
 
             <div class="modal-footer" style="width:100% !important; height:9% !important">
                 <button id="btnOk" type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    
+    /*
     window.onload = function () {
         var img = document.getElementById('imgsrc');
         var tracker = new tracking.ObjectTracker(['face']);
@@ -335,6 +306,6 @@
             rect.style.top = (img.offsetTop + y) + 'px';
         };
     };
-    
+    */
 </script>
 

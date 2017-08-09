@@ -2,6 +2,7 @@
 $(document).ready(function () {
     var selDiv = "";
     selDiv = document.querySelector("#divimg");
+    //Event click on button OK:
     $("#btnOk").click(function () {
         //alert('button clicked');
         console.log('button btnOK clicked');
@@ -9,34 +10,43 @@ $(document).ready(function () {
         console.log(arrImgObjs);
 
         arrImgs.forEach(function (i) {
+			var html = '<div class="item icart">';
+            html = html + '<div class="divrm">';
+            html = html + '<a onclick="removeSelectedImage(this)" class="remove ' + '">&times;</a>';
+            html = html + '</div>' + i.tag + '</div>';
 
-            // Instead of echoing this, build a real array
-            $('#console').html($('#console').html() + ' ' + i + ' ');
-            var html = $('#console').html();
-
-
-            selDiv.innerHTML += '  ' + i;
+            //selDiv.innerHTML += '  ' + i;		
+			selDiv.innerHTML += html;			
+			
+            $("#images_items").append(html);
         });
+		//Reset arrImgs:
+		arrImgs = [];
 
-
-      //Cập nhật đường dẫn các ảnh được chọn:
-        arrImgObjs.forEach(function(i) {
-            arrPaths.push(i.path);
-        });
+		//fruits.splice(0, length);
+        //Cập nhật đường dẫn các ảnh được chọn:
+        
+        addItemToPathArray();
+       
         $("#imgPaths").val(arrPaths);
 
         //Reset:
-         $("#cart_items").fadeOut("2000", function () {
+        $("#cart_items").fadeOut("2000", function () {
             $(this).html("").fadeIn("fast").css({ left: 0 });
         });
-        $("#citem").html("0");
-        
+        //$("#citem").html("0");
+
         total_items = 0;
 
-        //alert(src0);
+       
     });
 
-    
+
+    //even click on button Cancel:
+    $("#btnCancel").click(function () {
+        arrImgObjs = [];
+    });
+
 
 
 });
@@ -51,30 +61,21 @@ function init() {
     document.querySelector('#files').addEventListener('change', handleFileSelect, false);
     selDiv = document.querySelector("#divimg");
 
-     //Reset Cancas:
-    
-    //ctx.beginPath();
-    var myCanvas = document.getElementById('myCanvas');
-    var ctx = myCanvas.getContext('2d');
-    clearCanvas(myCanvas, ctx);
 }
 
 function handleFileSelect(e) {
 
     if (!e.target.files || !window.FileReader) return;
 
-   
-    createDirectory();   
-    
+
+    createDirectory();
+
 
     var files = e.target.files;
     var filesArr = Array.prototype.slice.call(files);
-    
-    
+
+
 }
-
-
-
 
 //Các biến lưu thông tin về ảnh:
 var arrImgs = [];
@@ -93,6 +94,13 @@ $(document).ready(function () {
     $("#cart_items").draggable({
         axis: "x"
     });
+	
+	//----------------------------------
+	 $("#images_items").draggable({
+        axis: "x"
+    });
+
+    
 
     $("#cart_items").droppable({
         accept: ".item",
@@ -104,25 +112,28 @@ $(document).ready(function () {
             var html = '<div class="item icart">';
             html = html + '<div class="divrm">';
             html = html + '<a onclick="remove(this)" class="remove ' + itemid + '">&times;</a>';
-            html = html + '<div/>' + item + '</div>';
+            html = html + '</div>' + item + '</div>';
+			console.log(html);
             $("#cart_items").append(html);
-
-
 
             //console.log('src = '  + item.attr("src")); //ui.draggable.attr("id");
             console.log('currentSrc = ' + ui.draggable[0].firstElementChild.currentSrc);
             let strsrc = ui.draggable[0].firstElementChild.currentSrc.replace("http://localhost:3000", "");
+			let imgID = ui.draggable[0].firstElementChild.id;
             console.log('currentSrc = ' + strsrc);
+			console.log('imgID = ' + imgID);
 
-            arrImgs.push(item);
+            arrImgs.push({
+				tag: item,
+				id: imgID
+			});
+            
             arrImgObjs.push({
-                id: 0,
+                id: imgID,
                 path: strsrc
             });
-            console.log('lenght arrImags = ' + arrImgs.length);
-            console.log('lenght arrImgObjs = ' + arrImgObjs.length);
-
-
+            
+            
 
             // update total items
             total_items++;
@@ -149,18 +160,31 @@ $(document).ready(function () {
             $(this).html("").fadeIn("fast").css({ left: 0 });
         });
         $("#citem").html("0");
-        
+
         total_items = 0;
-        
+		
+		//Reset:
+		arrImgObjs = [];
+		arrImgs = [];
+
         return false;
     });
 
     //Trackingjs:
-     detectFaces();
+    //detectFaces();
 
 });
 
+//Remove on the popup:
 function remove(el) {
+	//alert($(el).parent().parent());
+	let divimg = $(el).parent().parent();
+	let img = divimg.find('img')[0];
+	let path = img.currentSrc;
+	//alert(img.currentSrc);
+	console.log(divimg);
+	path = path.replace("http://localhost:3000", "");
+	console.log(path);
     $(el).hide();
     $(el).parent().parent().effect("highlight", { color: "#ff0000" }, 10);
     $(el).parent().parent().fadeOut('1');
@@ -172,45 +196,80 @@ function remove(el) {
         }
     }, 1100);
 
+    //Remove path of image removed:
+    removeItemOfPathTempArray(path);
+	
+	//removed item of array tags img:
+	let id = img.id;
+	for (let i = 0; i < arrImgs.length; i++) {
+        if (arrImgs[i].id == id) {
+            arrImgs.splice(i, 1);
+            break;
+        }
+    }
+
     // update total item
     total_items--;
     $("#citem").html(total_items);
 
-  
+}
+
+//Remove on the div selected images:
+function removeSelectedImage(el) {
+	//alert($(el).parent().parent());
+	let divimg = $(el).parent().parent();
+	let myDivUL = divimg.find('img')[0];
+	let path = myDivUL.currentSrc;
+	//alert(myDivUL.currentSrc);
+	console.log(divimg);
+	path = path.replace("http://localhost:3000", "");
+	console.log(path);
+    $(el).hide();
+    $(el).parent().parent().effect("highlight", { color: "#ff0000" }, 10);
+    $(el).parent().parent().fadeOut('1');
+    setTimeout(function () {
+        $(el).parent().parent().remove();
+        // collapse cart items
+        if (total_items > 3) {
+            //$("#cart_items").animate({ width: "-=120" }, 'normal');
+        }
+    }, 1100);
+
+    //Remove path of image removed:
+    removeItemOfPathArray(path);
+	
+	//hidden tab:
+	document.getElementById('imgtab').style.display = "none";
 
 }
-                              
 
 
-    //Sự kiện click :
+//Sự kiện click :
 
-    $(document).on('click', 'img', function (evt) {
-        //alert("hey!" + this.id + "--" + this.src);
-        document.getElementById('imgtab').style.display = "block";
-        getDataByID(this.id);
+$(document).on('click', '#divimg img', function (evt) {
+    //alert("hey!" + this.id + "--" + this.src);
+    document.getElementById('imgtab').style.display = "block";
+    getDataByID(this.id);
 
-        //detectFaces();
-        var myCanvas = document.getElementById('myCanvas');
-        var ctx = myCanvas.getContext('2d');
-        //clearCanvas(myCanvas, ctx);
-    });
-
-    $(document).on('click', '#btnPopup2', function(evt) { 
-        //alert("hey!");
-        getData();
-
-    });
-    //btnImgInfo
-    $(document).on('click', '#btnImgInfo', function (evt) {
-        //alert("This is button of img tab");
-        let data = getImageInfo();
-        updateImageInfo(data);
-
-        //View paths of images:
-        console.log("paths of imgs: " + arrImgObjs);
-        console.log(arrImgObjs);
-    });   
     
+});
+
+$(document).on('click', '#btnPopup2', function (evt) {
+    //alert("hey!");
+    getData();
+
+});
+//btnImgInfo
+$(document).on('click', '#btnImgInfo', function (evt) {
+    //alert("This is button of img tab");
+    let data = getImageInfo();
+    updateImageInfo(data);
+
+    //View paths of images:
+    console.log("paths of imgs: " + arrImgObjs);
+    console.log(arrImgObjs);
+});
+
 //hàm upload files:
 function uploadfile() {
     //debugger;
@@ -219,8 +278,6 @@ function uploadfile() {
         var files = fileUpload.files;
         //Tạo một đối tượng form data
         var filedata = new FormData();
-
-        //alert('file.lenght = ' + files.length);
 
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
@@ -233,9 +290,7 @@ function uploadfile() {
                 contentType: false,
                 processData: false,
                 data: filedata,
-                success: function (result) {
-                    //$("#Picture").val(result);
-
+                success: function (result) {                 
                     //alert(result);
                     console.log(result);
                     getDataByMoment(result);
@@ -249,7 +304,7 @@ function uploadfile() {
 
     }
     else {
-        alert("FormData không hỗ trợ");
+        alert("FormData not support");
     }
 }
 
@@ -257,54 +312,50 @@ var data0;
 //hàm lấy tập hợp dữ liệu:
 function getDataByMoment(moment) {
     //debugger;
-        var data = {
-            moment: moment
-        }
-        $.ajax(
-            {
-                url: '/image/dataByMoment',
-                
-                type: 'POST',  
-                data: JSON.stringify(data),                
-                contentType: "application/json",
-                //contentType: "application/x-www-form-urlencoded",
-                dataType:'json',
-                success: function (result) {
-                    //$("#Picture").val(result);
+    let data = {
+        moment: moment
+    }
+    $.ajax(
+        {
+            url: '/image/dataByMoment',
 
-                    //alert('getdata0 ' + result);
-                    console.log('data0 = ' + result);
-                    data0 = result;
-                    //window.location.reload();
-                    console.log('length = ' + data0.length);
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            //contentType: "application/x-www-form-urlencoded",
+            dataType: 'json',
+            success: function (result) {
+                              
 
-                    //selDiv.innerHTML = "<br />";
-                    data0.forEach(function (f) {
-                        var path = f.media + '/' + f.medialist.articlePreview;
-                        var html = "<img src=\"" + path + "\" " + "id = \"" + f._id + "\"" + " style= \"" + "width : 75px; height : 70px \"" + ">  ";
-                        selDiv.innerHTML += html;
+                //selDiv.innerHTML = "<br />";
+                result.forEach(function (f) {
+                    let path = f.media + '/' + f.medialist.articlePreview;
+                    let img = "<img src=\"" + path + "\" " + "id = \"" + f._id + "\"" + " style= \"" + "width : 75px; height : 70px \"" + ">  ";
+                    
+					
+					let html = '<div class="item icart">';
+					html = html + '<div class="divrm">';
+					html = html + '<a onclick="removeSelectedImage(this)" class="remove ' + '">&times;</a>';
+					html = html + '</div>' + img + '</div>';
+					
+					selDiv.innerHTML += html;
+                    //Update array image path:
+                    arrPaths.push(path);
+                   
 
-                        arrImgObjs.push({
-                            id: 0,
-                            path: path
-                        });
+                });
 
-                    });
-
-                    //cập nhật path của các ảnh được chọn:
-                    arrImgObjs.forEach(function(i) {
-                        arrPaths.push(i.path);
-                    });
-                    $("#imgPaths").val(arrPaths);
+                //cập nhật path của các ảnh được chọn:               
+                $("#imgPaths").val(arrPaths);
 
 
-                }, error: function (err) {
-                    alert(err);
-                }
+            }, error: function (err) {
+                alert(err);
             }
-        );
+        }
+    );
 
-    
+
 }
 
 //hàm lấy tập hợp dữ liệu:
@@ -327,15 +378,15 @@ function getData() {
 
 //Lấy dữ liệu theo id;
 function getDataByID(id) {
-    var data = {id: id};
+    var data = { id: id };
     $.ajax(
         {
             url: '/image/databyid',
-            type: 'POST',               
-            data: JSON.stringify(data),                
+            type: 'POST',
+            data: JSON.stringify(data),
             contentType: "application/json",
             //contentType: "application/x-www-form-urlencoded",
-            dataType:'json',
+            dataType: 'json',
             success: function (result) {
                 //$("#Picture").val(result);
                 if (result !== null && result != 'undefined') {
@@ -347,36 +398,34 @@ function getDataByID(id) {
                 console.log(err);
             }
         }
-    );   
+    );
 }
 
 //Hàm cập nhật thông tin của ảnh:
 function updateImageInfo(imgdata) {
-    //var data = {id: id};
-        //alert('id = ' + id);
-   
-        $.ajax(
-            {
-                url: '/image/' + imgdata.id,
-                type: 'POST',               
-               
-                data: JSON.stringify(imgdata),                
-                contentType: "application/json",
-                //contentType: "application/x-www-form-urlencoded",
-                dataType:'json',
-                success: function (result) {
-                   
-                    console.log("update: " + result);
-                    alert('Updated successful');
-                    //window.location.reload();     
-                    document.getElementById('imgtab').style.display = "none";              
-                    
+    
+    $.ajax(
+        {
+            url: '/image/ajax/' + imgdata.id,
+            type: 'POST',
 
-                }, error: function (err) {
-                    alert(err);
-                }
+            data: JSON.stringify(imgdata),
+            contentType: "application/json",
+            //contentType: "application/x-www-form-urlencoded",
+            dataType: 'json',
+            success: function (result) {
+
+                console.log("update: " + result);
+                alert('Updated successful');
+                //window.location.reload();     
+                document.getElementById('imgtab').style.display = "none";
+
+
+            }, error: function (err) {
+                alert(err);
             }
-        );
+        }
+    );
 
 
 }
@@ -389,40 +438,41 @@ function initImageTabcontent(imgdata) {
     $("#photographer").val(imgdata.photographer);
     //$("#imgsrc0").attr('src', src);
     $("#imgid").val(imgdata._id);
+
+    //$(".demo-container").empty();
     var img = document.getElementById("imgsrc0");
     //Clear Canvas:
     //var myCanvas = document.getElementById('myCanvas');
     //var ctx = myCanvas.getContext('2d');
 
-    //context.clearRect(0, 0, myCanvas.width, canvas.height);
-    // bind event handler to clear button
- 
-    img.onload = function() {
-           //ctx.drawImage(img,0,0); // Or at whatever offset you like
-            //var img = document.getElementById('imgsrc0');
-            var tracker = new tracking.ObjectTracker(['face']);
-            tracker.setStepSize(1.7);
-            tracking.track(img, tracker);
-            tracker.on('track', function (event) {
-                $(".demo-container2").empty();
-                event.data.forEach(function (rect) {
-                    window.plot(rect.x, rect.y, rect.width, rect.height);
-                });
+    img.onload = function () {
+        //$(".demo-container").empty();
+        //ctx.drawImage(img,0,0); // Or at whatever offset you like
+        //var img = document.getElementById('imgsrc0');
+        var tracker = new tracking.ObjectTracker(['face']);
+        tracker.setStepSize(1.7);
+        tracking.track(img, tracker);
+        tracker.on('track', function (event) {
+            $(".demo-container2").empty();
+            event.data.forEach(function (rect) {
+                window.plot(rect.x, rect.y, rect.width, rect.height);
             });
-            window.plot = function (x, y, w, h) {
-                var rect = document.createElement('div');
-                document.querySelector('.demo-container2').appendChild(rect);
-                rect.classList.add('rect');
-                rect.style.width = w + 'px';
-                rect.style.height = h + 'px';
-                rect.style.left = (img.offsetLeft + x) + 'px';
-                rect.style.top = (img.offsetTop + y) + 'px';
-            };
-		};
-        img.src = src;
+        });
+        window.plot = function (x, y, w, h) {
+            //$(".demo-container").empty();
+            var rect = document.createElement('div');
+            document.querySelector('.demo-container2').appendChild(rect);
+            rect.classList.add('rect');
+            rect.style.width = w + 'px';
+            rect.style.height = h + 'px';
+            rect.style.left = (img.offsetLeft + x) + 'px';
+            rect.style.top = (img.offsetTop + y) + 'px';
+        };
+    };
+    img.src = src;
 }
 
-function clearCanvas(canvas,ctx) {
+function clearCanvas(canvas, ctx) {
     event.preventDefault();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -433,12 +483,12 @@ function getImageInfo() {
     imgdata.id = $("#imgid").val();
     imgdata.description = $("#description").val();
     imgdata.heading = $("#heading").val();
-    imgdata.photographer =  $("#photographer").val();
-    
+    imgdata.photographer = $("#photographer").val();
+
     return imgdata;
 
 }
- 
+
 //Hàm reset tab thông tin ảnh:
 function resetImageTabcontent() {
     $("#description").val("");
@@ -452,56 +502,89 @@ function resetImageTabcontent() {
 function createDirectory() {
     //debugger;
     //alert('creating directory');
-    console.log('created diẻctory');
-   
-        $.ajax(
-            {
-                url: '/image/createDirectory',
-                type: 'GET',
-                contentType: false,
-                processData: false,
-                data: null,
-                success: function (result) {
-                    //$("#Picture").val(result);
+    console.log('created directory');
 
-                    //alert('create dir' + result);
-                    console.log('creat dir ' + result);
-                    uploadfile();
-                    //window.location.reload();
+    $.ajax(
+        {
+            url: '/image/createDirectory',
+            type: 'GET',
+            contentType: false,
+            processData: false,
+            data: null,
+            success: function (result) {
+                //$("#Picture").val(result);
 
-                }, error: function (err) {
-                    alert(err);
-                }
+                //alert('create dir' + result);
+                console.log('creat dir ' + result);
+                uploadfile();
+                //window.location.reload();
+
+            }, error: function (err) {
+                alert(err);
             }
-        );
-    
+        }
+    );
+
     // run function callback:    
     //cb();
 }
+
+//Add item to temp array of image path:
+
+
+//Add item to array of image path:
+function addItemToPathArray() {
+    arrImgObjs.forEach(function (i) {
+            arrPaths.push(i.path);
+    });
+    arrImgObjs = [];
+}
+
+//Delete item of temp array of image path:
+function removeItemOfPathTempArray(path) {
+    for (let i = 0; i < arrImgObjs.length; i++ ) {
+        if (arrImgObjs[i].path == path) {
+            arrImgObjs.splice(i, 1);
+        }
+    }
+}
+//Delete item of array of image path:
+function removeItemOfPathArray(obj) {
+    for (let i = 0; i < arrPaths.length; i++) {
+        //alert((arrPaths[i] == obj));
+        if (arrPaths[i] == obj) {
+            arrPaths.splice(i, 1);
+            break;
+        }
+       
+    }
+}
+
+
 
 //Xử lý của thư viện Trackingjs:
 
 //Function detect faces:
 function detectFaces() {
-    
-        var img = document.getElementById('imgsrc0');
-        var tracker = new tracking.ObjectTracker(['face']);
-        tracker.setStepSize(1.7);
-       // tracking.track('#imgsrc0', tracker);
-        tracking.track(img, tracker);
-        tracker.on('track', function (event) {
-            event.data.forEach(function (rect) {
-                window.plot(rect.x, rect.y, rect.width, rect.height);
-            });
+
+    var img = document.getElementById('imgsrc0');
+    var tracker = new tracking.ObjectTracker(['face']);
+    tracker.setStepSize(1.7);
+    // tracking.track('#imgsrc0', tracker);
+    tracking.track(img, tracker);
+    tracker.on('track', function (event) {
+        event.data.forEach(function (rect) {
+            window.plot(rect.x, rect.y, rect.width, rect.height);
         });
-        window.plot = function (x, y, w, h) {
-            var rect = document.createElement('div');
-            document.querySelector('.demo-container').appendChild(rect);
-            rect.classList.add('rect');
-            rect.style.width = w + 'px';
-            rect.style.height = h + 'px';
-            rect.style.left = (img.offsetLeft + x) + 'px';
-            rect.style.top = (img.offsetTop + y) + 'px';
-        };
-    
+    });
+    window.plot = function (x, y, w, h) {
+        var rect = document.createElement('div');
+        document.querySelector('.demo-container').appendChild(rect);
+        rect.classList.add('rect');
+        rect.style.width = w + 'px';
+        rect.style.height = h + 'px';
+        rect.style.left = (img.offsetLeft + x) + 'px';
+        rect.style.top = (img.offsetTop + y) + 'px';
+    };
+
 }
