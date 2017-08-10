@@ -66,7 +66,6 @@ app.use(bodyParser.urlencoded({"extended" : false}));
 //app.use(expressValidator());
 //view engine
 app.set('views', path.join(__dirname, 'views'));
-app.set('views', path.join(__dirname, 'www/views'));
 //app.set('view engine', 'ejs');
 
 var user = require('./models/user');
@@ -89,9 +88,7 @@ app.use(function (req, res, next) {
 });
 app.use(require('./controllers'))
 app.use(require('./api'))
-app.get('/demo',function(req,res){
-  res.render('articleView.handlebars',{layout:false});
-})
+
 mongoose.connect('mongodb://localhost:27017/intelligenceCms',function(err){
 if (err) {
     console.log('Unable to connect to Mongo.')

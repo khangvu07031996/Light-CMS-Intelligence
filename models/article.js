@@ -96,8 +96,8 @@ module.exports = {
         dbArticle.author = req.body.author;
         dbArticle.tags = req.body.tags;
         dbArticle.widgets = req.body.widgets;
-        dbArticle.date_created = new Date(req.body.date_created);
-        dbArticle.publishDate = new Date(req.body.publishDate);
+        dbArticle.date_created = new Date();
+        dbArticle.publishDate = new Date();
         dbArticle.CreateBy = req.body.CreateBy;
         dbArticle.status = req.body.status;
         dbArticle.save(function(err){
@@ -132,7 +132,7 @@ module.exports = {
     },
     getArticleById : function(req,res){
         var response = {};
-        article.findById({_id : req.params.id},function(err,data){vb   
+        article.findById({_id : req.params.id},function(err,data){   
             if(err){
                  response = {"error" : true,"message" : "Error fetching data"};
             } else {
@@ -166,8 +166,8 @@ module.exports = {
                 dataArticle.author = req.body.author;
                 dataArticle.tags = req.body.tags;
                 dataArticle.widgets = req.body.widgets;
-                dataArticle.date_created = new Date(req.body.date_created);
-                dataArticle.publishDate = new Date(req.body.publishDate);
+                dataArticle.date_created = new Date();
+                dataArticle.publishDate = new Date();
                 dataArticle.CreateBy = req.body.CreateBy;
                 dataArticle.status = req.body.status;
                 dataArticle.save(function(err){
@@ -197,6 +197,11 @@ module.exports = {
     }
 
 
+}
+module.exports.getlastArticle = function(req,res){
+    article.findOne({},[], { sort : {date_created : -1}, limit : 8},function(err,data){
+        res.send(data);
+    })
 }
 module.exports.getAllArticleApi = function (callback) {
     article.find(callback);

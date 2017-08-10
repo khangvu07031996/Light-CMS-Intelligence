@@ -163,4 +163,20 @@ router.delete("/api/articles/:id",deletearticle)
  *         description: Successfully updated
  */
 router.put("/api/articles/:id",ArticleData.updateArticleApi)
+/**
+ * @swagger
+ * /api/lastArticles:
+ *  get:
+ *      tags:
+ *          - articles
+ *      description: Return last articles
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: list of articles
+ *              schema:
+ *                  $ref: '#/definitions/Article'
+ */
+router.get("/api/lastArticles",ArticleData.getlastArticle);
 module.exports = router;
