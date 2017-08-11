@@ -40,6 +40,7 @@ var ArticleData = require('../models/article');
  *      description: Return all articles
  *      produces:
  *          - application/json
+ *         
  *      responses:
  *          200:
  *              description: list of articles
@@ -47,12 +48,12 @@ var ArticleData = require('../models/article');
  *                  $ref: '#/definitions/Article'
  */
 
-function datagot(req,res){
-    ArticleData.getAllArticleApi(function(err,data){
+function datagot(req, res) {
+    ArticleData.getAllArticleApi(function (err, data) {
         res.send(data);
     })
 }
-router.get("/api/articles",datagot);
+router.get("/api/articles", datagot);
 /**
  * @swagger
  * /api/articles/{id}:
@@ -74,12 +75,34 @@ router.get("/api/articles",datagot);
  *         schema:
  *           $ref: '#/definitions/Article'
  */
-function getAllArticlebyid(req,res){
-    ArticleData.getArticleByIdApi(req.params.id,function(err,data){
+function getAllArticlebyid(req, res) {
+    ArticleData.getArticleByIdApi(req.params.id, function (err, data) {
         res.send(data);
     })
 }
-router.get("/api/articles/:id",getAllArticlebyid);
+router.get("/api/articles/:id", getAllArticlebyid);
+/**
+ * @swagger
+ * /api/articles/{section}:
+ *   get:
+ *     tags:
+ *       - articles
+ *     description: Returns some article
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: section
+ *         description: articles's section
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: A single article
+ *         schema:
+ *           $ref: '#/definitions/Article'
+ */
+router.get("/api/articles/:section",ArticleData.getArticleBySection);
 /**
  * @swagger
  * /api/articles:
@@ -100,18 +123,18 @@ router.get("/api/articles/:id",getAllArticlebyid);
  *       200:
  *         description: Successfully created
  */
-function createArticle(req,res){
+function createArticle(req, res) {
     var { headline, section, premble, body, images, author, tags, widgets, date_created, publishDate, status, CreateBy } = req.body;
-       const command = ArticleData.addArticleApi({ headline, section, premble, body, images, author, tags, widgets, date_created, publishDate, status, CreateBy });
-        command.then((result, err) => {
+    const command = ArticleData.addArticleApi({ headline, section, premble, body, images, author, tags, widgets, date_created, publishDate, status, CreateBy });
+    command.then((result, err) => {
         if (err) {
-        res.status(500).json(err);
+            res.status(500).json(err);
         } else {
-        res.status(201).json({ Message: 'Insert new product', Name });
+            res.status(201).json({ Message: 'Insert new product', Name });
         }
     });
 }
-router.post("/api/articles",createArticle);
+router.post("/api/articles", createArticle);
 /**
  * @swagger
  * /api/articles/{id}:
@@ -131,12 +154,12 @@ router.post("/api/articles",createArticle);
  *       200:
  *         description: Successfully deleted
  */
-function deletearticle(req,res){
-     ArticleData.deleteArticleApi(req.params.id,function(err){
+function deletearticle(req, res) {
+    ArticleData.deleteArticleApi(req.params.id, function (err) {
         res.send("deleted");
     })
 }
-router.delete("/api/articles/:id",deletearticle)
+router.delete("/api/articles/:id", deletearticle)
 /**
  * @swagger
  * /api/articles/{id}:
@@ -162,7 +185,8 @@ router.delete("/api/articles/:id",deletearticle)
  *       200:
  *         description: Successfully updated
  */
-router.put("/api/articles/:id",ArticleData.updateArticleApi)
+router.put("/api/articles/:id", ArticleData.updateArticleApi)
+
 /**
  * @swagger
  * /api/lastArticles:
@@ -178,5 +202,5 @@ router.put("/api/articles/:id",ArticleData.updateArticleApi)
  *              schema:
  *                  $ref: '#/definitions/Article'
  */
-router.get("/api/lastArticles",ArticleData.getlastArticle);
+router.get("/api/lastArticles", ArticleData.getlastArticle);
 module.exports = router;

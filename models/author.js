@@ -61,13 +61,13 @@ module.exports = {
 				response = { "error": true, "message": "Error fetching data" };
 			} else {
 				res.render('AuthorForm', { Author: data })
-				
-				
+
+
 			}
 
 		})
-		
-		
+
+
 	},
 	//-----------------------getAuthorById-------------------------------
 	getAuthorById: function (req, res) {
@@ -107,13 +107,13 @@ module.exports = {
 			if (err) {
 				response = { "error": true, "message": "Error fetching data" };
 			} else {
-					dataAuthor.name = req.body.name;
-					dataAuthor.active = req.body.active;
-					dataAuthor.email = req.body.email;
-					dataAuthor.dob = new Date(req.body.dob);
-					dataAuthor.date_created = new Date(req.body.date_created);
-					dataAuthor.date_update = new Date(req.body.date_update);
-					dataAuthor.image = req.body.image;
+				dataAuthor.name = req.body.name;
+				dataAuthor.active = req.body.active;
+				dataAuthor.email = req.body.email;
+				dataAuthor.dob = new Date(req.body.dob);
+				dataAuthor.date_created = new Date(req.body.date_created);
+				dataAuthor.date_update = new Date(req.body.date_update);
+				dataAuthor.image = req.body.image;
 				dataAuthor.save(function (err) {
 					if (err) {
 						console.log("asssssssssssssdsadasdasdsa");
@@ -128,6 +128,6 @@ module.exports = {
 	}
 
 }
-module.exports.getAuthorNames = function(callback){
+module.exports.getAuthorNames = function (callback) {
 	Author.find(callback);
 }

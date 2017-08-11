@@ -28,7 +28,7 @@ router.get("/Article/edit/:id", ArticleData.getArticleById);
 //update article
 router.post("/Article/edit/:id", ArticleData.updateArticle);
 router.post("/Article/search", ArticleData.searchArtical);
-router.get("/demo",ArticleData.getlastArticle);
+router.get("/api/Article/:section",ArticleData.getArticleBySection);
 function getallName(req, res) {
     Author.getAuthorNames(function (err, data) {
         userdata.getUserNames(function (err, datauser) {
