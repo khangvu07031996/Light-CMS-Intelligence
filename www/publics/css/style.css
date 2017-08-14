@@ -15,7 +15,7 @@ ul{padding:0; margin:0; list-style:none}
 a{text-decoration:none; color:#798992}
 a:hover{color:#646464; text-decoration:none}
 a:focus{outline:none; text-decoration:none}
-h2{font-family:'Oswald',sans-serif; line-height:23px}
+h2{font-family:'Oswald',sans-serif;}
 img{border:none}
 img:hover{opacity:0.75}
 .img-center{display:block; margin-left:auto; margin-right:auto; text-align:center}
@@ -42,7 +42,7 @@ img:hover{opacity:0.75}
 .search_form input[type="submit"]{ background:url("images/icon-search.png") no-repeat scroll center 5px rgba(0,0,0,0); height:27px; line-height:27px; width:30px; border:none}
 .header_bottom{display:inline; float:left; width:100%; padding:30px 0px}
 .header_bottom_left{float:left; display:inline; width:217px}
-.logo{display:block; font-family:"Oswald",sans-serif; font-size:35px; font-weight:bold; line-height:32px; width:217px}
+.logo{display:block; font-family:"Oswald",sans-serif; font-size:35px; font-weight:bold; width:217px}
 .logo > img:hover{opacity:1}
 .logo > strong{color:#00a0df}
 .logo > span{display:block; font-size:16px; font-weight:normal}

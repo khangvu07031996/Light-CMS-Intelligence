@@ -56,6 +56,23 @@ function datagot(req, res) {
 router.get("/api/articles", datagot);
 /**
  * @swagger
+ * /api/hotArticles:
+ *  get:
+ *      tags:
+ *          - articles
+ *      description: Return some articles
+ *      produces:
+ *          - application/json
+ *         
+ *      responses:
+ *          200:
+ *              description: list of articles
+ *              schema:
+ *                  $ref: '#/definitions/Article'
+ */
+router.get("/api/hotArticles",ArticleData.getHotArticle);
+/**
+ * @swagger
  * /api/articles/{id}:
  *   get:
  *     tags:
@@ -81,6 +98,7 @@ function getAllArticlebyid(req, res) {
     })
 }
 router.get("/api/articles/:id", getAllArticlebyid);
+
 /**
  * @swagger
  * /api/articles/{section}:

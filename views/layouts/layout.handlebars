@@ -196,7 +196,7 @@
          <script src="/js/select2.min.js"></script>
          <script type="text/javascript" src="/js/soundex.js"></script>
         <script type="text/javascript" src="/js/keywords.js"></script>
-        <script>tinymce.init({ selector:'.body' });</script>
+        <script>tinymce.init({ selector:'.body', forced_root_block : false,paste_remove_styles: true,paste_remove_spans : true});</script>
         <script type = "text/javascript" >
             $("#author_selection").select2();
              $("#section_selection").select2();

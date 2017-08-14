@@ -199,7 +199,7 @@ module.exports = {
 
 }
 module.exports.getArticleBySection = function(req,res){
-    article.find({section:req.params.section},function(err,data){
+    article.find({section:req.params.section},{},{ sort: { date_created: -1 }, limit: 3 },function(err,data){
         res.send(data);
     })
 }
@@ -217,6 +217,12 @@ module.exports.getArticleByIdApi = function (id, callback) {
 module.exports.addArticleApi = function (articles) {
 
     return new article(articles).save();
+}
+module.exports.getHotArticle = function(req,res){
+    article.find({},[],{ sort: { date_created: -1 }, limit: 4 },function(err,data){
+        res.send(data);
+    })
+
 }
 module.exports.deleteArticleApi = function (id, callback) {
     article.findById({ _id: id }, function (err) {

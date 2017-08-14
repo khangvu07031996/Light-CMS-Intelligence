@@ -8,6 +8,7 @@ function getArticleById(req, res) {
         articleId = response.data;
         var arrimage = [];
         arrimage = articleId.images.split(",");
+
        axios.get('http://localhost:3000/api/articles').then(function (response) {
              var allArticle = response.data;
                 for(var i = 0 ; i < allArticle.length; i ++){
