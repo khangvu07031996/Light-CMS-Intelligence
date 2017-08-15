@@ -42,14 +42,14 @@ img:hover{opacity:0.75}
 .search_form input[type="submit"]{ background:url("images/icon-search.png") no-repeat scroll center 5px rgba(0,0,0,0); height:27px; line-height:27px; width:30px; border:none}
 .header_bottom{display:inline; float:left; width:100%; padding:30px 0px}
 .header_bottom_left{float:left; display:inline; width:217px}
-.logo{display:block; font-family:"Oswald",sans-serif; font-size:35px; font-weight:bold; width:217px}
+.logo{display:block; font-family:"Oswald",sans-serif; font-size:33px; font-weight:bold; width:217px}
 .logo > img:hover{opacity:1}
 .logo > strong{color:#00a0df}
 .logo > span{display:block; font-size:16px; font-weight:normal}
 .header_bottom_right{float:right; display:inline; width:728px}
 #preloader{position:fixed; top:0; left:0; right:0; bottom:0; background-color:#fff; z-index:99}
 #status{width:200px; height:200px; position:absolute; left:50%; top:50%; background-image:url("images/status.gif"); background-repeat:no-repeat; background-position:center; margin:-100px 0 0 -100px}
-.scrollToTop{bottom:105px; display:none; font-size:32px; font-weight:bold; height:50px; position:fixed; right:75px; text-align:center; text-decoration:none; width:50px; z-index:9; border:1px solid; -webkit-transition:all 0.5s; -moz-transition:all 0.5s; -ms-transition:all 0.5s; -o-transition:all 0.5s; transition:all 0.5s}
+.scrollToTop{bottom:105px; display:none; font-size:32px; font-weight:bold; height:50px; position:fixed; right:38px; text-align:center; text-decoration:none; width:50px; z-index:9; border:1px solid; -webkit-transition:all 0.5s; -moz-transition:all 0.5s; -ms-transition:all 0.5s; -o-transition:all 0.5s; transition:all 0.5s}
 .scrollToTop:hover, .scrollToTop:focus{text-decoration:none; outline:none}
 #navarea{float:left; display:inline; width:100%}
 .navbar-default{ border-radius:0; padding:0; margin-bottom:0px}
@@ -69,7 +69,7 @@ img:hover{opacity:0.75}
 .single_iteam h2 > a{background-color:rgba(0,0,0,0.4); color:#fff; display:inline-block; font-size:20px; padding:10px}
 .content_top_right{float:left; display:inline; width:100%}
 .featured_nav{}
-.featured_nav li{display:block; float:left; height:208px; margin-bottom:10px; margin-right:10px; position:relative; width:48%}
+.featured_nav li{display:block; float:left; height:230px; margin-bottom:44px; margin-right:10px; position:relative; width:48%}
 .featured_nav li img{width:100%; height:100%}
 .featured_nav li:hover .title_caption{height:130px; padding-top:15%}
 .title_caption{position:absolute; left:0; right:0; bottom:0; padding:10px; text-align:center; background-color:rgba(0,0,0,0.75); -webkit-transition:all 0.5s; -moz-transition:all 0.5s; -ms-transition:all 0.5s; -o-transition:all 0.5s; transition:all 0.5s}
@@ -77,13 +77,13 @@ img:hover{opacity:0.75}
 .content_middle{float:left; display:inline; width:100%}
 .content_middle_leftbar{float:left; display:inline; width:100%}
 .single_category{float:left; display:inline; width:100%}
-.single_category > h2, .archive_style_1 > h2{text-align:center; font-size:20px; font-weight:700; margin-top:5px; text-transform:uppercase; position:relative}
+.content_middle_middle > h2, .single_category > h2, .archive_style_1 > h2{text-align:center; font-size:20px; font-weight:700; margin-top:5px; text-transform:uppercase; position:relative}
 .bold_line{bottom:0; display:block; height:10px; left:0; position:absolute; width:100%}
 .bold_line span{ display:block; height:100%; width:100%}
 .solid_line{background-color:#fff; bottom:5px; display:block; height:1px; left:0; position:absolute; width:100%; z-index:0}
 .title_text{background-color:#f6f6f6; display:inline-block; padding:0 10px; position:relative; top:5px; z-index:1}
 .catg1_nav{}
-.catg1_nav li{float:left; display:inline; width:100%; margin-bottom:30px}
+.catg1_nav li{float:left; display:inline; width:100%; margin-bottom:-20px}
 .catg1_nav li a{}
 .catgimg_container{height:150px; overflow:hidden; width:100%; overflow:hidden}
 .catg1_img img{height:100%; width:100%; -webkit-transition:all 0.5s; -o-transition:all 0.5s; transition:all 0.5s}
@@ -143,7 +143,7 @@ span.meta_more:before{content:" "; font-family:FontAwesome; font-style:normal
 .blog_archive select{background-color:#fff; border:medium none; height:50px; padding:10px; width:100%}
 .blog_archive select option{cursor:pointer; padding:10px 5px}
 #footer{float:left; display:inline; width:100%; margin-top:30px}
-.footer_top{background-color:#434c51; display:inline; float:left; padding:15px 0; width:100%}
+.footer_top{background-color:#00a0df; display:inline; float:left; padding:15px 0; width:100%}
 .single_footer_top{float:left; display:inline; width:100%}
 .single_footer_top > h2{ font-size:18px; margin:0 0 10px; padding:6px 0; text-transform:uppercase}
 .flicker_nav{}
@@ -153,9 +153,9 @@ span.meta_more:before{content:" "; font-family:FontAwesome; font-style:normal
 .flicker_nav li a img:hover{opacity:0.75; -webkit-transform:rotate(360deg); -moz-transform:rotate(360deg); -ms-transform:rotate(360deg); -o-transform:rotate(360deg); transform:rotate(360deg)}
 .labels_nav{text-align:left}
 .labels_nav li{display:inline-block}
-.labels_nav li a{display:inline-block; background:none repeat scroll 0 0 #2e3d45; color:#ddd; line-height:12px; margin:0 2px 4px 0; padding:12px 17px; -webkit-transition:all 0.5s; -o-transition:all 0.5s; -moz-transition:all 0.5s; -ms-transition:all 0.5s; transition:all 0.5s}
+.labels_nav li a{display:inline-block; background:none repeat scroll 0 0 #074463; color:#ddd; line-height:12px; margin:0 2px 4px 0; padding:12px 17px; -webkit-transition:all 0.5s; -o-transition:all 0.5s; -moz-transition:all 0.5s; -ms-transition:all 0.5s; transition:all 0.5s}
 .single_footer_top p{color:#ddd}
-.footer_bottom{float:left; display:inline; width:100%; background:none repeat scroll 0 0 #282e31; color:#eee; font-size:12px; padding:8px 20px}
+.footer_bottom{float:left; display:inline; width:100%; background:none repeat scroll 0 0 #074463; color:#eee; font-size:12px; padding:8px 20px}
 .footer_bottom_left{float:left; display:inline; width:100%}
 .footer_bottom_left p, .footer_bottom_right p{color:#949494; margin:9px 10px 10px}
 .footer_bottom_right p{font-size:10px}

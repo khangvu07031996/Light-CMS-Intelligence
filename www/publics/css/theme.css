@@ -46,5 +46,5 @@ span.meta_date:hover, span.meta_comment:hover, span.meta_more:hover, span.meta_c
 .contact_form input[type="submit"]:hover{background-color:#00a0df; color:#fff; border-color:#00a0df}
 .our_office:before{border-bottom:1px solid #00a0df}
 .contact_us:before{border-bottom:1px solid #00a0df}
-.single_footer_top > h2{color:#00a0df}
+.single_footer_top > h2{color:#fff}
 .similar_post h2 i{color:#00a0df}

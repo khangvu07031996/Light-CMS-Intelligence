@@ -2,7 +2,6 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm6">
             <div class="latest_slider">
-
                 <div class="slick_slider">
                     {{#each arrLastArticle}}
                     <div class="single_iteam">
@@ -12,6 +11,8 @@
                     <h2><a class="slider_tittle" href="../detail/{{lastArticlesdata._id}}">{{lastArticlesdata.headline}}</a></h2>
                 </div>
             </div>
+            <div class="post_commentbox" style="margin-bottom:0px"><span><i class="fa fa-calendar"></i>{{lastArticlesdata.date_created}}</span> <a href="#"><i class="fa fa-tags"></i>{{lastArticlesdata.section}}</a></div>
+
         </div>
         <div class="col-lg-6 col-md-6 col-sm6">
             <div class="content_top_right">
@@ -20,6 +21,8 @@
 
                     <li><img src="http://localhost:3000/{{images}}" alt="">
                         <div class="title_caption"><a href="../detail/{{_id}}">{{headline}}</a></div>
+                        <div class="post_commentbox"><span><i class="fa fa-calendar"></i>{{date_created}}</span> <a style="display : inline;color: #798992; font-size: 11px;" href="#"><i class="fa fa-tags"></i>{{section}}</a></div>
+
                     </li>
 
                     {{/each}}
@@ -38,6 +41,7 @@
                             <li>
                                 <div class="catgimg_container"> <a href="../detail/{{_id}}" class="catg1_img"><img alt="" src="http://localhost:3000/{{images}}"></a></div>
                                 <h3 class="post_titile"><a href="../detail/{{_id}}">{{headline}}</a></h3>
+                                <div class="post_commentbox"><span><i class="fa fa-calendar"></i>{{date_created}}</span></div>
                             </li>
                             {{/each}}
                         </ul>
@@ -46,25 +50,29 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="content_middle_middle">
+                    <h2 style="margin-top:-12px"> <span class="bold_line" style="margin-left:3px; width:99%"><span></span></span> <span class="solid_line"></span><a href="#" class="title_text">Sport</a></h2>
                     <div class="slick_slider2">
-                        <div class="single_featured_slide"> <a href="pages/single.html"><img src="img/567x330x1.jpg" alt=""></a>
-                            <h2><a href="pages/single.html">Praesent vitae quam vitae arcu posuer 1</a></h2>
-                            <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl
-                                quis mauris. Suspendisse a pharetra urna. Morbi dui lectus, pharetra nec elementum eget,
-                                vulput...
+                        {{#each sport}}
+                        <div class="single_featured_slide"> <a href="../detail/{{_id}}"><img src="http://localhost:3000/{{images}}" alt=""></a>
+                            <h2><a href="../detail/{{_id}}">{{headline}}</a></h2>
+                            <p>
+                                {{premble}}
                             </p>
+                            <div class="post_commentbox" style="margin-bottom:18px"><span><i class="fa fa-calendar"></i>{{date_created}}</span> </div>
                         </div>
+                        {{/each}}
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="content_middle_rightbar">
-                        <div class="single_category wow fadeInDown">
+                        <div class="single_category wow fadeInDown" style="margin-top:-20px">
                             <h2> <span class="bold_line"><span></span></span> <span class="solid_line"></span> <a href="#" class="title_text">World</a></h2>
                             <ul class="catg1_nav">
                                 {{#each world}}
                                 <li>
                                     <div class="catgimg_container"> <a href="../detail/{{_id}}" class="catg1_img"><img alt="" src="http://localhost:3000/{{images}}"></a></div>
                                     <h3 class="post_titile"><a href="../detail/{{_id}}">{{headline}}</a></h3>
+                                    <div class="post_commentbox"><span><i class="fa fa-calendar"></i>{{date_created}}</span></div>
                                 </li>
                                 {{/each}}
                             </ul>
@@ -73,13 +81,14 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="content_middle_rightbar">
-                        <div class="single_category wow fadeInDown">
+                        <div class="single_category wow fadeInDown" style="margin-top:-20px">
                             <h2> <span class="bold_line"><span></span></span> <span class="solid_line"></span> <a href="#" class="title_text">Family</a></h2>
                             <ul class="catg1_nav">
                                 {{#each fa}}
                                 <li>
                                     <div class="catgimg_container"> <a href="../detail/{{_id}}" class="catg1_img"><img alt="" src="http://localhost:3000/{{images}}"></a></div>
                                     <h3 class="post_titile"><a href="../detail/{{_id}}">{{headline}}</a></h3>
+                                    <div class="post_commentbox"><span><i class="fa fa-calendar"></i>{{date_created}}</span></div>
                                 </li>
                                 {{/each}}
                             </ul>
@@ -96,6 +105,7 @@
                             <li>
                                 <div class="catgimg_container"> <a href="../detail/{{_id}}" class="catg1_img"><img alt="" src="http://localhost:3000/{{images}}"></a></div>
                                 <h3 class="post_titile"><a href="../detail/{{_id}}">{{headline}}</a></h3>
+                                <div class="post_commentbox"><span><i class="fa fa-calendar"></i>{{date_created}}</span></div>
                             </li>
                             {{/each}}
                         </ul>
