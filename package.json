@@ -32,6 +32,7 @@
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
+    "q": "^1.5.0",
     "save": "^2.3.1"
   },
   "devDependencies": {

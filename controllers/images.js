@@ -3,6 +3,7 @@ var express = require('express')
     , fs = require('fs');
 const path = require('path');
 var image = require('../models/image');
+var imageHelper = require('../helper/imageHelper');
 
 var strDateTime;
 var dtObj;
@@ -12,6 +13,11 @@ var moment;
 //Variable medialist:
 var original, teaser, searchResult, articlePreview;
 var bn = false;
+var arrobjThumbnails = [ { width: 567, height: 330},
+                         {width: 550, height: 330} ,
+                         {width: 390, height: 240},
+                         { width: 112, height: 112} ];
+var arrThumbnail = ["", "", "", ""];
 
 function createDirectory() {
     //console.log('---createDir');
@@ -158,11 +164,37 @@ router.post('/image/ajaxUpload', upload.any(), function (req, res) {
     console.log(arrPath);
     console.log("moment..... = " + moment);
     for (var i = 0; i < arrPath.length; i++) {
-        var obj = {
+        let indexOf_ = arrPath[i].indexOf("_");
+        let subString = arrPath[i].substring(indexOf_ + 1);
+
+        //Create name of thumbnail images:
+        arrThumbnail[0] = "567x330" + "_" + subString;
+        arrThumbnail[1] = "550x330" + "_" + subString;
+        arrThumbnail[2] = "390x240" +  "_" + subString;
+        arrThumbnail[3] = "112x112" +  "_" + subString;
+
+        //create object thumbnail:
+        let thumbnail = {
+            thumbnail_567x330:  arrThumbnail[0],
+            thumbnail_550x330:  arrThumbnail[1],
+            thumbnail_390x240:  arrThumbnail[2],
+            thumbnail_112x112:  arrThumbnail[3]
+
+        }
+
+        //Resize image:
+        for (let j = 0; j < arrThumbnail.length; j++) {
+            let src = destDirectory + "/" + arrPath[i];
+            let dst = destDirectory + "/"  + arrThumbnail[j];
+            imageHelper.resize(src, dst, arrobjThumbnails[j].width, arrobjThumbnails[j].height);
+        }
+
+        let obj = {
        
             articlePreview: arrPath[i],
             path: virtualDir,
-            moment: moment
+            moment: moment,
+            thumbnail: thumbnail
         };
         image.insert(req, res, null, obj, function (err, img) {
             console.log('inserted!');

@@ -17,8 +17,17 @@ var imageSchema = new Schema({
     medialist: {
         teaser: "",
         searchResult: "",
-        articlePreview: ""
-    },
+        articlePreview: "",
+        thumbnail: {
+            thumbnail_567x330: "",
+            thumbnail_550x330: "",
+            thumbnail_390x240: "",
+            thumbnail_112x112: ""
+
+        },
+
+    },    
+
     imageinfo: {
         size: String,
         ratio: String
@@ -50,7 +59,7 @@ var image = db.model('image', imageSchema);
 
 module.exports = {
     getAll: function (req, res, cb) {
-       
+
         console.log("This is image model");
         console.log('get all');
         image.find(function (err, rows) {
@@ -76,7 +85,7 @@ module.exports = {
         });
     },
 
-   
+
 
     insert: function (req, res, objinfo, obj, cb) {
         console.log("in add");
@@ -94,6 +103,8 @@ module.exports = {
             p.medialist.teaser = "";
             p.medialist.searchResult = "";
             p.medialist.articlePreview = obj.articlePreview;
+
+            p.medialist.thumbnail = obj.thumbnail;
         } else {
             p.heading = req.body.heading;
             p.media = objinfo.path;

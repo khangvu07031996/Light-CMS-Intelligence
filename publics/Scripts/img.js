@@ -11,20 +11,7 @@ $(document).ready(function () {
     var arrTagImg = [];
 
     arrTagImg = divimgItems.find('img');
-    //Display images on div of selected images on popup:
-    $("#cart_items").children = divimgItems;
-    for (let i = 0; i < arrTagImg.length; i++) {
-        console.log(arrTagImg[i]);
-        let html = '<div class="item icart">';
-        html = html + '<div class="divrm">';
-        html = html + '<a onclick="remove(this)" class="remove ' + '">&times;</a>';
-        html = html + '</div>' + arrTagImg[i].outerHTML + '</div>';
-        $("#cart_items").append(html);
-        //alert(arrTagImg[i].toString());
-    }
-
-    let divcart = $("#cart_items");
-
+    
     //Update arrImgID and arrPaths:
     for (let i = 0; i < arrTagImg.length; i++) {
         arrImgID[i] = arrTagImg[i].id;
@@ -283,6 +270,30 @@ $(document).on('click', '#divimg img', function (evt) {
 $(document).on('click', '#btnPopup2', function (evt) {
     //alert("hey!");
     getData();
+	var selDiv = "";
+    selDiv = document.querySelector("#divimg");
+
+    //get all tag img in div divimg:
+    var divimg = $('#divimg');
+    //Children of divimg:
+    var divimgItems = divimg.children();
+    //array tags img of divimg:
+    var arrTagImg = [];
+
+    arrTagImg = divimgItems.find('img');
+    //Display images on div of selected images on popup:
+    $("#cart_items").children = divimgItems;
+    for (let i = 0; i < arrTagImg.length; i++) {
+        console.log(arrTagImg[i]);
+        let html = '<div class="item icart">';
+        html = html + '<div class="divrm">';
+        html = html + '<a onclick="remove(this)" class="remove ' + '">&times;</a>';
+        html = html + '</div>' + arrTagImg[i].outerHTML + '</div>';
+        $("#cart_items").append(html);
+        //alert(arrTagImg[i].toString());
+    }
+
+    let divcart = $("#cart_items");
 
 });
 //btnImgInfo
@@ -400,7 +411,7 @@ function getData() {
             success: function (result) {
                 console.log(result);
             }, error: function (err) {
-                alert('0 ' + err);
+                alert(err);
             }
         }
     );
@@ -470,19 +481,25 @@ function initImageTabcontent(imgdata) {
     $("#imgid").val(imgdata._id);
 
     //$(".demo-container").empty();
-    var img = document.getElementById("imgsrc0");
+    var img = document.getElementById("imgsrc0");   
+
     //Clear Canvas:
     //var myCanvas = document.getElementById('myCanvas');
     //var ctx = myCanvas.getContext('2d');
-
+	var myCanvas = $("#myCanvas")[0];
+    var ctx = myCanvas.getContext('2d');
+	
     img.onload = function () {
         var tracker = new tracking.ObjectTracker(['face']);
         tracker.setStepSize(1.7);
         tracking.track(img, tracker);
         tracker.on('track', function (event) {
-            $(".demo-container2").empty();
+            //$(".demo-container2").empty();
             event.data.forEach(function (rect) {
                 window.plot(rect.x, rect.y, rect.width, rect.height);
+				//Crop image:
+				ctx.drawImage(img, rect.x, rect.y, rect.width, rect.height, 0, 0, rect.width, rect.height);
+                $('#imgCropped').val(myCanvas.toDataURL());
             });
         });
         window.plot = function (x, y, w, h) {
@@ -497,6 +514,7 @@ function initImageTabcontent(imgdata) {
         };
     };
     img.src = src;
+	
 }
 
 function clearCanvas(canvas, ctx) {
