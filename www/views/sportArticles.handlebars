@@ -1,0 +1,33 @@
+<div class="content_top">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm6">
+            <div class="latest_slider">
+                <div class="slick_slider">
+                    {{#each arrHotArticle}}
+                    <div class="single_iteam">
+                        <img src="http://localhost:3000/{{this}}" alt="" style="height:430px">
+                    </div>
+                    {{/each}}
+                    <h2><a class="slider_tittle" href="../detail/{{hot._id}}">{{hot.headline}}</a></h2>
+                </div>
+            </div>
+            <div class="post_commentbox" style="margin-bottom:0px"><span><i class="fa fa-calendar"></i>{{hot.date_created}}</span> <a href="#"><i class="fa fa-tags"></i>{{hot.section}}</a></div>
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm6">
+            <div class="content_top_right">
+                <ul class="featured_nav wow fadeInDown">
+                    {{#each sp}}
+
+                    <li><img src="http://localhost:3000/{{images}}" alt="">
+                        <div class="title_caption"><a href="../detail/{{_id}}">{{headline}}</a></div>
+                        <div class="post_commentbox"><span><i class="fa fa-calendar"></i>{{date_created}}</span> <a style="display : inline;color: #798992; font-size: 11px;" href="#"><i class="fa fa-tags"></i>{{section}}</a></div>
+
+                    </li>
+
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

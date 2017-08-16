@@ -1,40 +1,40 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
-var fs = require('fs');
+let mongoose = require('mongoose');
+let bcrypt = require('bcryptjs');
+let fs = require('fs');
 
-var AuthorSchema = mongoose.Schema({
-	name: {
-		type: String,
-		index: true
-	},
-	dob: {
-		type: Date,
-		"default": Date.now
-	},
-	email: {
-		type: String
-	},
-	active: {
-		type: String
-	},
-	image: {
-		type: String
-	},
-	date_update: {
-		type: Date,
-		"default": Date.now
+let AuthorSchema = mongoose.Schema({
+  name: {
+    type: String,
+    index: true,
+  },
+  dob: {
+    type: Date,
+    default: Date.now,
+  },
+  email: {
+    type: String,
+  },
+  active: {
+    type: String,
+  },
+  image: {
+    type: String,
+  },
+  date_update: {
+    type: Date,
+    'default': Date.now,
 
-	},
-	date_created: {
-		type: Date,
-		"default": Date.now
-	}
+  },
+  date_created: {
+    type: Date,
+    default: Date.now,
+  },
 
-})
+});
 
-var Author = module.exports = mongoose.model('Author', AuthorSchema);
+let Author = module.exports = mongoose.model('Author', AuthorSchema);
 module.exports = {
-	addAuthor: function (req, res) {
+  addAuthor (req, res) {
 		var response = {};
 		var AuthorData = new Author();
 		AuthorData.name = req.body.name;
@@ -52,8 +52,8 @@ module.exports = {
 			}
 		})
 	},
-	//------------------getAllAuthor------------------------
-	getAllAuthor: function (req, res) {
+  // ------------------getAllAuthor------------------------
+  getAllAuthor (req, res) {
 		var response = {};
 		var x;
 		Author.find(function (err, data) {
@@ -69,8 +69,8 @@ module.exports = {
 
 
 	},
-	//-----------------------getAuthorById-------------------------------
-	getAuthorById: function (req, res) {
+  // -----------------------getAuthorById-------------------------------
+  getAuthorById (req, res) {
 		var response = {};
 		Author.findById({ _id: req.params.id }, function (err, data) {
 			if (err) {
@@ -81,8 +81,8 @@ module.exports = {
 
 		})
 	},
-	// ----------------------delete Author--------------------------
-	deleteAuthor: function (req, res) {
+  // ----------------------delete Author--------------------------
+  deleteAuthor (req, res) {
 		var response = {};
 		Author.findById(req.params.id, function (err) {
 			if (err) {
@@ -99,8 +99,8 @@ module.exports = {
 			}
 		})
 	},
-	//--------------------update Author-----------------------
-	updateAuthor: function (req, res) {
+  // --------------------update Author-----------------------
+  updateAuthor (req, res) {
 
 		var response = {};
 		Author.findById(req.params.id, function (err, dataAuthor) {
@@ -125,9 +125,9 @@ module.exports = {
 				})
 			}
 		})
-	}
+	},
 
-}
+};
 module.exports.getAuthorNames = function (callback) {
-	Author.find(callback);
-}
+  Author.find(callback);
+};
