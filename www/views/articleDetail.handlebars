@@ -14,7 +14,7 @@
               {{/each}}
             </div>
           </div>
-          <p>{{data.body}}</p>
+          <p>{{text data.body}}</p>
         </div>
       </div>
     </div>
@@ -24,6 +24,7 @@
       <div class="single_bottom_rightbar">
         <h2>Recent Post</h2>
         {{#each allData}}
+        <p>{{image images}}</p>
         <ul class="small_catg popular_catg wow fadeInDown">
           <li>
             <div class="media wow fadeInDown"> <a href="../detail/{{_id}}" class="media-left"><img style="height:96px;width:130px" alt="" src="http://localhost:3000/{{images}}"> </a>

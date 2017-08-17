@@ -17,7 +17,16 @@ function getArticleById(req, res) {
         arr = allArticle[i].images.split(',');
         allArticle[i].images = arr[0];
       }
-      res.render('articleDetail', { data: articleId, arrimage, allData: allArticle });
+      res.render('articleDetail', { data: articleId, arrimage, allData: allArticle ,helpers:{
+        image : function(allArticle){
+          var x = allArticle.replace("Original", "right");
+         // console.log(x);
+          return x;
+        },
+        text : function(data){
+          return data.replace(/(<([^>]+)>)/ig,"");
+        }
+      }});
     });
   });
 }
