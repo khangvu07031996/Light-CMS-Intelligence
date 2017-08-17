@@ -61,7 +61,7 @@
                                  <div class="col-lg-12 col-md-offset-5" style="">
                                     <label class="" for="cname" class="control-label"> File : <span class="required">*</span></label>
                                 </div>
-                                <div class="col-lg-12 col-md-offset-5">
+                                <div id = "divajax" class="col-lg-12 col-md-offset-5">
                                             <div class="btn btn-info image-preview-input">
                                             <span class="glyphicon glyphicon-folder-open"></span>
                                             {{!-- <input type="file" multiple accept="image/png, image/jpeg, image/gif" name="file" /> --}}
@@ -87,10 +87,10 @@
                             <div class="col-md-10">
                                 <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
                                     <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
-                                    <br />
-									  <input type="button" id="btnCropLab" value="Crop" style="display: true" />
                                     <div>
-                                        
+									  <input type="button" class="btn btn-info" data-toggle="modal" data-target="#modalFaces" id="btnCrop" value="Crop" style="display: true" />
+									</div>
+                                    <div>                                       
                                          
                                         <div class="demo-container">
                                            
@@ -106,6 +106,8 @@
                                     <div>
                                         <input type="hidden" id = "imgid" name="imgid" value="">
                                     </div>
+									
+								
                                     
                                     <div >
                                         <div >
@@ -284,6 +286,26 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div id="modalFaces" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        	<div class="col-md-12" id="divFaces"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+ </div>
+</div>
+
 
     <script type="text/javascript">
         $(function () {
@@ -301,7 +323,7 @@
                 reader.readAsDataURL($(this)[0].files[0]);
             });
 
-            $('#btnCrop').click(function () {
+            $('#btnCrop0').click(function () {
                 var x1 = $('#imgX1').val();
                 var y1 = $('#imgY1').val();
                 var width = $('#imgWidth').val();

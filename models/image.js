@@ -5,7 +5,9 @@ var db = require('mongoose');
 //var bodyParser = require('body-parser');
 var _ = require('lodash');
 //var multer = require('multer');
-
+var openCvHelper = require('../helper/openCvHelper');
+const path = require('path');
+var imageHelper = require('../helper/imageHelper');
 
 var Schema = db.Schema;
 var imageSchema = new Schema({
@@ -116,6 +118,7 @@ module.exports = {
 
             p.usercreate = 'unknow';
             p.moment = objinfo.moment;
+			p.medialist.thumbnail = objinfo.thumbnail;
         }
 
 
@@ -182,6 +185,38 @@ module.exports = {
 
             cb(err, prod);
         })
+    },
+
+    cropImage: function(req, res, cb) {
+        console.log('model : id = ' + req.body.id)
+        image.findById(req.body.id, function (err, p) {
+            
+            let src = p.media + "/" + p.medialist.articlePreview;
+            let dstDir = p.media;
+            let filename = p.medialist.articlePreview.replace(".jpg", "");
+            let dirRoot = path.dirname(require.main.filename).replace("\\", "\/");
+            src = dirRoot + "/publics" + src;
+            dstDir = dirRoot + "/publics" + dstDir;
+			
+			console.log(src);
+			console.log(dstDir);
+			console.log(filename);
+			
+            let countFaces = openCvHelper.cropFaces(src, filename, dstDir, function(count) {
+                console.log('count faces = ' +  count);
+                //create object include info of image croped:
+                let data = {};
+                data.path = p.media;
+                data.count = count;
+                data.filename = filename;
+    
+                cb(err, data);
+            }, function(src) {
+				imageHelper.resize(src, src, 200, 200);
+			});
+			
+
+        });
     }
 
 };
