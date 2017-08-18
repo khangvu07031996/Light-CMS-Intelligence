@@ -1,7 +1,6 @@
 const express = require('express');
 
 const router = express.Router();
-const passport = require('passport');
 const ArticleData = require('../models/article');
 const userdata = require('../models/user');
 const Author = require('../models/author');
@@ -10,12 +9,12 @@ const image = require('../models/image');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
-    destination(req, file, cb) {
-        cb(null, './publics/img/article_images');
-    },
-    filename(req, file, cb) {
-        cb(null, file.originalname);
-    },
+  destination(req, file, cb) {
+    cb(null, './publics/img/article_images');
+  },
+  filename(req, file, cb) {
+    cb(null, file.originalname);
+  },
 
 });
 const upload = multer({ storage });
@@ -35,18 +34,15 @@ router.get('/api/Article/:section', ArticleData.getArticleBySection);
 router.get('/api/hotArticle/:section', ArticleData.getHotArticleBySection);
 // router.get("/demo",ArticleData.getlimitArticle);
 function getallName(req, res) {
-    Author.getAuthorNames((err, data) => {
-        userdata.getUserNames((err, datauser) => {
-            section.getSectionNames(function (err, dataSection) {
-                image.all(req, res, function (rows) {
-                    res.render('addArticles', { Author: data, Section: dataSection, data: rows });
-                });
-            })
-
+  Author.getAuthorNames((err, data) => {
+    userdata.getUserNames(() => {
+      section.getSectionNames((err, dataSection) => {
+        image.all(req, res, (rows) => {
+          res.render('addArticles', { Author: data, Section: dataSection, data: rows });
         });
+      });
     });
-
-
+  });
 }
 router.get('/addArticles', getallName);
 module.exports = router;

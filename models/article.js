@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 const section = require('../models/session');
 const userdata = require('../models/user');
 const Author = require('../models/author');
@@ -78,12 +77,10 @@ module.exports = {
     let response = {};
     article.find((err, data) => {
       if (err) {
-        response = { 'error': true, message: 'Error deleting data' };
+        response = { error: true, message: 'Error deleting data' };
       } else {
         res.render('ArticleForm', { articles: data });
       }
-
-
     });
   },
   addArticle(req, res) {
@@ -103,54 +100,45 @@ module.exports = {
     dbArticle.status = req.body.status;
     dbArticle.save((err) => {
       if (err) {
-        response = { 'error': true, message: 'Error deleting data' };
+        response = { error: true, message: 'Error deleting data' };
       } else {
         res.redirect('/ArticleForm');
       }
-
     });
-
   },
   deleteArticle(req, res) {
     let response = {};
     article.findById(req.params.id, (err) => {
       if (err) {
-        response = { 'error': true, 'message': 'error fetching data' };
+        response = { error: true, message: 'error fetching data' };
       } else {
         article.remove({ _id: req.params.id }, (err) => {
-                    if (err) {
-
-                        response = { "error": true, "message": "Error deleting data" };
-                    } else {
-
-                        res.redirect('/ArticleForm')
-                    }
-
-                });
+          if (err) {
+            response = { error: true, message: 'Error deleting data' };
+          } else {
+            res.redirect('/ArticleForm');
+          }
+        });
       }
     });
-
   },
   getArticleById(req, res) {
     let response = {};
     article.findById({ _id: req.params.id }, (err, data) => {
       if (err) {
-        response = { error: true, 'message': 'Error fetching data' };
+        response = { error: true, message: 'Error fetching data' };
       } else {
         // console.log(data.author);
         let arr = [];
         arr = data.author.split(',');
         Author.getAuthorNames((err, dataA) => {
-                    userdata.getUserNames(function (err, datauser) {
-                        section.getSectionNames(function (err, dataSection) {
-
-                            res.render('editArticles', { Author: dataA, Section: dataSection, article: data, arr })
-                        })
-
-                    })
-                });
+          userdata.getUserNames((err) => {
+            section.getSectionNames((err, dataSection) => {
+              res.render('editArticles', { Author: dataA, Section: dataSection, article: data, arr });
+            });
+          });
+        });
       }
-
     });
   },
   updateArticle(req, res) {
@@ -172,20 +160,16 @@ module.exports = {
         dataArticle.CreateBy = req.body.CreateBy;
         dataArticle.status = req.body.status;
         dataArticle.save((err) => {
-                    if (err) {
-                        response = { "error": true, "message": "Error updating data" };
-                    } else {
-                        res.redirect('/ArticleForm')
-                    }
-
-
-
-                });
+          if (err) {
+            response = { error: true, message: 'Error updating data' };
+          } else {
+            res.redirect('/ArticleForm');
+          }
+        });
       }
     });
   },
   searchArtical(req, res) {
-
     const terms = req.body.terms;
     article.search({ query_string: { query: terms } }, (err, results) => {
       if (err) {
@@ -193,7 +177,6 @@ module.exports = {
       } else {
         res.render('articleSearch', { articleResult: results.hits.hits });
       }
-
     });
   },
 
@@ -226,14 +209,12 @@ module.exports.getArticleByIdApi = function (id, callback) {
   article.findById({ _id: id }, callback);
 };
 module.exports.addArticleApi = function (articles) {
-
   return new article(articles).save();
 };
 module.exports.getHotArticle = function (req, res) {
   article.find({}, [], { sort: { date_created: -1 }, limit: 4 }, (err, data) => {
     res.send(data);
   });
-
 };
 module.exports.deleteArticleApi = function (id, callback) {
   article.findById({ _id: id }, (err) => {
@@ -262,11 +243,10 @@ module.exports.updateArticleApi = function (req, res) {
       dataArticle.status = req.body.status;
       dataArticle.save((err) => {
         if (err) {
-          response = { error: true, 'message': 'Error updating data' };
+          response = { error: true, message: 'Error updating data' };
         } else {
           res.send('updated');
         }
-
       });
     }
   });

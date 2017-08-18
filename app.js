@@ -1,20 +1,21 @@
-let express = require('express'),
-  bodyParser = require('body-parser'),
-  router = express.Router(),
-  mongoose = require('mongoose');
+const express = require('express');
 
-let app = express();
-let session = require('express-session');
-let path = require('path');
+const bodyParser = require('body-parser');
+
+const mongoose = require('mongoose');
+
+const app = express();
+const session = require('express-session');
+const path = require('path');
 // var cookieParser = require('cookie-parser');
-let expressValidator = require('express-validator');
-let passport = require('passport');
-let flash = require('connect-flash');
-let localStrategy = require('passport-local').Strategy;
-let exphbs = require('express-handlebars');
-let swaggerJSDoc = require('swagger-jsdoc');
+const expressValidator = require('express-validator');
+const passport = require('passport');
+const flash = require('connect-flash');
 
-let swaggerDefinition = {
+const exphbs = require('express-handlebars');
+const swaggerJSDoc = require('swagger-jsdoc');
+
+const swaggerDefinition = {
   info: {
     title: 'Node Swagger API',
     version: '1.0.0',
@@ -23,35 +24,35 @@ let swaggerDefinition = {
   host: 'localhost:3000',
   basepath: '/',
 };
-let options = {
+const options = {
   swaggerDefinition,
   apis: ['./api/*.js'],
 };
-let swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJSDoc(options);
 app.get('/swagger.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
 // app.use(cookieParser());
 app.use(expressValidator({
-  errorFormatter (param, msg, value) {
-    var namespace = param.split('.')
-      , root = namespace.shift()
-      , formParam = root;
+  errorFormatter(param, msg, value) {
+    const namespace = param.split('.');
+    const root = namespace.shift();
+    let formParam = root;
 
     while (namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
+      formParam += `[${namespace.shift()}]`;
     }
     return {
       param: formParam,
-      msg: msg,
-      value: value
+      msg,
+      value,
     };
   },
 }));
 
 // static folder
-app.use(express.static(`${__dirname  }/publics`));
+app.use(express.static(`${__dirname}/publics`));
 // use bodyparser
 app.use(session({
   secret: 'secret',
@@ -61,7 +62,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 // app.use(require('connect').bodyParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -69,9 +69,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // view engine
 app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'ejs');
-
-let user = require('./models/user');
-
 app.engine('handlebars', exphbs({ defaultLayout: 'layout' }));
 app.set('view engine', 'handlebars');
 
@@ -94,13 +91,12 @@ app.use(require('./api'));
 
 mongoose.connect('mongodb://localhost:27017/intelligenceCms', (err) => {
   if (err) {
-    console.log('Unable to connect to Mongo.')
-    process.exit(1)
+    console.log('Unable to connect to Mongo.');
+    process.exit(1);
   } else {
-    var db = mongoose.connection;
-    app.listen(3000, function () {
-      console.log('Listening on port 3000...')
-    })
+    app.listen(3000, () => {
+      console.log('Listening on port 3000...');
+    });
   }
 });
 

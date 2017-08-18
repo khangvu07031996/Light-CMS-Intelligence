@@ -214,15 +214,8 @@
                 if(sLength<500) {
                     alert('Source length must be more or equal than 500 symbols');
                 } else {
-        //			if(sLength>5000) {
-        //				alert('Source length must be at less or equal than 5000 symbols');
-        //			} else {
-
                         var myKeywords=getKeywords(tinyMCE.activeEditor.getContent());
                      $('#result').tagsinput('add', myKeywords);
-                        
-                      //  console.log(myKeywords);
-        
                 }
             });
         </script>

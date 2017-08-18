@@ -7,8 +7,6 @@ const app = express();
 const exphbs = require('express-handlebars');
 const path = require('path');
 const axios = require('axios');
-var handlebars  = require('./helpers/handlebars.js')(exphbs);
-app.engine('handlebars', handlebars.engine);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ 'extended': false }));
 app.set('views', path.join(__dirname, '/views'));
