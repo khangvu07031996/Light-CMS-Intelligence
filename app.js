@@ -89,6 +89,12 @@ app.use((req, res, next) => {
 app.use(require('./controllers'));
 app.use(require('./api'));
 
+const users = ['John', 'Betty', 'Hal'];
+
+app.get('/api/users', (req, res) => {
+  res.json(users);
+});
+
 mongoose.connect('mongodb://localhost:27017/intelligenceCms', (err) => {
   if (err) {
     console.log('Unable to connect to Mongo.');
