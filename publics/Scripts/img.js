@@ -40,7 +40,7 @@ $(document).ready(function () {
             //selDiv.innerHTML += '  ' + i;		
             selDiv.innerHTML += html;
 
-            $("#images_items").append(html);
+           // $("#images_items").append(html);
         });
         //Reset arrImgs:
         arrImgs = [];
@@ -66,6 +66,7 @@ $(document).ready(function () {
     });
 
 });
+
 
 
 //event browse file:
@@ -101,6 +102,7 @@ var arrPaths = [];
 var arrImgID = [];
 var arrPathAndID = [];
 var imageID = 0;
+var objbyid;
 
 var total_items = 0;
 
@@ -266,21 +268,13 @@ function removeSelectedImage(el) {
 $(document).on('click', '#divimg img', function (evt) {
     //alert("hey!" + this.id + "--" + this.src);
     document.getElementById('imgtab').style.display = "block";
+    //reset tag img:
+    $("#imgsrc0").attr('src', "");
 	imageID = this.id;
     getDataByID(this.id);
 
-
 });
 
-//Automatic crop image:
-$(document).on('click', '#btnCropLab', function (evt) {
-        
-	var img = document.getElementById("imgsrc0"); 
-	alert("hey ! " + imageID);
-    //getDataByID(this.id);
-
-
-});
 
 $(document).on('click', '#btnPopup2', function (evt) {
     //alert("hey!");
@@ -341,9 +335,58 @@ $(document).on('click', '#btnUpdateImage', function (evt) {
 
 //crop image:
 $(document).on('click', '#btnCrop', function (evt) {
+    let radio = $("#save input[type='radio']:checked").val();
+    //alert(radio);
 
-    cropImage(imageID);
+    if ($("#save input[type='radio']:checked").val() == "auto") {
+        cropAutoImage(imageID);
+    } else {
+        let x1 = $('#imgX1').val();
+        let y1 = $('#imgY1').val();
+        let width = $('#imgWidth').val();
+        let height = $('#imgHeight').val();
+        let canvas = $("#myCanvas")[0];
+        let context = canvas.getContext('2d');
+        let img = new Image();
+        img.onload = function () {
+            canvas.height = height;
+            canvas.width = width;
+            context.drawImage(img, x1, y1, width, height, 0, 0, width, height);  
+           
+            $("#imgCrop").attr("src", canvas.toDataURL());
+        };
+        img.src = $('#cp_' + imageID).attr("src");
+
+        $("#modalCropManual").modal();
+    }
     
+    
+});
+
+//crop image:
+$(document).on('click', '#btnSubmit', function (evt) {
+    //Crop manual image:   
+    let canvas = $("#myCanvas")[0];
+    let dataURL = canvas.toDataURL();
+    let data = {};
+    data.imgBase64 = dataURL;
+    data.img = objbyid;
+    $.ajax({
+        type: "POST",
+        url: "/urlsave",
+        data: data
+    }).done(function (o) {
+        console.log('saved');
+        // If you want the file to be visible in the browser 
+        // - please modify the callback in javascript. All you
+        // need is to return the url to the file, you just saved 
+        // and than put the image in your browser.
+        console.log(o);        
+
+        $("#modalCropManual").modal('hide');
+
+        alert(o);
+    });
 });
 
 //funstion upload files:
@@ -551,6 +594,7 @@ function getDataByID(id) {
                 if (result !== null && result != 'undefined') {
                     //alert('get data by id: ' + result[0]._id);
                     console.log(result);
+                    objbyid = result[0];
                     initImageTabcontent(result[0]);
                 }
             }, error: function (err) {
@@ -629,40 +673,35 @@ function initImageTabcontent(imgdata) {
     //$("#imgsrc0").attr('src', src);
     $("#imgid").val(imgdata._id);
 
-    //$(".demo-container").empty();
-    var img = document.getElementById("imgsrc0");   
+    
+    let html = "<img src=\"" + src + "\" " + "id = \"cp_" + imgdata._id + "\"" + ">  ";
+       
+    //selDiv.innerHTML += html;
+    $("#divImgSelected").empty();
+    $("#divImgSelected").append(html);
 
-    //Clear Canvas:
-    //var myCanvas = document.getElementById('myCanvas');
-    //var ctx = myCanvas.getContext('2d');
-	//var myCanvas = $("#myCanvas")[0];
-    //var ctx = myCanvas.getContext('2d');
+    //-------
+    $("input:radio[name=theme]").click(function() {
+        var value = $(this).val();
+    });
+
+	//JQuery.Jcop:
 	
-    img.onload = function () {
-        var tracker = new tracking.ObjectTracker(['face']);
-        tracker.setStepSize(1.7);
-        tracking.track(img, tracker);
-        tracker.on('track', function (event) {
-            //$(".demo-container2").empty();
-            event.data.forEach(function (rect) {
-                //window.plot(rect.x, rect.y, rect.width, rect.height);
-				//Crop image:
-				//ctx.drawImage(img, rect.x, rect.y, rect.width, rect.height, 0, 0, rect.width, rect.height);
-                //$('#imgCropped').val(myCanvas.toDataURL());
+
+            $(".demo-container #cp_" + imgdata._id).Jcrop({
+                onChange: SetCoordinates,
+                onSelect: SetCoordinates
             });
-        });
-        window.plot = function (x, y, w, h) {
-            //$(".demo-container").empty();
-            var rect = document.createElement('div');
-            document.querySelector('.demo-container2').appendChild(rect);
-            rect.classList.add('rect');
-            rect.style.width = w + 'px';
-            rect.style.height = h + 'px';
-            rect.style.left = (img.offsetLeft + x) + 'px';
-            rect.style.top = (img.offsetTop + y) + 'px';
+
+            
+       
+        function SetCoordinates(c) {
+            $('#imgX1').val(c.x);
+            $('#imgY1').val(c.y);
+            $('#imgWidth').val(c.w);
+            $('#imgHeight').val(c.h);
+            //$('#btnCrop0').show();
         };
-    };
-    img.src = src;
 	
 }
 
@@ -787,7 +826,7 @@ function removeItemOfPathArray(obj) {
 }
 
 //function crop image:
-function cropImage(id) {
+function cropAutoImage(id) {
 	let data = { id: id };
 	 $.ajax(
         {
@@ -818,9 +857,11 @@ function displayImageCropAuto(data) {
 		html += img + '</div>';
 		
         $("#divFaces").append(html);
+        $("#modalFaces").modal();
 	}
 	 
 }
+
 
 
 //Trackingjs:

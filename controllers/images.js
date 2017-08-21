@@ -323,6 +323,45 @@ router.route('/image/cropImage/faces').post(function(req, res) {
     });
     
 });
+//Manual crop:
+router.post('/urlsave', function(req, res) {
+    let data = req.body.imgBase64;
+    let objimg = req.body.img;    
+    console.log('data = ' + data);
+
+    let dstDir = objimg.media;
+    let filename = objimg.medialist.articlePreview;
+    let dirRoot = path.dirname(require.main.filename).replace("\\", "\/");  
+
+    dstDir = dirRoot + "/publics" + dstDir;
+    filename = "cropmanual_" + filename;
+    let dst = dstDir + "/" + filename;
+        
+    var imageBuffer = decodeBase64Image(data, function(arg) {
+        fs.writeFile(dst, arg.data, function(err) {
+            res.json('Saved image');
+        });
+    });
+    console.log(imageBuffer);
+    
+});
+
+function decodeBase64Image(dataString, cb) {
+    var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+      response = {};
+  
+    if (matches.length !== 3) {
+      return new Error('Invalid input string');
+    }
+  
+    response.type = matches[1];
+    response.data = new Buffer(matches[2], 'base64');
+
+    cb(response);
+  
+    return response;
+  }
+  
 
 //Get data about year, month, day:
 function getDateTimeObject() {
