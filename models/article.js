@@ -3,6 +3,7 @@ const section = require('../models/session');
 const userdata = require('../models/user');
 const Author = require('../models/author');
 const mongoosastic = require('mongoosastic');
+var image = require('../models/image');
 
 const ArticleSchema = mongoose.Schema({
   headline: {
@@ -129,12 +130,36 @@ module.exports = {
         response = { error: true, message: 'Error fetching data' };
       } else {
         // console.log(data.author);
-        let arr = [];
-        arr = data.author.split(',');
+        // console.log(data.author);
+        var arr = [], arrPath = [];
+        var arrImg = [], arrLab = [];
+
+        arr = data.author.split(",");
+        arrPath = data.images.split(',');
+
+        //Delete item is string empty:
+        for (let i = 0; i < arrPath.length; i += 2) {
+          if (arrPath[i] == '') {
+            arrPath.splice(i, 1);
+          }
+        }
+
+        for (let i = 0; i < arrPath.length; i += 2) {
+          arrImg.push({ id: arrPath[i], src: arrPath[i + 1] });
+          arrLab.push({ id: arrPath[i], src: arrPath[i + 1] });
+        }
+        console.log(data.images);
+        console.log('arrImg = ' + arrImg);
+        console.log(arrImg);
+        console.log(arrPath);
+        console.log('---')
+        console.log(arrLab);
         Author.getAuthorNames((err, dataA) => {
           userdata.getUserNames((err) => {
             section.getSectionNames((err, dataSection) => {
-              res.render('editArticles', { Author: dataA, Section: dataSection, article: data, arr });
+              image.getAll(req, res, function (err, rows) {
+                res.render('editArticles', { Author: dataA, Section: dataSection, article: data, images: rows, arr: arr, arrImg: arrImg });
+              });
             });
           });
         });

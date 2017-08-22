@@ -20,7 +20,7 @@
                     {{#each Article}}
 
                     <li><img src="http://localhost:3000/{{images}}" alt="">
-                        <div class="title_caption"><a href="../detail/{{_id}}">{{headline}}</a></div>
+                        <div class="title_caption"><a href="/detail/{{_id}}">{{headline}}</a></div>
                         <div class="post_commentbox"><span><i class="fa fa-calendar"></i>{{date_created}}</span> <a style="display : inline;color: #798992; font-size: 11px;" href="#"><i class="fa fa-tags"></i>{{section}}</a></div>
 
                     </li>
@@ -39,8 +39,8 @@
                         <ul class="catg1_nav">
                             {{#each tech}}
                             <li>
-                                <div class="catgimg_container"> <a href="../detail/{{_id}}" class="catg1_img"><img alt="" src="http://localhost:3000/{{images}}"></a></div>
-                                <h3 class="post_titile"><a href="../detail/{{_id}}">{{headline}}</a></h3>
+                                <div class="catgimg_container"> <a href="/detail/{{_id}}" class="catg1_img"><img alt="" src="http://localhost:3000/{{images}}"></a></div>
+                                <h3 class="post_titile"><a href="/detail/{{_id}}">{{headline}}</a></h3>
                                 <div class="post_commentbox"><span><i class="fa fa-calendar"></i>{{date_created}}</span></div>
                             </li>
                             {{/each}}

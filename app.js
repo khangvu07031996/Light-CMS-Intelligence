@@ -63,8 +63,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // app.use(require('connect').bodyParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({limit: '50mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
 // app.use(expressValidator());
 // view engine
 app.set('views', path.join(__dirname, 'views'));

@@ -11,13 +11,19 @@ function getArticleById(req, res) {
     const articleId = response.data;
     let arrimage = [];
     arrimage = articleId.images.split(',');
+    let arrtemp = [];
 
+    //get only path don't get id:
+    for(let t = 1; t < arrimage.length; t += 2) {
+        arrtemp.push(arrimage[t]);
+    }
+    arrimage = arrtemp;
     axios.get(`${domain}/api/articles`).then((responseAll) => {
       const allArticle = responseAll.data;
       for (let i = 0; i < allArticle.length; i++) {
         let arr = [];
         arr = allArticle[i].images.split(',');
-        allArticle[i].images = arr[0];
+        allArticle[i].images = arr[1];
       }
       res.render('articleDetail', { data: articleId,
         arrimage,

@@ -12,18 +12,24 @@ function getAllArticle(req, res) {
     for (let i = 0; i < dataArticle.length; i++) {
       let arr = [];
       arr = dataArticle[i].images.split(',');
-      dataArticle[i].images = arr[0];
+      dataArticle[i].images = arr[1];
     }
     axios.get(`${domain}/api/lastArticles`).then((responseLast) => {
       const lastArticles = responseLast.data;
       let arrLastArticle = [];
       arrLastArticle = lastArticles.images.split(',');
+      //get only path:
+      let arrtemp = [];
+      for (let j = 1; j < arrLastArticle.length; j += 2) {
+          arrtemp.push(arrLastArticle[j]);
+      }
+      arrLastArticle = arrtemp;
       axios.get(`${domain}/api/Article/Technology`).then((responseTech) => {
         const technologyArticle = responseTech.data;
         for (let i = 0; i < technologyArticle.length; i++) {
           let arr = [];
           arr = technologyArticle[i].images.split(',');
-          technologyArticle[i].images = arr[0];
+          technologyArticle[i].images = arr[1];
         }
         axios.get(`${domain}/api/Article/Education`).then((responseEdu) => {
           const educationArticle = responseEdu.data;
@@ -34,9 +40,10 @@ function getAllArticle(req, res) {
               axios.get(`${domain}/api/Article/Sports`).then((responseSp) => {
                 let arr = [];
                 const sportArticle = responseSp.data;
+                //console.log(responseSp);
                 for (let i = 0; i < sportArticle.length; i++) {
                   arr = sportArticle[i].images.split(',');
-                  sportArticle[i].images = arr[0];
+                  sportArticle[i].images = arr[1];
                 }
                 res.render('allArticle',
                   { Article: dataArticle, arr, lastArticlesdata: lastArticles, arrLastArticle, tech: technologyArticle, edu: educationArticle, fa: faArticle, world: worldArticle, sport: sportArticle });
@@ -56,7 +63,7 @@ function getTechArticle(req, res) {
     for (let i = 0; i < techArticles.length; i++) {
       let arr = [];
       arr = techArticles[i].images.split(',');
-      techArticles[i].images = arr[0];
+      techArticles[i].images = arr[1];
     }
     axios.get(`${domain}/api/hotArticle/Technology`).then((responseHotTech) => {
       const hotTechArticle = responseHotTech.data;
@@ -73,7 +80,7 @@ function getEduArticle(req, res) {
     for (let i = 0; i < eduArticles.length; i++) {
       let arr = [];
       arr = eduArticles[i].images.split(',');
-      eduArticles[i].images = arr[0];
+      eduArticles[i].images = arr[1];
     }
     axios.get(`${domain}/api/hotArticle/Education`).then((responseHotEdu) => {
       const hotEduArticle = responseHotEdu.data;
@@ -90,7 +97,7 @@ function getSpArticle(req, res) {
     for (let i = 0; i < spArticles.length; i++) {
       let arr = [];
       arr = spArticles[i].images.split(',');
-      spArticles[i].images = arr[0];
+      spArticles[i].images = arr[1];
     }
     axios.get(`${domain}/api/hotArticle/Sports`).then((responseHotSp) => {
       const hotSpArticle = responseHotSp.data;
@@ -107,7 +114,7 @@ function getWoArticle(req, res) {
     for (let i = 0; i < woArticles.length; i++) {
       let arr = [];
       arr = woArticles[i].images.split(',');
-      woArticles[i].images = arr[0];
+      woArticles[i].images = arr[1];
     }
     axios.get(`${domain}/api/hotArticle/World`).then((responseHotWo) => {
       const hotWoArticle = responseHotWo.data;
@@ -124,7 +131,7 @@ function getFaArticle(req, res) {
     for (let i = 0; i < faArticles.length; i++) {
       let arr = [];
       arr = faArticles[i].images.split(',');
-      faArticles[i].images = arr[0];
+      faArticles[i].images = arr[1];
     }
     axios.get(`${domain}/api/hotArticle/Family`).then((responseHotFa) => {
       const hotFaArticle = responseHotFa.data;

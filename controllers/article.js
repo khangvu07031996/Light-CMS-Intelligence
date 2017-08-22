@@ -37,9 +37,13 @@ function getallName(req, res) {
   Author.getAuthorNames((err, data) => {
     userdata.getUserNames(() => {
       section.getSectionNames((err, dataSection) => {
-        image.all(req, res, (rows) => {
+        image.getAll(req, res, (err, rows) => {
           res.render('addArticles', { Author: data, Section: dataSection, data: rows });
+          console.log(rows);
         });
+        // image.getAll(req, res, function(err, rows) {                
+        //   res.render('addArticles',{Author: data,Section:dataSection, data: rows});
+        //  });
       });
     });
   });

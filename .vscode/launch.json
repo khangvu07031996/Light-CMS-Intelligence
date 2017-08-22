@@ -7,17 +7,9 @@
 
         {
             "type": "node",
-            "request": "attach",
-            "name": "Attach",
-            "port": 5858,
-            "restart": true
-        },
-        {
-            "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${file}",
-            "restart": true
+            "program": "${workspaceRoot}\\app.js"
         }
     ]
 }
