@@ -1,0 +1,46 @@
+<div class="content_bottom">
+  <div class="col-lg-8 col-md-8">
+    <div class="content_bottom_left">
+      <div class="single_page_area">
+        <h2 class="post_titile">{{data.headline}}</h2>
+        <div class="single_page_content">
+          <div class="post_commentbox"> <a href="#"><i class="fa fa-user"></i>{{data.author}}</a> <span><i class="fa fa-calendar"></i>{{data.date_created}}</span> <a href="#"><i class="fa fa-tags"></i>{{data.section}}</a></div>
+
+          <div class="latest_slider">
+            <div class="slick_slider">
+              {{#each arrimage}}
+              <div class="single_iteam"><img src="http://localhost:3000/{{this}}" alt="" style="height:430px">
+              </div>
+              {{/each}}
+            </div>
+          </div>
+          <p>{{text data.body}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4">
+    <div class="content_bottom_right">
+      <div class="single_bottom_rightbar">
+        <h2>Recent Post</h2>
+        {{#each allData}}
+<<<<<<< HEAD
+         <p>{{image images}}</p> 
+=======
+        {{!-- <p>{{image images}}</p> --}}
+>>>>>>> 52672dcfdddb59cc298f769a4c78a87d5262b008
+        <ul class="small_catg popular_catg wow fadeInDown">
+          <li>
+            <div class="media wow fadeInDown"> <a href="../detail/{{_id}}" class="media-left"><img style="height:96px;width:130px" alt="" src="http://localhost:3000/{{images}}"> </a>
+              <div class="media-body">
+                <h4 class="media-heading"><a href="../detail/{{_id}}">{{headline}}</a></h4>
+                <p>{{premble}}</p>
+              </div>
+            </div>
+          </li>
+         {{/each}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

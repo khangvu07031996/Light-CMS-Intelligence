@@ -1,15 +1,13 @@
 <link href="/css/image.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/jquery.Jcrop.css" type="text/css" />
+
+<script type="text/javascript" src="/Scripts/jquery.Jcrop.min.js"></script>
+
 <script src="/Scripts/img.js" type="text/javascript"></script>
+
 <script src="/build/tracking-min.js"></script>
 <script src="/build/data/face-min.js"></script>
-<style>
-        .rect {
-            border: 2px solid #a64ceb;
-            left: -1000px;
-            position: absolute;
-            top: -1000px;
-        }
-</style>
+
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header"><i class="fa fa-files-o"></i> Add Article</h3>
@@ -56,28 +54,26 @@
                                 <textarea class="col-lg-12" name = "premble"> </textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            
-                           
-                            <div class="col-lg-2">
+				  <div class="form-group">
+                           <div class="col-lg-2">
                                  <div class="col-lg-12 col-md-offset-5" style="">
                                     <label class="" for="cname" class="control-label"> File : <span class="required">*</span></label>
                                 </div>
-                                <div class="col-md-5 col-md-offset-3" style="margin-left: 22%;">
+                                <div id = "divajax" class="col-lg-12 col-md-offset-5">
                                             <div class="btn btn-info image-preview-input">
                                             <span class="glyphicon glyphicon-folder-open"></span>
-                                             
                                             {{!-- <input type="file" multiple accept="image/png, image/jpeg, image/gif" name="file" /> --}}
                                             <input style="display: block; margin:0px ;width:50px;" type="file" id="files" name="files" multiple accept="image/*">
                                             <!-- rename it -->
                                         </div> 
                                 </div>
-                                <button type="button" id = "btnPopup2" class="btn btn-info btn-lg col-lg-8 col-lg-offset-4" data-toggle="modal" data-target="#myModal" style="font-size: 13px;margin-top: 7px;">+</button>
+                                <button type="button" id = "btnPopup2" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal" style="font-size: 15px;margin-top: 7px;">+</button>
                                
                            </div >
                                 <div class="col-md-10">                               
 									<div class="col-md-12" id="divimg"></div>
 									<input type="hidden" id = "imgPaths" name="imgPaths" value="">
+									
                                 </div>
                               
                                 
@@ -89,27 +85,31 @@
                             <div class="col-md-10">
                                 <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
                                     <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
-                                    <br />
                                     <div>
-                                        
+                                        <input type="radio"  name="cropimage" value="auto" checked="checked">automatical<br>
+                                        <input type="radio" name="cropimage" value="manual">manual<br>
+                                       
+                                        <br />
+									    <input type="button" class="btn btn-info"  id="btnCrop" value="Crop" style="display: true" />
+									</div>
+                                    <div>                                       
                                          
-                                        <div class="demo-container">
+                                        <div class="demo-container" id ="divImgSelected">
                                            
-                                             <img id = "imgsrc0" src="" style = "width : 300px; height:auto"></img> 
+                                             {{!-- <img id = "imgsrc0" src="" ></img>  --}}
                                             
                                         </div>
 
-                                        <div class="demo-container2" style = " height: 5px">
-                                            <canvas id="myCanvas"  >
-                                                 
-                                            </canvas>                                            
-                                            
+                                        <div class="demo-container2" >
+                                              <canvas id="myCanvas" style="display: none"></canvas>
                                         </div> 
                                         
                                     </div>
                                     <div>
                                         <input type="hidden" id = "imgid" name="imgid" value="">
                                     </div>
+									
+								
                                     
                                     <div >
                                         <div >
@@ -300,11 +300,89 @@
 
             <div class="modal-footer" style="width:100% !important; height:9% !important">
                 <button id="btnOk" type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div id="modalFaces" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">image croped</h4>
+      </div>
+      <div class="modal-body">
+        	<div class="col-md-12" id="divFaces"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+ </div>
+</div>
+
+
+   
+	
+    
+   
+    <input type="hidden" name="imgX1" id="imgX1" />
+    <input type="hidden" name="imgY1" id="imgY1" />
+    <input type="hidden" name="imgWidth" id="imgWidth" />
+    <input type="hidden" name="imgHeight" id="imgHeight" />
+    <input type="hidden" name="imgCropped" id="imgCropped" />
+
+    <!-- Modal -->
+                <div class="modal fade" id="modalCropManual" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Image croped</h4>
+                            </div>
+                            <div class="modal-body">
+                                <img src="" id = "imgCrop">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id = "btnSubmit" class="btn btn-default" >Save</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+<script>
+    /*
+    window.onload = function () {
+        var img = document.getElementById('imgsrc');
+        var tracker = new tracking.ObjectTracker(['face']);
+        tracker.setStepSize(1.7);
+        tracking.track('#imgsrc', tracker);
+        tracker.on('track', function (event) {
+            event.data.forEach(function (rect) {
+                window.plot(rect.x, rect.y, rect.width, rect.height);
+            });
+        });
+        window.plot = function (x, y, w, h) {
+            var rect = document.createElement('div');
+            document.querySelector('.demo-container').appendChild(rect);
+            rect.classList.add('rect');
+            rect.style.width = w + 'px';
+            rect.style.height = h + 'px';
+            rect.style.left = (img.offsetLeft + x) + 'px';
+            rect.style.top = (img.offsetTop + y) + 'px';
+        };
+    };
+    */
+</script>
 
 
 
