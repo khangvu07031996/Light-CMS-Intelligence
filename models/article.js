@@ -61,7 +61,7 @@ ArticleSchema.plugin(mongoosastic, {
   hosts: 'localhost:9200',
 });
 
-const article = module.exports = mongoose.model('Article', ArticleSchema);
+const article = module.exports = mongoose.model('article', ArticleSchema);
 article.createMapping((err, mapping) => {
   if (err) {
     console.log('error creating mapping (you can safely ignore this)');
@@ -72,115 +72,7 @@ article.createMapping((err, mapping) => {
   }
 });
 module.exports = {
-
-  getAllArticle(req, res) {
-    let response = {};
-    article.find((err, data) => {
-      if (err) {
-        response = { error: true, message: 'Error deleting data' };
-      } else {
-        res.render('ArticleForm', { articles: data });
-      }
-    });
-  },
-  addArticle(req, res) {
-    let response = {};
-    const dbArticle = new article();
-    dbArticle.headline = req.body.headline;
-    dbArticle.section = req.body.section;
-    dbArticle.premble = req.body.premble;
-    dbArticle.body = req.body.body;
-    dbArticle.images = req.body.imgPaths;
-    dbArticle.author = req.body.author;
-    dbArticle.tags = req.body.tags;
-    dbArticle.widgets = req.body.widgets;
-    dbArticle.date_created = new Date();
-    dbArticle.publishDate = new Date();
-    dbArticle.CreateBy = req.body.CreateBy;
-    dbArticle.status = req.body.status;
-    dbArticle.save((err) => {
-      if (err) {
-        response = { error: true, message: 'Error deleting data' };
-      } else {
-        res.redirect('/ArticleForm');
-      }
-    });
-  },
-  deleteArticle(req, res) {
-    let response = {};
-    article.findById(req.params.id, (err) => {
-      if (err) {
-        response = { error: true, message: 'error fetching data' };
-      } else {
-        article.remove({ _id: req.params.id }, (err) => {
-          if (err) {
-            response = { error: true, message: 'Error deleting data' };
-          } else {
-            res.redirect('/ArticleForm');
-          }
-        });
-      }
-    });
-  },
-  getArticleById(req, res) {
-    let response = {};
-    article.findById({ _id: req.params.id }, (err, data) => {
-      if (err) {
-        response = { error: true, message: 'Error fetching data' };
-      } else {
-        // console.log(data.author);
-        let arr = [];
-        arr = data.author.split(',');
-        Author.getAuthorNames((err, dataA) => {
-          userdata.getUserNames((err) => {
-            section.getSectionNames((err, dataSection) => {
-              res.render('editArticles', { Author: dataA, Section: dataSection, article: data, arr });
-            });
-          });
-        });
-      }
-    });
-  },
-  updateArticle(req, res) {
-    let response = {};
-    article.findById(req.params.id, (err, dataArticle) => {
-      if (err) {
-        response = { error: true, message: 'Error fetching data' };
-      } else {
-        dataArticle.headline = req.body.headline;
-        dataArticle.section = req.body.section;
-        dataArticle.premble = req.body.premble;
-        dataArticle.body = req.body.body;
-        dataArticle.images = req.body.images;
-        dataArticle.author = req.body.author;
-        dataArticle.tags = req.body.tags;
-        dataArticle.widgets = req.body.widgets;
-        dataArticle.date_created = new Date();
-        dataArticle.publishDate = new Date();
-        dataArticle.CreateBy = req.body.CreateBy;
-        dataArticle.status = req.body.status;
-        dataArticle.save((err) => {
-          if (err) {
-            response = { error: true, message: 'Error updating data' };
-          } else {
-            res.redirect('/ArticleForm');
-          }
-        });
-      }
-    });
-  },
-  searchArtical(req, res) {
-    const terms = req.body.terms;
-    article.search({ query_string: { query: terms } }, (err, results) => {
-      if (err) {
-        console.log('failed');
-      } else {
-        res.render('articleSearch', { articleResult: results.hits.hits });
-      }
-    });
-  },
-
-
+  article,
 };
 module.exports.getArticleBySection = function (req, res) {
   article.find({ section: req.params.section }, {}, { sort: { date_created: -1 }, limit: 3 }, (err, data) => {
