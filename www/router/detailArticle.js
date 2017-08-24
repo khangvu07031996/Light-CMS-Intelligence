@@ -26,7 +26,6 @@ function getArticleById(req, res) {
         helpers: {
           image(allArticles) {
             const x = allArticles.replace('Original', 'right');
-            // console.log(x);
             return x;
           },
           text(data) {

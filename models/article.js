@@ -64,7 +64,6 @@ ArticleSchema.plugin(mongoosastic, {
 const article = module.exports = mongoose.model('article', ArticleSchema);
 article.createMapping((err, mapping) => {
   if (err) {
-    console.log('error creating mapping (you can safely ignore this)');
     console.log(err);
   } else {
     console.log('mapping created!');
@@ -75,9 +74,10 @@ module.exports = {
   article,
 };
 module.exports.getArticleBySection = function (req, res) {
-  article.find({ section: req.params.section }, {}, { sort: { date_created: -1 }, limit: 3 }, (err, data) => {
-    res.send(data);
-  });
+  article.find({ section: req.params.section },
+    {}, { sort: { date_created: -1 }, limit: 3 }, (err, data) => {
+      res.send(data);
+    });
 };
 module.exports.getAllArticleBySection = function (req, res) {
   article.find({ section: req.params.section }, {}, { sort: { date_created: -1 } }, (err, data) => {
@@ -85,9 +85,10 @@ module.exports.getAllArticleBySection = function (req, res) {
   });
 };
 module.exports.getHotArticleBySection = function (req, res) {
-  article.findOne({ section: req.params.section }, {}, { sort: { date_created: -1 } }, (err, data) => {
-    res.send(data);
-  });
+  article.findOne({ section: req.params.section },
+    {}, { sort: { date_created: -1 } }, (err, data) => {
+      res.send(data);
+    });
 };
 module.exports.getlastArticle = function (req, res) {
   article.findOne({}, [], { sort: { date_created: -1 }, limit: 8 }, (err, data) => {
