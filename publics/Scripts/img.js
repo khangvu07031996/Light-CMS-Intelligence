@@ -1,3 +1,4 @@
+/*eslint-disable */
 //event click button trên Popup:
 $(document).ready(function () {
     var selDiv = "";
@@ -7,7 +8,7 @@ $(document).ready(function () {
     var divimg = $('#divimg');
     //Children of divimg:
     var divimgItems = divimg.children();
-    //array tags img of divimg:
+    // array tags img of divimg:
     var arrTagImg = [];
 
     arrTagImg = divimgItems.find('img');
