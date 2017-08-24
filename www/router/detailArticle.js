@@ -31,7 +31,7 @@ function getArticleById(req, res) {
         allData: allArticle,
         helpers: {
           image(allArticles) {
-            const x = allArticles.replace('Original', 'right');
+            const x = allArticles.replace('Original', '112x112');
             // console.log(x);
             return x;
           },

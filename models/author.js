@@ -57,7 +57,16 @@ module.exports = {
       if (err) {
         response = { error: true, message: 'Error fetching data' };
       } else {
-        res.render('AuthorForm', { Author: data });
+        res.render('AuthorForm', { Author: data, helpers:{
+          date(data){
+            var date = new Date(data)
+            var d = date.getDate();
+            var mm = date.getMonth() + 1;
+            var yyyy = date.getFullYear();
+            return d + "/" + mm + "/" + yyyy;
+          }
+
+        } });
       }
     });
   },
