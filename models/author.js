@@ -57,16 +57,17 @@ module.exports = {
       if (err) {
         response = { error: true, message: 'Error fetching data' };
       } else {
-        res.render('AuthorForm', { Author: data, helpers:{
-          date(data){
-            var date = new Date(data)
-            var d = date.getDate();
-            var mm = date.getMonth() + 1;
-            var yyyy = date.getFullYear();
-            return d + "/" + mm + "/" + yyyy;
-          }
+        res.render('AuthorForm', { Author: data,
+          helpers: {
+            date(data) {
+              const date = new Date(data);
+              const d = date.getDate();
+              const mm = date.getMonth() + 1;
+              const yyyy = date.getFullYear();
+              return `${d}/${mm}/${yyyy}`;
+            },
 
-        } });
+          } });
       }
     });
   },
@@ -122,8 +123,8 @@ module.exports = {
       }
     });
   },
+  getAuthorNames(callback) {
+    Author.find(callback);
+  },
+};
 
-};
-module.exports.getAuthorNames = function (callback) {
-  Author.find(callback);
-};

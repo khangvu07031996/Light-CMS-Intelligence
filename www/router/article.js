@@ -91,6 +91,11 @@ function getTechArticle(req, res) {
       const hotTechArticle = responseHotTech.data;
       let arrHotArticle = [];
       arrHotArticle = hotTechArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('technologyArticle', { tech: techArticles, hot: hotTechArticle, arrHotArticle });
     });
   });
@@ -108,6 +113,11 @@ function getEduArticle(req, res) {
       const hotEduArticle = responseHotEdu.data;
       let arrHotArticle = [];
       arrHotArticle = hotEduArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('educationArticle', { edu: eduArticles, hot: hotEduArticle, arrHotArticle });
     });
   });
@@ -125,6 +135,11 @@ function getSpArticle(req, res) {
       const hotSpArticle = responseHotSp.data;
       let arrHotArticle = [];
       arrHotArticle = hotSpArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('sportArticles', { sp: spArticles, hot: hotSpArticle, arrHotArticle });
     });
   });
@@ -142,6 +157,11 @@ function getWoArticle(req, res) {
       const hotWoArticle = responseHotWo.data;
       let arrHotArticle = [];
       arrHotArticle = hotWoArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('worldArticle', { wo: woArticles, hot: hotWoArticle, arrHotArticle });
     });
   });
@@ -159,6 +179,11 @@ function getFaArticle(req, res) {
       const hotFaArticle = responseHotFa.data;
       let arrHotArticle = [];
       arrHotArticle = hotFaArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('familyArticle', { fa: faArticles, hot: hotFaArticle, arrHotArticle });
     });
   });

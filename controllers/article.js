@@ -19,17 +19,15 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 function getAllArticle(req, res) {
-  let response = {};
+  const response = {};
   ArticleController.find((err, data) => {
     if (err) {
-      response = { error: true, message: 'Error deleting data' };
-    } else {
-      res.render('ArticleForm', { articles: data });
+      return res.json({ error: true, message: 'error fetching data' });
     }
+    res.render('ArticleForm', { articles: data });
   });
 }
 function addArticle(req, res) {
-  let response = {};
   const dbArticle = new ArticleController();
   dbArticle.headline = req.body.headline;
   dbArticle.section = req.body.section;
@@ -45,59 +43,54 @@ function addArticle(req, res) {
   dbArticle.status = req.body.status;
   dbArticle.save((err) => {
     if (err) {
-      response = { error: true, message: 'Error deleting data' };
-    } else {
-      res.redirect('/ArticleForm');
+      return res.json({ success: false, errors: 'Failed To Create Article' });
     }
+    res.redirect('/ArticleForm');
   });
 }
 function deleteArticle(req, res) {
-  let response = {};
   ArticleController.findById(req.params.id, (err) => {
     if (err) {
-      response = { error: true, message: 'error fetching data' };
-    } else {
-      ArticleController.remove({ _id: req.params.id }, (err) => {
-        if (err) {
-          response = { error: true, message: 'Error deleting data' };
-        } else {
-          res.redirect('/ArticleForm');
-        }
-      });
+      return res.json({ error: true, message: 'error fetching data' });
     }
+    ArticleController.remove({ _id: req.params.id }, (err) => {
+      if (err) {
+        return res.json({ error: true, message: 'error fetching data' });
+      }
+      res.redirect('/ArticleForm');
+    });
   });
 }
 function getArticleById(req, res) {
-  let response = {};
+  const response = {};
   ArticleController.findById({ _id: req.params.id }, (err, data) => {
     if (err) {
-      response = { error: true, message: 'Error fetching data' };
-    } else {
-      let arr = [];
-      let arrPath = [];
-      const arrImg = [];
-      const arrLab = [];
-      arr = data.author.split(',');
-      arrPath = data.images.split(',');
-      for (let i = 0; i < arrPath.length; i += 2) {
-        if (arrPath[i] === '') {
-          arrPath.splice(i, 1);
-        }
+      return res.json({ error: true, message: 'error fetching data' });
+    }
+    let arr = [];
+    let arrPath = [];
+    const arrImg = [];
+    const arrLab = [];
+    arr = data.author.split(',');
+    arrPath = data.images.split(',');
+    for (let i = 0; i < arrPath.length; i += 2) {
+      if (arrPath[i] === '') {
+        arrPath.splice(i, 1);
       }
-      for (let i = 0; i < arrPath.length; i += 2) {
-        arrImg.push({ id: arrPath[i], src: arrPath[i + 1] });
-        arrLab.push({ id: arrPath[i], src: arrPath[i + 1] });
-      }
-      Author.getAuthorNames((err, dataA) => {
-        userdata.getUserNames((err) => {
-          section.getSectionNames((err, dataSection) => {
-            image.getAll(req, res, (err, rows) => {
-              res.render('editArticles', { Author: dataA, Section: dataSection, article: data, images: rows, arr, arrImg });
-            });
+    }
+    for (let i = 0; i < arrPath.length; i += 2) {
+      arrImg.push({ id: arrPath[i], src: arrPath[i + 1] });
+      arrLab.push({ id: arrPath[i], src: arrPath[i + 1] });
+    }
+    Author.getAuthorNames((err, dataA) => {
+      userdata.getUserNames((err) => {
+        section.getSectionNames((err, dataSection) => {
+          image.getAll(req, res, (err, rows) => {
+            res.render('editArticles', { Author: dataA, Section: dataSection, article: data, images: rows, arr, arrImg });
           });
         });
       });
-    }
+    });
   });
 }
 function updateArticle(req, res) {
@@ -120,10 +113,9 @@ function updateArticle(req, res) {
       dataArticle.status = req.body.status;
       dataArticle.save((err) => {
         if (err) {
-          response = { error: true, message: 'Error updating data' };
-        } else {
-          res.redirect('/ArticleForm');
+          return res.json({ error: true, message: 'error update data' });
         }
+        res.redirect('/ArticleForm');
       });
     }
   });

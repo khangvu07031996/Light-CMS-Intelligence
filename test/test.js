@@ -21,7 +21,7 @@ describe('Test restful API', () => {
     server
       .post('/api/articles')
       .send({
-        headline: 'khang vu',
+        headline: 'khangvu',
         section: 'khang',
         premble: '123',
         body: '123',
@@ -36,7 +36,6 @@ describe('Test restful API', () => {
       .expect('Content-type', /json/)
       .expect(200)
       .end((err, res) => {
-        article = res.body;
         done();
       });
   });
@@ -51,7 +50,7 @@ describe('Test restful API', () => {
   });
   it('update an article', (done) => {
     server
-      .put('/api/articles/599b9cf72f4b372f386d37c5')
+      .put('/api/articles/59a3d90d5b0532270493a4f7')
       .set('Acept', 'application/x-ww-form-urlencoded')
       .send({
         headline: 'khang vu123123123213123123',
