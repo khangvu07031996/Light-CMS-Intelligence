@@ -68,7 +68,14 @@ function getAllArticle(req, res) {
                     edu: educationArticle,
                     fa: faArticle,
                     world: worldArticle,
-                    sport: sportArticle });
+                    sport: sportArticle,
+                    helpers : {
+                      imageResize(educationArticle){
+                        const temp = educationArticle.replace('Original','390x240');
+                        return temp;
+                      }
+                    }
+                   });
               });
             });
           });

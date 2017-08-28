@@ -50,7 +50,7 @@ describe('Test restful API', () => {
   });
   it('update an article', (done) => {
     server
-      .put('/api/articles/59a3d90d5b0532270493a4f7')
+      .put('/api/articles/59a3dc0484f52626a826ee0c')
       .set('Acept', 'application/x-ww-form-urlencoded')
       .send({
         headline: 'khang vu123123123213123123',
