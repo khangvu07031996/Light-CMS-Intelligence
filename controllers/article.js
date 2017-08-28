@@ -39,7 +39,7 @@ function getallName(req, res) {
       section.getSectionNames((err, dataSection) => {
         image.getAll(req, res, (err, rows) => {
           res.render('addArticles', { Author: data, Section: dataSection, data: rows });
-          console.log(rows);
+          //console.log(rows);
         });
         // image.getAll(req, res, function(err, rows) {                
         //   res.render('addArticles',{Author: data,Section:dataSection, data: rows});

@@ -1,75 +1,42 @@
 
 const express = require("express");
-
-const router = express.Router();
 const fs = require("fs");
 const path = require("path");
 const image = require("../models/image");
 const imageHelper = require("../helper/imageHelper");
-// const openCvHelper = require("../helper/openCvHelper");
-var strDateTime;
+const directoryHelper = require("../helper/directoryHelper");
 
-let dtObj;
-let destDirectory = "";
-let virtualDir = "";
-let moment;
+let router = express.Router();
+// Create object for directory:
+let dirObject = {};
+dirObject.strDateTime = "";
+dirObject.dtObj = null;
+dirObject.destDirectory = "";
+dirObject.virtualDir = "";
+dirObject.moment = "";
+dirObject.appDir = "";
 // Variable medialist:
 let original;
-// let teaser;
-// let searchResult;
-// let    articlePreview;
+const setting = {
+    objThumbnailDim: {
+        0: { width: 567, height: 330 },
+        1: { width: 550, height: 330 },
+        2: { width: 400, height: 400 },
+        3: { width: 390, height: 240 },
+        4: { width: 300, height: 300 },
+        5: { width: 112, height: 112 },
+        6: { width: 75, height: 75 },
+        count: 7
+    }
 
-const arrobjThumbnails = [{ width: 567, height: 330 },
-{ width: 550, height: 330 },
-{ width: 390, height: 240 },
-{ width: 112, height: 112 }];
-const arrThumbnail = ["", "", "", ""];
-
-function createDirectory() {
-    // console.log('---createDir');
-    strDateTime = getDateTimeObject().toString();
-    dtObj = getDateTimeObject();
-    destDirectory = "";
-    moment = Date.now().toString();
-    // let path = require('path');
-    const appDir = path.dirname(require.main.filename);
-
-    console.log(appDir);
-
-    const destDir = path.join(appDir, "publics");
-    const dirVpp = path.join(destDir, "vpp");
-    const dirYear = path.join(dirVpp, dtObj.year);
-    const dirMonth = path.join(dirYear, dtObj.month);
-    const dirDay = path.join(dirMonth, dtObj.day);
-    const dirMoment = path.join(dirDay, moment);
-
-    destDirectory = dirMoment;
-    virtualDir = `/vpp/${dtObj.year}/${dtObj.month}/${dtObj.day}/${moment}`;
-
-    fs.access(destDir, (err) => {
-        if (err) { fs.mkdirSync(destDir); }
-    });
-    fs.access(dirVpp, (err) => {
-        if (err) { fs.mkdirSync(dirVpp); }
-    });
-    fs.access(dirYear, (err) => {
-        if (err) { fs.mkdirSync(dirYear); }
-    });
-    fs.access(dirMonth, (err) => {
-        if (err) { fs.mkdirSync(dirMonth); }
-    });
-    fs.access(dirDay, (err) => {
-        if (err) { fs.mkdirSync(dirDay); }
-    });
-    fs.access(dirMoment, (err) => {
-        if (err) { fs.mkdirSync(dirMoment); }
-    });
-}
-
+};
+let objThumbnailName = [];
 
 // function create directory:
 router.get("/image/createDirectory", (req, res) => {
-    createDirectory();
+    directoryHelper.initCreateDirectory(dirObject,
+        directoryHelper.getDateTimeObject,
+        directoryHelper.createDirectory);
     res.send("Created Directory");
 });
 
@@ -103,8 +70,6 @@ router.post("/image/databyid", (req, res) => {
 
 // Get all data and render view:
 router.get("/image", (req, res) => {
-    // openCvHelper.cropFaces('faces.jpg');
-    // createDirectory();
     image.getAll(req, res, (err, result) => {
         if (err) {
             res.send(err);
@@ -113,71 +78,69 @@ router.get("/image", (req, res) => {
     });
 });
 
-
-const multer = require("multer");
+let multer = require("multer");
 
 let arrPath = [];
 let count = 0;
-const storage = multer.diskStorage({
+let storage = multer.diskStorage({
 
     destination(req, file, cb) {
         // createDirectory();
-        cb(null, destDirectory);
+        cb(null, dirObject.destDirectory);
     },
 
     filename(req, file, cb) {
-        let strDate = moment;
+        let strDate = dirObject.moment;
         strDate = `${strDate}_${count}.jpg`;
         count++;
-
         original = `Original_${strDate}`;
-        // teaser = 'Teaser_' + strDate ;
-        // searchResult = 'SearchResul_' + strDate;
-        // articlePreview = 'ArticlePreview_' + strDate;
-
         arrPath.push(original);
         cb(null, original);
-
         // cb(null, Date.now().toString() + '-' + file.originalname);
     },
 
 });
 
-const upload = multer({ storage });
+let upload = multer({ storage });
 
 // Upload with ajax and insert:
 router.post("/image/ajaxUpload", upload.any(), (req, res) => {
-    console.log(arrPath);
-    console.log(`moment..... = ${moment}`);
     for (let i = 0; i < arrPath.length; i++) {
-        const indexOf_ = arrPath[i].indexOf("_");
-        const subString = arrPath[i].substring(indexOf_ + 1);
+        let indexOf_ = arrPath[i].indexOf("_");
+        let subString = arrPath[i].substring(indexOf_ + 1);
 
         // Create name of thumbnail images:
-        arrThumbnail[0] = `567x330_${subString}`;
-        arrThumbnail[1] = `550x330_${subString}`;
-        arrThumbnail[2] = `390x240_${subString}`;
-        arrThumbnail[3] = `112x112_${subString}`;
-
+        objThumbnailName = [];
+        for (let j = 0; j < setting.objThumbnailDim.count; j++) {
+            objThumbnailName.push(`${setting.objThumbnailDim[j].width}x${setting.objThumbnailDim[j].height}_${subString}`);
+        }
+        console.log(objThumbnailName);
         // create object thumbnail:
-        const thumbnail = {
-            thumbnail_567x330: arrThumbnail[0],
-            thumbnail_550x330: arrThumbnail[1],
-            thumbnail_390x240: arrThumbnail[2],
-            thumbnail_112x112: arrThumbnail[3],
+        let thumbnail = {
+            thumbnail_567x330: objThumbnailName[0],
+            thumbnail_550x330: objThumbnailName[1],
+            thumbnail_400x400: objThumbnailName[2],
+            thumbnail_390x240: objThumbnailName[3],
+            thumbnail_300x300: objThumbnailName[4],
+            thumbnail_112x112: objThumbnailName[5],
+            thumbnail_75x75: objThumbnailName[6],
 
         };
 
         // Resize image:
-        for (let j = 0; j < arrThumbnail.length; j++) {
-            const src = `${destDirectory}/${arrPath[i]}`;
-            const dst = `${destDirectory}/${arrThumbnail[j]}`;
-            imageHelper.resize(src, dst, arrobjThumbnails[j].width, arrobjThumbnails[j].height);
+        for (let j = 0; j < objThumbnailName.length; j++) {
+            let src = `${dirObject.destDirectory}/${arrPath[i]}`;
+            let dst = `${dirObject.destDirectory}/${objThumbnailName[j]}`;
+            let name = objThumbnailName[j];
+            imageHelper.resize(src, dst, setting.objThumbnailDim[j].width,
+                setting.objThumbnailDim[j].height);
         }
-        const obj = {
+
+        let obj = {
+
             articlePreview: arrPath[i],
-            path: virtualDir,
-            moment,
+            path: dirObject.virtualDir,
+            moment: dirObject.moment,
             thumbnail,
         };
         image.insert(req, res, null, obj, (err, img) => {
@@ -189,7 +152,7 @@ router.post("/image/ajaxUpload", upload.any(), (req, res) => {
     arrPath = [];
     count = 0;
 
-    res.send(moment);
+    res.send(dirObject.moment);
 });
 // Upload image:
 router.post("/image/upload", upload.any(), (req, res) => {
@@ -199,37 +162,36 @@ router.post("/image/upload", upload.any(), (req, res) => {
 // Insert image infomation:
 router.post("/image/insert", (req, res) => {
     for (let i = 0; i < arrPath.length; i++) {
-        const indexOf_ = arrPath[i].indexOf("_");
-        const subString = arrPath[i].substring(indexOf_ + 1);
+        let indexOf_ = arrPath[i].indexOf("_");
+        let subString = arrPath[i].substring(indexOf_ + 1);
 
         // Create name of thumbnail images:
-        arrThumbnail[0] = `567x330_${subString}`;
-        arrThumbnail[1] = `550x330_${subString}`;
-        arrThumbnail[2] = `390x240_${subString}`;
-        arrThumbnail[3] = `112x112_${subString}`;
-
-        // create object thumbnail:
-        const thumbnail = {
-            thumbnail_567x330: arrThumbnail[0],
-            thumbnail_550x330: arrThumbnail[1],
-            thumbnail_390x240: arrThumbnail[2],
-            thumbnail_112x112: arrThumbnail[3],
-
-        };
-
-        // Resize image:
-        for (let j = 0; j < arrThumbnail.length; j++) {
-            const src = `${destDirectory}/${arrPath[i]}`;
-            const dst = `${destDirectory}/${arrThumbnail[j]}`;
-            imageHelper.resize(src, dst, arrobjThumbnails[j].width, arrobjThumbnails[j].height);
+        for (let j = 0; j < setting.objThumbnailDim.count; j++) {
+            objThumbnailName.push(`${setting.objThumbnailDim[j].width}x${setting.objThumbnailDim[j].height}_${subString}`);
         }
 
+        // create object thumbnail:
+        let thumbnail = {
+            thumbnail_567x330: objThumbnailName[0],
+            thumbnail_550x330: objThumbnailName[1],
+            thumbnail_400x400: objThumbnailName[2],
+            thumbnail_390x240: objThumbnailName[3],
+            thumbnail_300x300: objThumbnailName[4],
+            thumbnail_112x112: objThumbnailName[5],
+            thumbnail_75x75: objThumbnailName[6],
 
-        const objinfo = {
-
+        };
+        // Resize image:
+        for (let j = 0; j < objThumbnailName.length; j++) {
+            let src = `${dirObject.destDirectory}/${arrPath[i]}`;
+            let dst = `${dirObject.destDirectory}/${objThumbnailName[j]}`;
+            imageHelper.resize(src, dst, setting.objThumbnailDim[j].width,
+                setting.objThumbnailDim[j].height);
+        }
+        let objinfo = {
             articlePreview: arrPath[i],
-            path: virtualDir,
-            moment,
+            path: dirObject.virtualDir,
+            moment: dirObject.moment,
             thumbnail,
         };
         image.insert(req, res, objinfo, null, (err, img) => {
@@ -251,28 +213,30 @@ router.get("/image/add", (req, res) => {
 router.route("/image/:image_id").get((req, res) => {
     image.edit(req, res, (err, row) => {
         if (err) res.send(err);
-        // res.json(rows);
-        console.log("image: ");
-        console.log(row);
         res.render("editImage", { image: row });
     });
 });
 // update image and render form list images:
 router.route("/image/:image_id").post((req, res) => {
     console.log("This is controller update");
-    image.update(req, res);
+    image.update(req, res, (err, row) => {
+        if (err) res.send(err);
+        res.json("Update successful");
+    });
     // res.redirect('/image');
-    res.json("Update successful");
 });
 
 // Ajax update:
 router.route("/image/ajax/:image_id").post((req, res) => {
-    image.ajaxUpdate(req, res);
+    image.ajaxUpdate(req, res, (err, row) => {
+        if (err) res.send(err);
+        res.json("Update successful");
+    });
 });
 
 // Delete image info:
 router.route("/image/delete/:image_id").get((req, res) => {
-    console.log(`_id = ${req.params.image_id}`);
+    // console.log('_id = ' + req.params.image_id)
     image.delete(req, res, (err, result) => {
         if (err) {
             res.send(err);
@@ -294,24 +258,26 @@ router.route("/image/cropImage/faces").post((req, res) => {
 });
 // Manual crop:
 router.post("/urlsave", (req, res) => {
-    const data = req.body.imgBase64;
-    const objimg = req.body.img;
+    let data = req.body.imgBase64;
+    let objimg = req.body.img;
     console.log(`data = ${data}`);
-
     let dstDir = objimg.media;
     let filename = objimg.medialist.articlePreview;
-    const dirRoot = path.dirname(require.main.filename).replace("\\", "/");
+    let dirRoot = path.dirname(require.main.filename).replace("\\", "/");
 
     dstDir = `${dirRoot}/publics${dstDir}`;
-    filename = `cropmanual_${filename}`;
-    const dst = `${dstDir}/${filename}`;
-
-    const imageBuffer = decodeBase64Image(data, (arg) => {
+    // filename = `cropmanual_${filename}`;
+    let dst = `${dstDir}/${filename}`;
+    let imageBuffer = decodeBase64Image(data, (arg) => {
         fs.writeFile(dst, arg.data, (err) => {
-            res.json("Saved image");
+            if (err) {
+                res.json(err);
+            } else {
+                res.json("Saved image");
+            }
         });
     });
-    console.log(imageBuffer);
+    // console.log(imageBuffer);
 });
 
 function decodeBase64Image(dataString, cb) {
@@ -330,47 +296,5 @@ function decodeBase64Image(dataString, cb) {
     return response;
 }
 
-
-// Get data about year, month, day:
-function getDateTimeObject() {
-    const date = new Date();
-
-    let hour = date.getHours();
-    hour = (hour < 10 ? "0" : "") + hour;
-
-    let min = date.getMinutes();
-    min = (min < 10 ? "0" : "") + min;
-
-    let sec = date.getSeconds();
-    sec = (sec < 10 ? "0" : "") + sec;
-
-    const year = `${date.getFullYear()}`;
-
-    let month = date.getMonth() + 1;
-    month = (month < 10 ? "0" : "") + month;
-
-    let day = date.getDate();
-    day = (day < 10 ? "0" : "") + day;
-
-    const strDate0 = `${year}:${month}:${day}:${hour}:${min}:${sec}`;
-    const strDate = `${year}${month}${day}${hour}${min}${sec}`;
-
-
-    const obj = {
-        year,
-        month,
-        day,
-        hour,
-        min,
-        sec,
-
-        toString() {
-            // console.log('this is to string of obj');
-            return strDate;
-        },
-    };
-    // console.log(obj);
-    return obj;
-}
 
 module.exports = router;

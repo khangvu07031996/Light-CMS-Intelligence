@@ -1,8 +1,13 @@
+
 module.exports = {
-    
-    initImageSize: function (im, x, y, width, height) {
-        let _x, _y, _width, _height;
-        let w = width / 2, h = height / 2;
+
+    initImageSize(im, x, y, width, height) {
+        let _x;
+        let _y;
+        let _width;
+        let _height;
+        let w = width / 2;
+        let h = height / 2;
         let obj = {};
 
         if (x - w < 0) {
@@ -21,7 +26,7 @@ module.exports = {
             _width = 2 * width;
         }
         if (2 * height > im.height() - _y) {
-            _height = img.height() - _y;
+            _height = im.height() - _y;
         } else {
             _height = 2 * height;
         }
@@ -32,6 +37,6 @@ module.exports = {
         obj.height = _height;
 
         return obj;
-    }
+    },
 
-}
+};

@@ -1,16 +1,11 @@
+let db = require("mongoose");
+let _ = require("lodash");
+let openCvHelper = require("../helper/openCvHelper");
+let path = require("path");
+let imageHelper = require("../helper/imageHelper");
 
-
-// var db = require('../db');
-var db = require("mongoose");
-// var bodyParser = require('body-parser');
-var _ = require("lodash");
-// var multer = require('multer');
-var openCvHelper = require("../helper/openCvHelper");
-const path = require("path");
-var imageHelper = require("../helper/imageHelper");
-
-var Schema = db.Schema;
-var imageSchema = new Schema({
+let Schema = db.Schema;
+let imageSchema = new Schema({
     heading: String,
     description: String,
     media: String,
@@ -21,11 +16,6 @@ var imageSchema = new Schema({
         searchResult: "",
         articlePreview: "",
         thumbnail: {
-            thumbnail_567x330: "",
-            thumbnail_550x330: "",
-            thumbnail_390x240: "",
-            thumbnail_112x112: "",
-
         },
 
     },
@@ -43,19 +33,20 @@ var imageSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-    moment: String,
+    moment: String
 });
 
-var image = db.model("image", imageSchema);
+imageSchema.virtual("imageinfo.full").get(function () {
+    return _.startCase(`${this.imageinfo.size} ${this.imageinfo.ratio}`);
+});
 
-imageSchema.virtual("imageinfo.full").get(() => _.startCase(`${this.imageinfo.size} ${this.imageinfo.ratio}`));
-
-imageSchema.virtual("imageinfo.full").set((value) => {
-    var bits = value.split(" ");
+imageSchema.virtual("imageinfo.full").set(function (value) {
+    let bits = value.split(" ");
     this.imageinfo.size = bits[0];
     this.imageinfo.ratio = bits[1];
 });
 
+let image = db.model("image", imageSchema);
 
 module.exports = {
     getAll(req, res, cb) {
@@ -67,10 +58,9 @@ module.exports = {
         });
     },
     getDataByID(req, res, cb) {
-        console.log(`get by id with req.body.id = ${req.body.id}`);
-
         image.find({ _id: req.body.id }, (err, rows) => {
             cb(err, rows);
+            return false;
         });
     },
     // getDataByMoment
@@ -82,8 +72,9 @@ module.exports = {
 
 
     insert(req, res, objinfo, obj, cb) {
-        var p = new image();
         console.log("in add");
+        let p = new image();
+
         if (objinfo == null) {
             p.media = obj.path;
             p.heading = "";
@@ -112,11 +103,7 @@ module.exports = {
             p.medialist.thumbnail = objinfo.thumbnail;
         }
 
-
         p.save((err) => {
-            if (err) {
-                res.send(err);
-            }
             console.log("inserted");
             cb(err, p);
         });
@@ -128,54 +115,53 @@ module.exports = {
         });
     },
 
-    update(req, res) {
+    update(req, res, cb) {
         image.findById(req.params.image_id, (err, p) => {
             if (err) {
-                res.send(err);
+                cb(err, null);
+                return false;
             }
             p.heading = req.body.heading;
             p.description = req.body.description;
             p.photographer = req.body.photographer;
             p.usercreate = "unknow";
 
-            p.save((saveerr, img) => {
-                if (saveerr) {
-                    res.send(saveerr);
-                }
+            p.save((error, img) => {
+                cb(error, img);
+                return false;
             });
+            return false;
         });
     },
 
     // Ajax update:
-    ajaxUpdate(req, res) {
+    ajaxUpdate(req, res, cb) {
         image.findById(req.params.image_id, (err, p) => {
             if (err) {
-                res.send(err);
+                cb(err, null);
+                return false;
             }
             p.heading = req.body.heading;
             p.description = req.body.description;
             p.photographer = req.body.photographer;
             p.usercreate = "unknow";
 
-            p.save((saveerr, img) => {
-                if (saveerr) {
-                    res.send(saveerr);
-                }
-
-                res.send(img);
+            p.save((error, img) => {
+                cb(error, img);
+                return false;
             });
+            return false;
         });
     },
 
     delete(req, res, cb) {
-        console.log(`_id = ${req.params.image_id}`);
+        // console.log('_id = ' + req.params.image_id)
         image.remove({ _id: req.params.image_id }, (err, prod) => {
             cb(err, prod);
         });
     },
 
     cropImage(req, res, cb) {
-        console.log(`model : id = ${req.body.id}`);
         image.findById(req.body.id, (err, p) => {
             let src = `${p.media}/${p.medialist.articlePreview}`;
             let dstDir = p.media;
@@ -183,11 +169,6 @@ module.exports = {
             let dirRoot = path.dirname(require.main.filename).replace("\\", "/");
             src = `${dirRoot}/publics${src}`;
             dstDir = `${dirRoot}/publics${dstDir}`;
-
-            console.log(src);
-            console.log(dstDir);
-            console.log(filename);
-
             let countFaces = openCvHelper.cropFaces(src, filename, dstDir, (count) => {
                 console.log(`count faces = ${count}`);
                 // create object include info of image croped:
@@ -195,13 +176,12 @@ module.exports = {
                 data.path = p.media;
                 data.count = count;
                 data.filename = filename;
-
                 cb(err, data);
-            }, (srcrs) => {
-                imageHelper.resize(srcrs, srcrs, 200, 200);
+            }, (imgSrc) => {
+                imageHelper.resize(imgSrc, imgSrc, 200, 200);
             });
         });
-    },
+    }
 
 };
 
