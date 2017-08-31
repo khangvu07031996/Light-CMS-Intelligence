@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const app = express();
 const session = require('express-session');
 const path = require('path');
+
+const errorlog = require('./utils/logger').errorlog;
 // var cookieParser = require('cookie-parser');
 const expressValidator = require('express-validator');
 const passport = require('passport');
@@ -74,7 +76,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({ defaultLayout: 'layout' }));
 app.set('view engine', 'handlebars');
 
-
+function error(err,req,res,next){
+  errorlog.error(err.stack);
+  res.send(500);
+} 
+app.use(error);
 // Passport init
 
 // connect flash

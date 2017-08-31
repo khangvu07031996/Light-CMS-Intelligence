@@ -1,4 +1,4 @@
-const errorLog = require('../util/logger').errorlog;
+const errorLog = require('../utils/logger').errorlog;
 
 module.exports.ensureAuthenticated = function (req, res, next) {
   if (req.isAuthenticated()) {

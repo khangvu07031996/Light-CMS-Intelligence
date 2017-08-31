@@ -5,9 +5,9 @@ const db = require('mongoose');
 // var bodyParser = require('body-parser');
 const _ = require('lodash');
 // var multer = require('multer');
-const openCvHelper = require('../helper/openCvHelper');
+const openCvHelper = require('../helpers/openCvHelper');
 const path = require('path');
-const imageHelper = require('../helper/imageHelper');
+const imageHelper = require('../helpers/imageHelper');
 
 const Schema = db.Schema;
 const imageSchema = new Schema({

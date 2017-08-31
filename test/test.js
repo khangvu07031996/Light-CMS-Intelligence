@@ -6,17 +6,6 @@ const should = require('should');
 const server = supertest.agent('http://localhost:3000');
 
 describe('Test restful API', () => {
-  it('should return a 200 response', (done) => {
-    server
-      .get('/api/articles')
-      .expect('Content-type', /json/)
-      .expect(200) // THis is HTTP response
-      .end((err, res) => {
-      // HTTP status should be 200
-        res.status.should.equal(200);
-        done();
-      });
-  });
   it('test add article', (done) => {
     server
       .post('/api/articles')
@@ -36,15 +25,6 @@ describe('Test restful API', () => {
       .expect('Content-type', /json/)
       .expect(200)
       .end((err, res) => {
-        done();
-      });
-  });
-  it('should return 404', (done) => {
-    server
-      .get('/random')
-      .expect(404)
-      .end((err, res) => {
-        res.status.should.equal(404);
         done();
       });
   });

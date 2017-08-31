@@ -4,8 +4,8 @@ var express = require('express')
     , fs = require('fs');
 const path = require('path');
 var image = require('../models/image');
-var imageHelper = require('../helper/imageHelper');
-var openCvHelper = require('../helper/openCvHelper');
+var imageHelper = require('../helpers/imageHelper');
+var openCvHelper = require('../helpers/openCvHelper');
 
 var strDateTime;
 var dtObj;

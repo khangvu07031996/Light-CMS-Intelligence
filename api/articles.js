@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const ArticleData = require('../models/article');
-const errorlog = require('../util/logger').errorlog;
+const errorlog = require('../utils/logger').errorlog;
 /**
  * @swagger
  * definition:
@@ -50,7 +50,7 @@ const errorlog = require('../util/logger').errorlog;
  *                  $ref: '#/definitions/Article'
  */
 
-function datagot(req, res, next) {
+function getAllArticle(req, res, next) {
   ArticleData.getAllArticleApi((err, data) => {
     if (err) {
       return next(err);
@@ -65,7 +65,7 @@ function datagot(req, res, next) {
     res.send(data);
   });
 }
-router.get('/api/articles', datagot);
+router.get('/api/articles', getAllArticle);
 /**
  * @swagger
  * /api/hotArticles:
@@ -104,7 +104,7 @@ router.get('/api/hotArticles', ArticleData.getHotArticle);
  *         schema:
  *           $ref: '#/definitions/Article'
  */
-function getAllArticlebyid(req, res, next) {
+function getAllArticleByid(req, res, next) {
   ArticleData.getArticleByIdApi(req.params.id, (err, data) => {
     if (err) {
       return next(err);
@@ -119,7 +119,7 @@ function getAllArticlebyid(req, res, next) {
     res.send(data);
   });
 }
-router.get('/api/articles/:id', getAllArticlebyid);
+router.get('/api/articles/:id', getAllArticleByid);
 
 /**
  * @swagger

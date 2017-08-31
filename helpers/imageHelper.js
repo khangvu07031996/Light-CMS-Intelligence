@@ -2,7 +2,7 @@
 var fs = require('fs');
 //var outputDir = './output';
 //if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
-var easyimg = require('../lib/easyimage.js');
+var easyimg = require('../publics/libs/easyimage.js');
 //var srcimg = 'kitten.jpg';
 
 module.exports = {

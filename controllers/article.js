@@ -1,13 +1,17 @@
 const express = require('express');
-
+const axios = require('axios');
+const variable = require('../config.js');
+const multer = require('multer');
+const domain = variable.token;
 const router = express.Router();
+
 const ArticleData = require('../models/article');
 const ArticleController = require('../models/article').Article;
 const userdata = require('../models/user');
 const Author = require('../models/author');
 const section = require('../models/session');
 const image = require('../models/image');
-const multer = require('multer');
+
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -18,12 +22,11 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage });
+// --------------get All article -----------------
 function getAllArticle(req, res) {
-  const response = {};
-  ArticleController.find((err, data) => {
-    if (err) {
-      return res.json({ error: true, message: 'error fetching data' });
-    }
+  const url = `${domain}/api/articles`;
+  axios.get(url).then((response) => {
+    const data = response.data;
     res.render('ArticleForm', { articles: data });
   });
 }
@@ -43,29 +46,21 @@ function addArticle(req, res) {
   dbArticle.status = req.body.status;
   dbArticle.save((err) => {
     if (err) {
-      return res.json({ success: false, errors: 'Failed To Create Article' });
+      throw new Error("Can't save Article");
     }
     res.redirect('/ArticleForm');
   });
 }
+
 function deleteArticle(req, res) {
-  ArticleController.findById(req.params.id, (err) => {
-    if (err) {
-      return res.json({ error: true, message: 'error fetching data' });
-    }
-    ArticleController.remove({ _id: req.params.id }, (err) => {
-      if (err) {
-        return res.json({ error: true, message: 'error fetching data' });
-      }
-      res.redirect('/ArticleForm');
-    });
+  ArticleData.deleteArticleApi(req.params.id, (err) => {
+    res.redirect('/ArticleForm');
   });
 }
 function getArticleById(req, res) {
-  const response = {};
-  ArticleController.findById({ _id: req.params.id }, (err, data) => {
+  ArticleData.getArticleByIdApi(req.params.id, (err, data) => {
     if (err) {
-      return res.json({ error: true, message: 'error fetching data' });
+      throw new Error("Can't get Article");
     }
     let arr = [];
     let arrPath = [];
@@ -97,7 +92,7 @@ function updateArticle(req, res) {
   let response = {};
   ArticleController.findById(req.params.id, (err, dataArticle) => {
     if (err) {
-      response = { error: true, message: 'Error fetching data' };
+      throw new Error("Error fetching data")
     } else {
       dataArticle.headline = req.body.headline;
       dataArticle.section = req.body.section;
@@ -133,14 +128,14 @@ function searchArtical(req, res) {
 // add article
 router.post('/article/add', upload.single('file'), addArticle);
 // get all article
-router.get('/ArticleForm', getAllArticle);
+router.get('/articleForm', getAllArticle);
 // delete article
-router.get('/Article/delete/:id', deleteArticle);
+router.get('/article/delete/:id', deleteArticle);
 // get article by id
-router.get('/Article/edit/:id', getArticleById);
+router.get('/article/edit/:id', getArticleById);
 // update article
-router.post('/Article/edit/:id', updateArticle);
-router.post('/Article/search', searchArtical);
+router.post('/article/edit/:id', updateArticle);
+router.post('/article/search', searchArtical);
 router.get('/api/allArticle/:section', ArticleData.getAllArticleBySection);
 router.get('/api/Article/:section', ArticleData.getArticleBySection);
 router.get('/api/hotArticle/:section', ArticleData.getHotArticleBySection);
