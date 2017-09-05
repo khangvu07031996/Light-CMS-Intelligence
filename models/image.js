@@ -15,6 +15,7 @@ let imageSchema = new Schema({
         teaser: "",
         searchResult: "",
         articlePreview: "",
+        imageupload: "",
         thumbnail: {
         },
 
@@ -80,14 +81,12 @@ module.exports = {
             p.heading = "";
             p.description = "";
             p.photographer = "";
-            p.usercreate = "unknow";
+            p.usercreate = "";
 
             p.moment = obj.moment;
-
             p.medialist.teaser = "";
             p.medialist.searchResult = "";
             p.medialist.articlePreview = obj.articlePreview;
-
             p.medialist.thumbnail = obj.thumbnail;
         } else {
             p.heading = req.body.heading;
@@ -97,8 +96,7 @@ module.exports = {
             p.medialist.teaser = "";
             p.medialist.searchResult = "";
             p.medialist.articlePreview = objinfo.articlePreview;
-
-            p.usercreate = "unknow";
+            p.usercreate = req.body.usercreate;
             p.moment = objinfo.moment;
             p.medialist.thumbnail = objinfo.thumbnail;
         }
@@ -124,8 +122,7 @@ module.exports = {
             p.heading = req.body.heading;
             p.description = req.body.description;
             p.photographer = req.body.photographer;
-            p.usercreate = "unknow";
-
+            p.usercreate = req.body.usercreate;
             p.save((error, img) => {
                 cb(error, img);
                 return false;
@@ -144,8 +141,7 @@ module.exports = {
             p.heading = req.body.heading;
             p.description = req.body.description;
             p.photographer = req.body.photographer;
-            p.usercreate = "unknow";
-
+            // p.usercreate = "unknow";
             p.save((error, img) => {
                 cb(error, img);
                 return false;

@@ -8,7 +8,7 @@
         <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
             <li><i class="icon_document_alt"></i>Forms</li>
-            <li><i class="fa fa-files-o"></i>Addimages</li>
+            <li><i class="fa fa-files-o"></i>Add images</li>
         </ol>
     </div>
 </div>
@@ -24,12 +24,12 @@
 
                     <form action="/image/{{image._id}}" method="post" class="form-horizontal" >
                          <div class="form-group">
-                            <div class="col-md-12">
-                                <img src = "{{image.media}}/{{image.medialist.articlePreview}}" style="width : 200px; height : 200px"></img>
+                             <label class="col-md-2"></label>
+                            <div class="col-md-10">
+                                <img src = "{{image.media}}/{{image.medialist.thumbnail.thumbnail_300x300}}" ></img>
                               
                             </div>
-                            
-                                
+                                                            
                         </div>   
                         <div>
                             <input type="hidden" id = "imgid" name="imgid" value="{{image._id}}">
@@ -54,7 +54,9 @@
                             </div>
                         </div>
                        
-                       
+                       <div>
+                            <input type="hidden" id = "usercreate" name="usercreate" value="{{user.username}}">
+                       </div>
                         
                         <div class="form-group ">
                             <div class="col-lg-offset-2 col-lg-10">

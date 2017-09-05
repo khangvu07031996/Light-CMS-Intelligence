@@ -27,7 +27,7 @@
             <div class="panel-body">
                 <div class="form">
                    
-                    <form method="post" action="/Article/edit/{{article.id}}" class="form-validate form-horizontal save">
+                    <form method="post" action="/Article/edit/{{article.id}}" class="form-validate form-horizontal save" id="save">
                          <div class = "col-lg-8">
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Headline <span class="required">*</span></label>
@@ -66,7 +66,7 @@
                                             <!-- rename it -->
                                         </div>
                                     </div>
-                                    <button type="button" id="btnPopup2" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal"
+                                    <button type="button" id="btnPopup" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal"
                                         style="font-size: 15px;margin-top: 7px;">+</button>
 
                                 </div>
@@ -98,16 +98,26 @@
                                 <div class="col-md-10">
                                     <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
                                         <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
-                                        <br />
+                                       
                                         <div>
                                             <div>
-                                                <input type="radio" name="cropimage" value="auto" checked="checked">automatical<br>
-                                                <input type="radio" name="cropimage" value="manual">manual<br>
-
-                                                <br />
-                                                <input type="button" class="btn btn-info" id="btnCrop" value="Crop" style="display: true" />
+												<table>
+                                                    <tr>
+                                                        <td>
+                                                             <input type="radio" name="cropimage" value="auto" checked="checked">  Automatical <br />
+                                                             <input type="radio" name="cropimage" value="manual">  Manual <br />                                                
+                                                        </td>
+                                                        <td>
+                                                            <input type="button" style="margin:20px" class="btn btn-info" id="btnCrop" value="Crop" style="display: true" />
+                                                        </td>
+                                                    </tr>
+                                                    
+												</table>
+                                               
+                                                
+												
                                             </div>
-
+											<br />
                                             <div class="demo-container" id="divImgSelected">
 
                                                 {{!-- <img id="imgsrc0" src=""></img> --}}
@@ -158,27 +168,7 @@
                                 <textarea class="body" name = "body">{{article.body}}</textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="cname" class="control-label col-lg-2"> image <span class="required">*</span></label>
-                            <div class="input-group image-preview col-lg-10" style="padding-left:15px ; padding-right:15px;">
-                                <input type="text" class="form-control image-preview-filename" name="images" value="{{article.images}}">
-                                <!-- don't give a name === doesn't send on POST/GET -->
-                                <span class="input-group-btn">
-                                                    <!-- image-preview-clear button -->
-                                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
-                                            <span class="glyphicon glyphicon-remove"></span>Clear
-                                    </button>
-                                <!-- image-preview-input -->
-                                <div class="btn btn-default image-preview-input">
-                                    <span class="glyphicon glyphicon-folder-open"></span>
-                                    <span class="image-preview-input-title">Browse</span>
-                                    <input type="file" accept="image/png, image/jpeg, image/gif" name="file" />
-                                    <!-- rename it -->
-                                </div>
-                                </span>
-                            </div>
-                        </div>
-                        
+                                               
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
                             <div class="col-lg-10">
@@ -304,7 +294,7 @@
 
                     {{#each images}}
                     <div class="item" id="div_{{_id}}" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        <img src="{{media}}/{{medialist.articlePreview}}" draggable="true" id="{{_id}}" style="width : 75px; height : 70px">
+                          <img src="{{media}}/{{medialist.thumbnail.thumbnail_x75}}" draggable="true" id="{{_id}}"  >
                     </div>
                     {{/each}}
 

@@ -1,6 +1,8 @@
 
 const fs = require("fs");
 const path = require("path");
+let mkdirp = require("mkdirp");
+
 
 module.exports = {
 
@@ -55,6 +57,31 @@ module.exports = {
     },
 
     createDirectory(dirPublics, dirVpp, dirYear, dirMonth, dirDay, dirMoment) {
+        mkdirp(dirPublics, (errpl) => {
+            // path was created unless there was error
+            console.log(`Create directory with error: ${errpl}`);
+            mkdirp(dirVpp, (errvpp) => {
+                // path was created unless there was error
+                console.log(`Create directory with error: ${errvpp}`);
+                mkdirp(dirYear, (erryear) => {
+                    // path was created unless there was error
+                    console.log(`Create directory with error: ${erryear}`);
+                    mkdirp(dirMonth, (errmth) => {
+                        // path was created unless there was error
+                        console.log(`Create directory with error: ${errmth}`);
+                        mkdirp(dirDay, (errday) => {
+                            // path was created unless there was error
+                            console.log(`Create directory with error: ${errday}`);
+                            mkdirp(dirMoment, (errmoment) => {
+                                // path was created unless there was error
+                                console.log(`Create directory with error: ${errmoment}`);
+                            });
+                        });
+                    });
+                });
+            });
+        });
+        /*
         fs.access(dirPublics, (err) => {
             if (err) {
                 fs.mkdirSync(dirPublics);
@@ -86,7 +113,8 @@ module.exports = {
                 fs.mkdirSync(dirMoment);
             }
         });
-    },
-
+        */
+    }
 
 };
+

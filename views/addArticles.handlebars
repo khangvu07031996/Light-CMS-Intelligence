@@ -24,222 +24,235 @@
         <section class="panel">
             <header class="panel-heading">
             </header>
-
-            
-
             <div class="panel-body">
-                <div class="form" >
-                   
-                    <form method="POST" action="/article/add" class="form-validate form-horizontal save" id = "save">
-                    <div class = "col-lg-7">
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Headline <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <input class="form-control" id="cname" name="headline" minlength="5" type="text" required />
+                <div class="form">
+
+                    <form method="POST" action="/article/add" class="form-validate form-horizontal save" id="save">
+                        <div class="col-lg-7">
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2"> Headline <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="cname" name="headline" minlength="5" type="text" required />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Section <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <select class="form-control" id="section_selection" name = "section" >
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2"> Section <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <select class="form-control" id="section_selection" name="section">
                                     {{#each Section}}
                                     <option>{{name}}</option>
                                     {{/each}}
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2">  Premble <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <textarea class="col-lg-12" name = "premble"> </textarea>
-                            </div>
-                        </div>
-				  <div class="form-group">
-                           <div class="col-lg-2">
-                                 <div class="col-lg-12 col-md-offset-5" style="">
-                                    <label class="" for="cname" class="control-label"> File : <span class="required">*</span></label>
                                 </div>
-                                <div id = "divajax" class="col-lg-12 col-md-offset-5">
-                                            <div class="btn btn-info image-preview-input">
-                                            <span class="glyphicon glyphicon-folder-open"></span>
-                                            {{!-- <input type="file" multiple accept="image/png, image/jpeg, image/gif" name="file" /> --}}
+                            </div>
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2">  Premble <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <textarea class="col-lg-12" name="premble"> </textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-2">
+                                    <div class="col-lg-12 col-md-offset-5" style="">
+                                        <label class="" for="cname" class="control-label"> File : <span class="required">*</span></label>
+                                    </div>
+                                    <div id="divajax" class="col-lg-12 col-md-offset-5">
+                                        <div class="btn btn-info image-preview-input">
+                                            <span class="glyphicon glyphicon-folder-open"></span> {{!-- <input type="file"
+                                                multiple accept="image/png, image/jpeg, image/gif" name="file" /> --}}
                                             <input style="display: block; margin:0px ;width:50px;" type="file" id="files" name="files" multiple accept="image/*">
                                             <!-- rename it -->
-                                        </div> 
-                                </div>
-                                <button type="button" id = "btnPopup2" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal" style="font-size: 15px;margin-top: 7px;">+</button>
-                               
-                           </div >
-                                <div class="col-md-10">                               
-									<div class="col-md-12" id="divimg"></div>
-									<input type="hidden" id = "imgPaths" name="imgPaths" value="">
-									
-                                </div>
-                              
-                                
-                        </div>   
-                        
-                         <div class="form-group">
-                            <div class="col-md-2"></div>
-
-                            <div class="col-md-10">
-                                <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
-                                    <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
-                                    <div>
-                                        <input type="radio"  name="cropimage" value="auto" checked="checked">automatical<br>
-                                        <input type="radio" name="cropimage" value="manual">manual<br>
-                                       
-                                        <br />
-									    <input type="button" class="btn btn-info"  id="btnCrop" value="Crop" style="display: true" />
-									</div>
-                                    <div>                                       
-                                         
-                                        <div class="demo-container" id ="divImgSelected">
-                                           
-                                             {{!-- <img id = "imgsrc0" src="" ></img>  --}}
-                                            
                                         </div>
+                                    </div>
+                                    <button type="button" id="btnPopup" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal"
+                                        style="font-size: 15px;margin-top: 7px;">+</button>
 
-                                        <div class="demo-container2" >
-                                              <canvas id="myCanvas" style="display: none"></canvas>
-                                        </div> 
-                                        
-                                    </div>
-                                    <div>
-                                        <input type="hidden" id = "imgid" name="imgid" value="">
-                                    </div>
-									
-								
-                                    
-                                    <div >
-                                        <div >
-                                            <label for="heading">Heading:</label>
-                                            <input id = "heading" type="text" class="form-control" name="heading">
-                                        </div>
-                                        <div >
-                                            <label for="description">Description:</label>
-                                            ​<textarea id="description" rows="5"  class="col-md-12"></textarea>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="col-md-12" id="divimg"></div>
+                                    <input type="hidden" id="imgPaths" name="imgPaths" value="">
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-2"></div>
+
+                                <div class="col-md-10">
+                                    <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
+                                        <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                                        <div>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <input type="radio" name="cropimage" value="auto" checked="checked">                                                        Automatical <br />
+                                                        <input type="radio" name="cropimage" value="manual"> Manual <br />
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" style="margin:20px" class="btn btn-info" id="btnCrop" value="Crop" style="display: true" />
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+
+
+
                                         </div>
                                         <div>
-                                            <label for="photographer">Photographer:</label>
-                                            <input id = "photographer" type="tel" class="form-control" name="photographer">
+
+                                            <div class="demo-container" id="divImgSelected">
+
+                                                {{!-- <img id="imgsrc0" src=""></img> --}}
+
+                                            </div>
+
+                                            <div class="demo-container2">
+                                                <canvas id="myCanvas" style="display: none"></canvas>
+                                            </div>
+
                                         </div>
+                                        <div>
+                                            <input type="hidden" id="imgid" name="imgid" value="">
+                                        </div>
+
+
+
+                                        <div>
+                                            <div>
+                                                <label for="heading">Heading:</label>
+                                                <input id="heading" type="text" class="form-control" name="heading">
+                                            </div>
+                                            <div>
+                                                <label for="description">Description:</label> ​
+                                                <textarea id="description" rows="5" class="col-md-12"></textarea>
+                                            </div>
+                                            <div>
+                                                <label for="photographer">Photographer:</label>
+                                                <input id="photographer" type="tel" class="form-control" name="photographer">
+                                            </div>
+                                            <div>
+                                                <input type="hidden" id = "usercreate" name="usercreate" value="{{user.username}}">
+                                            </div>
 
                                             <br />
                                             <div class="pull-right">
-                                                <button id = "btnImgInfo" type="button" class="btn btn-primary">Save</button>
+                                                <button id="btnImgInfo" type="button" class="btn btn-primary">Save</button>
 
-                                                
+
                                             </div>
-                                        
+
+                                        </div>
                                     </div>
                                 </div>
+
+
                             </div>
 
-                             
-                         </div>
 
 
 
-
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2">  Body <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <textarea class = "body" id="source" name = "body"></textarea>
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2">  Body <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <textarea class="body" id="source" name="body"></textarea>
+                                </div>
                             </div>
-                        </div>
-                     {{!-- <div class="form-group">
-                            <label for="cname" class="control-label col-lg-2"> Image <span class="required">*</span></label>
-                            <div class="input-group image-preview col-lg-10" style="padding-left:15px ; padding-right:15px;">
-                                <input type="text" class="form-control image-preview-filename" name="images">
-                                <!-- don't give a name === doesn't send on POST/GET -->
-                                <span class="input-group-btn">
+                            {{!--
+                            <div class="form-group">
+                                <label for="cname" class="control-label col-lg-2"> Image <span class="required">*</span></label>
+                                <div class="input-group image-preview col-lg-10" style="padding-left:15px ; padding-right:15px;">
+                                    <input type="text" class="form-control image-preview-filename" name="images">
+                                    <!-- don't give a name === doesn't send on POST/GET -->
+                                    <span class="input-group-btn">
                                                     <!-- image-preview-clear button -->
                                     <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
                                             <span class="glyphicon glyphicon-remove"></span>Clear
                                     </button>
-                                <!-- image-preview-input -->
-                                <div class="btn btn-default image-preview-input">
-                                    <span class="glyphicon glyphicon-folder-open"></span>
-                                    <span class="image-preview-input-title">Browse</span>
-                                    <input type="file" multiple accept="image/png, image/jpeg, image/gif" name="file" />
-                                    <!-- rename it -->
+                                    <!-- image-preview-input -->
+                                    <div class="btn btn-default image-preview-input">
+                                        <span class="glyphicon glyphicon-folder-open"></span>
+                                        <span class="image-preview-input-title">Browse</span>
+                                        <input type="file" multiple accept="image/png, image/jpeg, image/gif" name="file" />
+                                        <!-- rename it -->
+                                    </div>
+                                    </span>
                                 </div>
-                                </span>
-                            </div>
-                        </div> --}}
-                        
-                       
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Tags <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                               <button class="btn btn-info col-lg-4" id = "press_me" type = "button">generator</button>
-                                <input class = "form-control col-lg-8" type="text" data-role="tagsinput"  id ="result" value="" data-role="" name = "tags"/>
-                            </div>
+                            </div> --}}
+
+
                         </div>
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Author <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <select class="form-control" id="author_selection" name = "author" multiple="multiple">
+                        <div class="col-lg-5">
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2"> Tags <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <button class="btn btn-info col-lg-4" id="press_me" type="button">generator</button>
+                                    <input class="form-control col-lg-8" type="text" data-role="tagsinput" id="result" value="" data-role="" name="tags" />
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2"> Author <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <select class="form-control" id="author_selection" name="author" multiple="multiple">
                                     {{#each Author}}
                                     <option>{{name}}</option>
                                     {{/each}}
                                 </select>
-                            </div>
-                        </div>
-                         
-                        <div class="form-group ">
-                            <label class="control-label col-lg-2"> Widgets </label>
-                            <div class="col-lg-10">
-                                <input class="form-control" id="cname" name="widgets" minlength="5" type="text" required />
-                            </div>
-                        </div>
-                        {{!-- <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Date Created <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <div class='input-group date' id='datetimepicker2'>
-                                    <input type='text' class="form-control" name="date_created" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
                                 </div>
                             </div>
-                        </div> --}}
 
-                        {{!-- <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Date Publish <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <div class='input-group date' id='datetimepicker3'>
-                                    <input type='text' class="form-control" name="publishDate" />
-                                    <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                            <div class="form-group ">
+                                <label class="control-label col-lg-2"> Widgets </label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="cname" name="widgets" minlength="5" type="text" required />
                                 </div>
                             </div>
-                        </div> --}}
-                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <select class="form-control" id="sel1" name = "status" >
+                            {{!--
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2"> Date Created <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <input type='text' class="form-control" name="date_created" />
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> --}} {{!--
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2"> Date Publish <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <div class='input-group date' id='datetimepicker3'>
+                                        <input type='text' class="form-control" name="publishDate" />
+                                        <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div> --}}
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <select class="form-control" id="sel1" name="status">
                                     <option>Save Draft</option>
                                     <option>Published</option>
                                     
-                                </select>
+									</select>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label for="cname" class="control-label col-lg-2"> Create By<span class="required">*</span></label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="cname" name="CreateBy" value="{{user.username}}" minlength="5" type="text" required />
+                                </div>
+                            </div>
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="btn btn-primary" type="submit" name="submit" value="save" style="width: 45%;">Save</button>
+								<button class="btn btn-primary" type="submit" name="submit" value="publish" style="width: 45%;">Publish</button>
                             </div>
                         </div>
-                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> CreateBy<span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                 <input class="form-control" id="cname" name="CreateBy" value= "{{user.username}}" minlength="5" type="text" required />
-                            </div>
-                        </div>
-                        <div class="col-lg-offset-2 col-lg-10" >
-                            <button   class="btn btn-primary" type="submit" style="width: 50%;" >Save</button>
-                        </div>
-                    </div>
-                    
+
                     </form>
                 </div>
 
@@ -260,7 +273,7 @@
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-lg" style="width:100% !important; height:100% !important">
         <div class="modal-content" style="width:100% !important; height:100% !important">
-            
+
             <div class="modal-body" style="width:100% !important; height: 81%; overfolw: auto;">
 
 
@@ -282,19 +295,18 @@
                         <div class="clear"></div>
                     </div>
                 </div>
+                {{!-- style="width : 75px; height : 70px" --}}
 
                 <div id="item_container">
-
-
                     {{#each data}}
                     <div class="item" id="div_{{_id}}" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        <img src="{{media}}/{{medialist.articlePreview}}" draggable="true" id="{{_id}}" style="width : 75px; height : 70px">
+                       
+                        <img src="{{media}}/{{medialist.thumbnail.thumbnail_x75}}" draggable="true" id="{{_id}}" >
+                      
                     </div>
                     {{/each}}
-
                     <div class="clear"></div>
                 </div>
-
 
             </div>
 
@@ -308,81 +320,56 @@
 
 <!-- Modal -->
 <div id="modalFaces" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+    <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">image croped</h4>
-      </div>
-      <div class="modal-body">
-        	<div class="col-md-12" id="divFaces"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">image croped</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12" id="divFaces"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
- </div>
 </div>
 
 
-   
-	
-    
-   
-    <input type="hidden" name="imgX1" id="imgX1" />
-    <input type="hidden" name="imgY1" id="imgY1" />
-    <input type="hidden" name="imgWidth" id="imgWidth" />
-    <input type="hidden" name="imgHeight" id="imgHeight" />
-    <input type="hidden" name="imgCropped" id="imgCropped" />
-
-    <!-- Modal -->
-                <div class="modal fade" id="modalCropManual" role="dialog">
-                    <div class="modal-dialog">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Image croped</h4>
-                            </div>
-                            <div class="modal-body">
-                                <img src="" id = "imgCrop">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id = "btnSubmit" class="btn btn-default" >Save</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-<script>
-    /*
-    window.onload = function () {
-        var img = document.getElementById('imgsrc');
-        var tracker = new tracking.ObjectTracker(['face']);
-        tracker.setStepSize(1.7);
-        tracking.track('#imgsrc', tracker);
-        tracker.on('track', function (event) {
-            event.data.forEach(function (rect) {
-                window.plot(rect.x, rect.y, rect.width, rect.height);
-            });
-        });
-        window.plot = function (x, y, w, h) {
-            var rect = document.createElement('div');
-            document.querySelector('.demo-container').appendChild(rect);
-            rect.classList.add('rect');
-            rect.style.width = w + 'px';
-            rect.style.height = h + 'px';
-            rect.style.left = (img.offsetLeft + x) + 'px';
-            rect.style.top = (img.offsetTop + y) + 'px';
-        };
-    };
-    */
-</script>
 
 
 
+
+<input type="hidden" name="imgX1" id="imgX1" />
+<input type="hidden" name="imgY1" id="imgY1" />
+<input type="hidden" name="imgWidth" id="imgWidth" />
+<input type="hidden" name="imgHeight" id="imgHeight" />
+<input type="hidden" name="imgCropped" id="imgCropped" />
+
+<!-- Modal -->
+<div class="modal fade" id="modalCropManual" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Image croped</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" id="imgCrop">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSubmit" class="btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+ 

@@ -59,8 +59,14 @@ $(document).ready(function () {
     //even click on button Cancel:
     $("#btnCancel").click(function () {
         arrImgObjs = [];
+		 //Reset:
+        $("#cart_items").fadeOut("2000", function () {
+            $(this).html("").fadeIn("fast").css({ left: 0 });
+        });  
+		
     });
 
+         
 });
 //event browse file:
 document.addEventListener("DOMContentLoaded", init, false);
@@ -93,13 +99,15 @@ $(document).ready(function () {
         activeClass: "drop-active",
         hoverClass: "drop-hover",
         drop: function (event, ui) {
+			
             let item = ui.draggable.html();
             let itemid = ui.draggable.attr("id");
             let html = '<div class="item icart">';
             html = html + '<div class="divrm">';
             html = html + '<a onclick="remove(this)" class="remove ' + itemid + '">&times;</a>';
             html = html + '</div>' + item + '</div>';
-            console.log(html);
+            console.log(html);	
+			
             $("#cart_items").append(html);            
             console.log('currentSrc = ' + ui.draggable[0].firstElementChild.currentSrc);
             let strsrc = ui.draggable[0].firstElementChild.currentSrc.replace(domain, "");
@@ -248,9 +256,12 @@ $(document).on('click', '#divimg img', function (evt) {
     $("#imgsrc0").attr('src', "");
 	imageID = this.id;
     getDataByID(this.id);
+   
+	$('.selected').removeClass('selected'); // removes the previous selected class
+    $(this).addClass('selected'); // adds the class to the clicked image
 });
 
-$(document).on('click', '#btnPopup2', function (evt) {    
+$(document).on('click', '#btnPopup', function (evt) {    
     getData();
 	var selDiv = "";
     selDiv = document.querySelector("#divimg");
@@ -264,7 +275,15 @@ $(document).on('click', '#btnPopup2', function (evt) {
     //Display images on div of selected images on popup:
     $("#cart_items").children = divimgItems;
     for (let i = 0; i < arrTagImg.length; i++) {
+        let img = arrTagImg[i];
         console.log(arrTagImg[i]);
+        let width = arrTagImg[i].width;
+        let obj = $("#" + arrTagImg[i].id);
+        if (width < 75) {
+            //$(".element").css( { marginLeft : "200px", marginRight : "200px" } );           
+           // img = $("#" + arrTagImg[i].id).css( { paddingLeft : "20px", paddingRight : "20px" } );
+            img = arrTagImg[i];
+        }
         let html = '<div class="item icart">';
         html = html + '<div class="divrm">';
         html = html + '<a onclick="remove(this)" class="remove ' + '">&times;</a>';
@@ -272,6 +291,19 @@ $(document).on('click', '#btnPopup2', function (evt) {
         $("#cart_items").append(html);       
     }
     let divcart = $("#cart_items");
+
+    //Set padding for tag img:
+    //$(".item img").css( { paddingLeft : "20px", paddingRight : "20px" } );
+    let objs = $(".item img");
+    for (let j = 0; j < objs.length; j++) {       
+        let id = objs[j].id;
+        let width = objs[j].width;
+        let height = objs[j].height;
+        if (width < 75) {
+            let img = $(".item  #" + id);
+               // $("#item_container  #" + id).css( { paddingLeft : "20px", paddingRight : "20px" } );
+        }
+    }       
 });
 $(document).on('click', '#btnImgInfo', function (evt) {    
     let data = getImageInfo();
@@ -294,7 +326,7 @@ $(document).on('click', '#btnCrop', function (evt) {
 
     if ($("#save input[type='radio']:checked").val() == "auto") {
         cropAutoImage(imageID);
-    } else {
+    } else {       
         let x1 = $('#imgX1').val();
         let y1 = $('#imgY1').val();
         let width = $('#imgWidth').val();
@@ -316,6 +348,16 @@ $(document).on('click', '#btnCrop', function (evt) {
     
     
 });
+
+//Highlight image after click:
+$('img').click(function(){
+    $('.selected').removeClass('selected'); // removes the previous selected class
+    $(this).addClass('selected'); // adds the class to the clicked image
+ });
+ 
+ $('img').click(function(){
+     //$(this).toggleClass('selectedIMG');
+ });
 
 //crop image:
 $(document).on('click', '#btnSubmit', function (evt) {
@@ -453,24 +495,31 @@ function getDataByMoment(moment) {
             data: JSON.stringify(data),
             contentType: "application/json",            
             dataType: 'json',
-            success: function (result) {
-                result.forEach(function (f) {
-                    let path = f.media + '/' + f.medialist.articlePreview;
-                    let img = "<img src=\"" + path + "\" " + "id = \"" + f._id + "\"" + " style= \"" + "width : 75px; height : 70px \"" + ">  ";
+            success: function (result) {                
+                //window.location.reload();
+                result.forEach(function (f) {  
+                    //let path = f.media + '/' + f.medialist.thumbnail.thumbnail_400x400;
+                    //+ "style=\"height : 75px\" "
+                    let thumbnail_75x75 = f.medialist.articlePreview;
+                    let path = f.media + '/' + thumbnail_75x75;
+                    let img = "<img  src=\"" + path + "\" " + "id = \"" + f._id + "\" " + "style=\"width: 75px; height : 75px\";  " + ">  ";
                     let html = '<div class="item icart">';
                     html = html + '<div class="divrm">';
                     html = html + '<a onclick="removeSelectedImage(this)" class="remove ' + '">&times;</a>';
-                    html = html + '</div>' + img + '</div>';
+                    html = html + '</div>'  + img + '</div>';                   
                     selDiv.innerHTML += html;
                     //Update array image path:
                     arrPaths.push(path);
-                    arrImgID.push(f._id);
+                    arrImgID.push(f._id);   
+                                 
                 });
+                //refreshDivimg();
                 //update path of selected images:   
                 for (let i = 0; i < arrPaths.length; i++) {
                     arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i];
                 }
-                $("#imgPaths").val(arrPathAndID);
+                $("#imgPaths").val(arrPathAndID);                
+                
             }, error: function (err) {
                 alert(err);
             }
@@ -516,6 +565,33 @@ function getDataByID(id) {
         }
     );
 }
+//Refresh divimg:
+function refreshDivimg() {
+    getData();
+	let selDiv = "";
+    selDiv = document.querySelector("#divimg");
+    //get all tag img in div divimg:
+    let divimg = $('#divimg');
+    //Children of divimg:
+    let divimgItems = divimg.children();
+    //array tags img of divimg:
+    let arrTagImg = [];
+    arrTagImg = divimgItems.find('img');
+    //Display images on div of selected images on popup:     
+    for (let i = 0; i < arrTagImg.length; i++) {
+        let img = arrTagImg[i];
+        console.log(arrTagImg[i]);
+        let width = arrTagImg[i].style.width;
+        let height = arrTagImg[i].style.height;        
+        let obj = $("#" + arrTagImg[i].id);
+        if (width < 75) {
+            //$(".element").css( { marginLeft : "200px", marginRight : "200px" } );           
+            img = $("#" + arrTagImg[i].id).css( { paddingLeft : "20px", paddingRight : "20px" } );
+            img = arrTagImg[i];
+        }
+       
+    }   
+}
 //-----------------------update data of image:---------------------------------------------------------
 function updateImageInfo(imgdata) {
     $.ajax(
@@ -525,7 +601,9 @@ function updateImageInfo(imgdata) {
             data: JSON.stringify(imgdata),
             contentType: "application/json",            
             dataType: 'json',
-            success: function (result) {              
+            success: function (result) {
+				let rst = result;
+				console.log(rst);
                 //window.location.reload();  
 				if (document.getElementById('imgtab') != null){					
 					document.getElementById('imgtab').style.display = "none";
@@ -561,33 +639,70 @@ function updateImageInfoWithFormImage(imgdata) {
 
 //---------------------Get and biding data of tab of image:---------------------------------------------
 //function init tab content include data of image:
+var jcrop_api = null;
 function initImageTabcontent(imgdata) {
-    let src = imgdata.media + "/" + imgdata.medialist.articlePreview;
+    
+    let src = imgdata.media + "/" + imgdata.medialist.thumbnail.thumbnail_400x400;
     $("#description").val(imgdata._id);
     $("#heading").val(imgdata.heading);
     $("#photographer").val(imgdata.photographer);   
     $("#imgid").val(imgdata._id);    
-    let html = "<img src=\"" + src + "\" " + "id = \"cp_" + imgdata._id + "\"" + ">  ";    
+    let html = "<img src=\"" + src + "\" " + "id = \"cp_" + imgdata._id + "\"" + ">  "; 
+		
     $("#divImgSelected").empty();
     $("#divImgSelected").append(html);
-    $("input:radio[name=theme]").click(function() {
-        var value = $(this).val();
+   
+	//Display dimension of image:
+	$("#" + "cp_" + imgdata._id).load(function() {
+        //alert($(this).height());
+       // alert($(this).width());
+        let width = $(this).width();
+        let height = $(this).height();
+        let html = "<br /> <label>" + width +" x " + height + "</label> <br />";
+        $("#divImgSelected").append(html);
+
+    });     
+    
+    if ($("#save input[type='radio']:checked").val() != "auto") {
+        $(".demo-container #cp_" + imgdata._id).Jcrop({
+            onChange: SetCoordinates,
+            onSelect: SetCoordinates
+        }, function() {
+            jcrop_api = this;
+        });
+    } 
+
+    //Click rodio button: 
+    $(function () {
+
+        $('#save input:radio').change(function () {
+            //alert('changed');
+            //JQuery.Jcop:
+            
+            if ($("#save input[type='radio']:checked").val() != "auto") {
+                $(".demo-container #cp_" + imgdata._id).Jcrop({
+                    onChange: SetCoordinates,
+                    onSelect: SetCoordinates
+                }, function() {
+                    jcrop_api = this;
+                });
+            } else {
+                //getDataByID(imageID);
+                jcrop_api.destroy();
+            }
+        });
+
     });
 
-	//JQuery.Jcop:
-    $(".demo-container #cp_" + imgdata._id).Jcrop({
-        onChange: SetCoordinates,
-        onSelect: SetCoordinates
-    });            
-       
-    function SetCoordinates(c) {
-        $('#imgX1').val(c.x);
-        $('#imgY1').val(c.y);
-        $('#imgWidth').val(c.w);
-        $('#imgHeight').val(c.h);
-        //$('#btnCrop0').show();
-    };	
+
 }
+function SetCoordinates(c) {
+    $('#imgX1').val(c.x);
+    $('#imgY1').val(c.y);
+    $('#imgWidth').val(c.w);
+    $('#imgHeight').val(c.h);
+    //$('#btnCrop0').show();
+};	
 
 //get data on tab content of image:
 function getImageInfo() {
@@ -596,6 +711,7 @@ function getImageInfo() {
     imgdata.description = $("#description").val();
     imgdata.heading = $("#heading").val();
     imgdata.photographer = $("#photographer").val();
+    imgdata.usercreate = $("#usercreate").val();
     return imgdata;
 }
 
@@ -661,7 +777,7 @@ function displayImageCropAuto(data) {
 	$("#divFaces").empty();
 	for (let i = 0; i < data.count; i++) {
 		let src = data.path + "/" + data.filename + "_face_" + i + ".jpg";
-		let img = "<img src=\"" + src + "\" "  + " style= \"" + "width : 75px; height : 70px \"" + ">  ";
+		let img = "<img src=\"" + src + "\" " + "style= \"" + "width : 75px; height : 75px \"" +  ">  ";
 		let html = '<div class="item icart">';
 		html += img + '</div>';		
         $("#divFaces").append(html);

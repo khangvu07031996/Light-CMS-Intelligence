@@ -1,3 +1,4 @@
+/*eslint-disable*/
 const mongoose = require('mongoose');
 const section = require('../models/session');
 const userdata = require('../models/user');
@@ -98,7 +99,13 @@ module.exports = {
     dbArticle.date_created = new Date();
     dbArticle.publishDate = new Date();
     dbArticle.CreateBy = req.body.CreateBy;
-    dbArticle.status = req.body.status;
+    //dbArticle.status = req.body.status;
+    console.log("submit = "  + req.body.submit);
+    if (req.body.submit == "save") {
+      dbArticle.status = "Save Draft";
+    } else {
+      dbArticle.status = "Published";
+    }
     dbArticle.save((err) => {
       if (err) {
         response = { error: true, message: 'Error deleting data' };
@@ -176,7 +183,7 @@ module.exports = {
         dataArticle.section = req.body.section;
         dataArticle.premble = req.body.premble;
         dataArticle.body = req.body.body;
-        dataArticle.images = req.body.images;
+        dataArticle.images = req.body.imgPaths;
         dataArticle.author = req.body.author;
         dataArticle.tags = req.body.tags;
         dataArticle.widgets = req.body.widgets;

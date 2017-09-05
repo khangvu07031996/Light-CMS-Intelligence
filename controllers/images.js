@@ -126,23 +126,58 @@ router.post("/image/ajaxUpload", upload.any(), (req, res) => {
             thumbnail_75x75: objThumbnailName[6],
 
         };
-
-        // Resize image:
+        // Resize image with widthxheight:
         for (let j = 0; j < objThumbnailName.length; j++) {
             let src = `${dirObject.destDirectory}/${arrPath[i]}`;
             let dst = `${dirObject.destDirectory}/${objThumbnailName[j]}`;
-            let name = objThumbnailName[j];
+
             imageHelper.resize(src, dst, setting.objThumbnailDim[j].width,
                 setting.objThumbnailDim[j].height);
         }
 
-        let obj = {
+        // Resize with height:        
+        objThumbnailName = [];
+        for (let j = 0; j < setting.objThumbnailDim.count; j++) {
+            objThumbnailName.push(`x${setting.objThumbnailDim[j].height}_${subString}`);
+        }
+        console.log(objThumbnailName);
+        // create object thumbnail:
+        thumbnail.thumbnail_x330 = objThumbnailName[0];
+        thumbnail.thumbnail_x400 = objThumbnailName[2];
+        thumbnail.thumbnail_x240 = objThumbnailName[3];
+        thumbnail.thumbnail_x300 = objThumbnailName[4];
+        thumbnail.thumbnail_x112 = objThumbnailName[5];
+        thumbnail.thumbnail_x75 = objThumbnailName[6];
+        // Resize image with height:
+        imageHelper.resizeWithHeight(objThumbnailName, dirObject,
+            arrPath, setting, i);
 
+        // Resize with width:        
+        objThumbnailName = [];
+        for (let j = 0; j < setting.objThumbnailDim.count; j++) {
+            objThumbnailName.push(`${setting.objThumbnailDim[j].width}x_${subString}`);
+        }
+        console.log(objThumbnailName);
+        // create object thumbnail:
+        thumbnail.thumbnail_567x = objThumbnailName[0];
+        thumbnail.thumbnail_550x = objThumbnailName[1];
+        thumbnail.thumbnail_400x = objThumbnailName[2];
+        thumbnail.thumbnail_390x = objThumbnailName[3];
+        thumbnail.thumbnail_300x = objThumbnailName[4];
+        thumbnail.thumbnail_112x = objThumbnailName[5];
+        thumbnail.thumbnail_75x = objThumbnailName[6];
+        // Resize image with width:
+        imageHelper.resizeWithWidth(objThumbnailName, dirObject,
+            arrPath, setting, i);
+
+
+        let obj = {
             articlePreview: arrPath[i],
             path: dirObject.virtualDir,
             moment: dirObject.moment,
-            thumbnail,
+            thumbnail
         };
+
         image.insert(req, res, null, obj, (err, img) => {
             console.log("inserted!");
         });
@@ -166,6 +201,7 @@ router.post("/image/insert", (req, res) => {
         let subString = arrPath[i].substring(indexOf_ + 1);
 
         // Create name of thumbnail images:
+        objThumbnailName = [];
         for (let j = 0; j < setting.objThumbnailDim.count; j++) {
             objThumbnailName.push(`${setting.objThumbnailDim[j].width}x${setting.objThumbnailDim[j].height}_${subString}`);
         }
@@ -185,9 +221,44 @@ router.post("/image/insert", (req, res) => {
         for (let j = 0; j < objThumbnailName.length; j++) {
             let src = `${dirObject.destDirectory}/${arrPath[i]}`;
             let dst = `${dirObject.destDirectory}/${objThumbnailName[j]}`;
+
             imageHelper.resize(src, dst, setting.objThumbnailDim[j].width,
                 setting.objThumbnailDim[j].height);
         }
+        // Resize with height:        
+        objThumbnailName = [];
+        for (let j = 0; j < setting.objThumbnailDim.count; j++) {
+            objThumbnailName.push(`x${setting.objThumbnailDim[j].height}_${subString}`);
+        }
+        console.log(objThumbnailName);
+        // create object thumbnail:
+        thumbnail.thumbnail_x330 = objThumbnailName[0];
+        thumbnail.thumbnail_x400 = objThumbnailName[2];
+        thumbnail.thumbnail_x240 = objThumbnailName[3];
+        thumbnail.thumbnail_x300 = objThumbnailName[4];
+        thumbnail.thumbnail_x112 = objThumbnailName[5];
+        thumbnail.thumbnail_x75 = objThumbnailName[6];
+        // Resize image with height:
+        imageHelper.resizeWithHeight(objThumbnailName, dirObject,
+            arrPath, setting, i);
+        // Resize with width:        
+        objThumbnailName = [];
+        for (let j = 0; j < setting.objThumbnailDim.count; j++) {
+            objThumbnailName.push(`${setting.objThumbnailDim[j].width}x_${subString}`);
+        }
+        console.log(objThumbnailName);
+        // create object thumbnail:
+        thumbnail.thumbnail_567x = objThumbnailName[0];
+        thumbnail.thumbnail_550x = objThumbnailName[1];
+        thumbnail.thumbnail_400x = objThumbnailName[2];
+        thumbnail.thumbnail_390x = objThumbnailName[3];
+        thumbnail.thumbnail_300x = objThumbnailName[4];
+        thumbnail.thumbnail_112x = objThumbnailName[5];
+        thumbnail.thumbnail_75x = objThumbnailName[6];
+        // Resize image with width:
+        imageHelper.resizeWithWidth(objThumbnailName, dirObject,
+            arrPath, setting, i);
+
         let objinfo = {
             articlePreview: arrPath[i],
             path: dirObject.virtualDir,
