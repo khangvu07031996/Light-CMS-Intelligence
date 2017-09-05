@@ -27,7 +27,7 @@
             <div class="panel-body">
                 <div class="form">
                    
-                    <form method="post" action="/Article/edit/{{article.id}}" class="form-validate form-horizontal save" id="save">
+                    <form method="post" action="/Article/edit/{{article.id}}" class="form-validate form-horizontal save">
                          <div class = "col-lg-8">
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Headline <span class="required">*</span></label>
@@ -66,7 +66,7 @@
                                             <!-- rename it -->
                                         </div>
                                     </div>
-                                    <button type="button" id="btnPopup" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal"
+                                    <button type="button" id="btnPopup2" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal"
                                         style="font-size: 15px;margin-top: 7px;">+</button>
 
                                 </div>
@@ -98,26 +98,16 @@
                                 <div class="col-md-10">
                                     <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
                                         <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
-                                       
+                                        <br />
                                         <div>
                                             <div>
-												<table>
-                                                    <tr>
-                                                        <td>
-                                                             <input type="radio" name="cropimage" value="auto" checked="checked">  Automatical <br />
-                                                             <input type="radio" name="cropimage" value="manual">  Manual <br />                                                
-                                                        </td>
-                                                        <td>
-                                                            <input type="button" style="margin:20px" class="btn btn-info" id="btnCrop" value="Crop" style="display: true" />
-                                                        </td>
-                                                    </tr>
-                                                    
-												</table>
-                                               
-                                                
-												
+                                                <input type="radio" name="cropimage" value="auto" checked="checked">automatical<br>
+                                                <input type="radio" name="cropimage" value="manual">manual<br>
+
+                                                <br />
+                                                <input type="button" class="btn btn-info" id="btnCrop" value="Crop" style="display: true" />
                                             </div>
-											<br />
+
                                             <div class="demo-container" id="divImgSelected">
 
                                                 {{!-- <img id="imgsrc0" src=""></img> --}}
@@ -168,7 +158,6 @@
                                 <textarea class="body" name = "body">{{article.body}}</textarea>
                             </div>
                         </div>
-                                               
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
                             <div class="col-lg-10">
@@ -209,33 +198,9 @@
                             <div class="col-lg-10">
                                 <input class="form-control" id="cname" name="widgets" minlength="5" value="{{article.widgets}}" type="text" required />
                             </div>
-                        </div>
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Date Created <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <div class='input-group date' id='datetimepicker2'>
-                                    <input type='text' class="form-control" name="date_created" value="{{article.date_created}}"/>
-                                    <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Date Publish <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <div class='input-group date' id='datetimepicker3'>
-                                    <input type='text' class="form-control" name="publishDate" value="{{article.publishDate}}"/>
-                                    <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        
+                        </div>  
                          <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> CreateBy <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Create By <span class="required">*</span></label>
                             <div class="col-lg-10">
                                  <input class="form-control" id="cname" name="CreateBy" value= "{{user.username}}" minlength="5" type="text" required />
                                 
@@ -294,7 +259,7 @@
 
                     {{#each images}}
                     <div class="item" id="div_{{_id}}" ondrop="drop(event)" ondragover="allowDrop(event)">
-                          <img src="{{media}}/{{medialist.thumbnail.thumbnail_x75}}" draggable="true" id="{{_id}}"  >
+                        <img src="{{media}}/{{medialist.articlePreview}}" draggable="true" id="{{_id}}" style="width : 75px; height : 70px">
                     </div>
                     {{/each}}
 

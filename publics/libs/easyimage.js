@@ -1,4 +1,3 @@
-/*eslint-disable*/
 var Q = require('q');
 var exec = require('child_process').execFile;
 var command = require('child_process').exec;

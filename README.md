@@ -1,4 +1,13 @@
 # Light-CMS-Intelligence
 Niteco Young Talent 2017
-Khang vu Thanh Nguyen Thai Nguyen 
+Member : Khang vu
+         Thanh Nguyen
 Mentor : Thao Van Pham
+
+# Setting
+clone or download
+run : npm install
+you have to install :
+    - mongodb
+    - elasticsearch
+    - openCv

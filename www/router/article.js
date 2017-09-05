@@ -18,10 +18,10 @@ function getAllArticle(req, res) {
       const lastArticles = responseLast.data;
       let arrLastArticle = [];
       arrLastArticle = lastArticles.images.split(',');
-      //get only path:
-      let arrtemp = [];
+      // get only path:
+      const arrtemp = [];
       for (let j = 1; j < arrLastArticle.length; j += 2) {
-          arrtemp.push(arrLastArticle[j]);
+        arrtemp.push(arrLastArticle[j]);
       }
       arrLastArticle = arrtemp;
       axios.get(`${domain}/api/Article/Technology`).then((responseTech) => {
@@ -33,20 +33,49 @@ function getAllArticle(req, res) {
         }
         axios.get(`${domain}/api/Article/Education`).then((responseEdu) => {
           const educationArticle = responseEdu.data;
+          for (let i = 0; i < educationArticle.length; i++) {
+            let arr = [];
+            arr = educationArticle[i].images.split(',');
+            educationArticle[i].images = arr[1];
+          }
           axios.get(`${domain}/api/Article/Family`).then((responseFa) => {
             const faArticle = responseFa.data;
+            for (let i = 0; i < faArticle.length; i++) {
+              let arr = [];
+              arr = faArticle[i].images.split(',');
+              faArticle[i].images = arr[1];
+            }
             axios.get(`${domain}/api/Article/World`).then((responseWo) => {
               const worldArticle = responseWo.data;
+              for (let i = 0; i < worldArticle.length; i++) {
+                let arr = [];
+                arr = worldArticle[i].images.split(',');
+                worldArticle[i].images = arr[1];
+              }
               axios.get(`${domain}/api/Article/Sports`).then((responseSp) => {
                 let arr = [];
                 const sportArticle = responseSp.data;
-                //console.log(responseSp);
                 for (let i = 0; i < sportArticle.length; i++) {
                   arr = sportArticle[i].images.split(',');
                   sportArticle[i].images = arr[1];
                 }
                 res.render('allArticle',
-                  { Article: dataArticle, arr, lastArticlesdata: lastArticles, arrLastArticle, tech: technologyArticle, edu: educationArticle, fa: faArticle, world: worldArticle, sport: sportArticle });
+                  { Article: dataArticle,
+                    arr,
+                    lastArticlesdata: lastArticles,
+                    arrLastArticle,
+                    tech: technologyArticle,
+                    edu: educationArticle,
+                    fa: faArticle,
+                    world: worldArticle,
+                    sport: sportArticle,
+                    helpers : {
+                      imageResize(educationArticle){
+                        const temp = educationArticle.replace('Original','390x240');
+                        return temp;
+                      }
+                    }
+                   });
               });
             });
           });
@@ -69,6 +98,11 @@ function getTechArticle(req, res) {
       const hotTechArticle = responseHotTech.data;
       let arrHotArticle = [];
       arrHotArticle = hotTechArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('technologyArticle', { tech: techArticles, hot: hotTechArticle, arrHotArticle });
     });
   });
@@ -86,6 +120,11 @@ function getEduArticle(req, res) {
       const hotEduArticle = responseHotEdu.data;
       let arrHotArticle = [];
       arrHotArticle = hotEduArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('educationArticle', { edu: eduArticles, hot: hotEduArticle, arrHotArticle });
     });
   });
@@ -103,6 +142,11 @@ function getSpArticle(req, res) {
       const hotSpArticle = responseHotSp.data;
       let arrHotArticle = [];
       arrHotArticle = hotSpArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('sportArticles', { sp: spArticles, hot: hotSpArticle, arrHotArticle });
     });
   });
@@ -120,6 +164,11 @@ function getWoArticle(req, res) {
       const hotWoArticle = responseHotWo.data;
       let arrHotArticle = [];
       arrHotArticle = hotWoArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('worldArticle', { wo: woArticles, hot: hotWoArticle, arrHotArticle });
     });
   });
@@ -137,6 +186,11 @@ function getFaArticle(req, res) {
       const hotFaArticle = responseHotFa.data;
       let arrHotArticle = [];
       arrHotArticle = hotFaArticle.images.split(',');
+      const arrtemp = [];
+      for (let j = 1; j < arrHotArticle.length; j += 2) {
+        arrtemp.push(arrHotArticle[j]);
+      }
+      arrHotArticle = arrtemp;
       res.render('familyArticle', { fa: faArticles, hot: hotFaArticle, arrHotArticle });
     });
   });

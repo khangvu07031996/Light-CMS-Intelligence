@@ -40,8 +40,8 @@ module.exports = {
     AuthorData.email = req.body.email;
     AuthorData.active = req.body.active;
     AuthorData.image = req.body.image;
-    AuthorData.date_update = new Date(req.body.date_update);
-    AuthorData.date_created = new Date(req.body.date_created);
+    AuthorData.date_update = new Date();
+    AuthorData.date_created = new Date();
     AuthorData.save((err) => {
       if (err) {
         response = { error: true, message: 'Error adding data' };
@@ -57,7 +57,17 @@ module.exports = {
       if (err) {
         response = { error: true, message: 'Error fetching data' };
       } else {
-        res.render('AuthorForm', { Author: data });
+        res.render('AuthorForm', { Author: data,
+          helpers: {
+            date(data) {
+              const date = new Date(data);
+              const d = date.getDate();
+              const mm = date.getMonth() + 1;
+              const yyyy = date.getFullYear();
+              return `${d}/${mm}/${yyyy}`;
+            },
+
+          } });
       }
     });
   },
@@ -100,8 +110,8 @@ module.exports = {
         dataAuthor.active = req.body.active;
         dataAuthor.email = req.body.email;
         dataAuthor.dob = new Date(req.body.dob);
-        dataAuthor.date_created = new Date(req.body.date_created);
-        dataAuthor.date_update = new Date(req.body.date_update);
+        dataAuthor.date_created = new Date();
+        dataAuthor.date_update = new Date();
         dataAuthor.image = req.body.image;
         dataAuthor.save((err) => {
           if (err) {
@@ -113,8 +123,8 @@ module.exports = {
       }
     });
   },
+  getAuthorNames(callback) {
+    Author.find(callback);
+  },
+};
 
-};
-module.exports.getAuthorNames = function (callback) {
-  Author.find(callback);
-};

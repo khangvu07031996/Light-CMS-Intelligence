@@ -8004,8 +8004,6 @@ ul.amounts li {
 
 .form-horizontal .form-group {
 
-    border-bottom: 1px solid #eff2f7;
-
     padding-bottom: 15px;
 
     margin-bottom: 15px;
@@ -9893,5 +9891,20 @@ span.customSelect.changed {
 .image-preview-input-title {
     margin-left:2px;
 }
+@media only screen and (min-width:1224px) {
+    .fileUpload{
+    margin-left: -9px;
+    width: 47px;
+  }
+}
 
-
+@media only screen and (min-width : 1824px) {
+    .fileUpload{
+    margin-left: -4px;
+    width: 79px;
+} 
+}
+.save{
+    
+    margin-left: -8px;
+}

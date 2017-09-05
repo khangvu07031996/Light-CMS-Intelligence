@@ -69,7 +69,7 @@ img:hover{opacity:0.75}
 .single_iteam h2 > a{background-color:rgba(0,0,0,0.4); color:#fff; display:inline-block; font-size:20px; padding:10px}
 .content_top_right{float:left; display:inline; width:100%}
 .featured_nav{}
-.featured_nav li{display:block; float:left; height:230px; margin-bottom:44px; margin-right:10px; position:relative; width:48%}
+.featured_nav li{display:block; float:left; height:194px; margin-bottom:44px; margin-right:10px; position:relative; width:48%}
 .featured_nav li img{width:100%; height:100%}
 .featured_nav li:hover .title_caption{height:130px; padding-top:15%}
 .title_caption{position:absolute; left:0; right:0; bottom:0; padding:10px; text-align:center; background-color:rgba(0,0,0,0.75); -webkit-transition:all 0.5s; -moz-transition:all 0.5s; -ms-transition:all 0.5s; -o-transition:all 0.5s; transition:all 0.5s}
@@ -83,7 +83,7 @@ img:hover{opacity:0.75}
 .solid_line{background-color:#fff; bottom:5px; display:block; height:1px; left:0; position:absolute; width:100%; z-index:0}
 .title_text{background-color:#f6f6f6; display:inline-block; padding:0 10px; position:relative; top:5px; z-index:1}
 .catg1_nav{}
-.catg1_nav li{float:left; display:inline; width:100%; margin-bottom:-20px}
+.catg1_nav li{float:left; display:inline; width:100%; margin-bottom:2px}
 .catg1_nav li a{}
 .catgimg_container{height:150px; overflow:hidden; width:100%; overflow:hidden}
 .catg1_img img{height:100%; width:100%; -webkit-transition:all 0.5s; -o-transition:all 0.5s; transition:all 0.5s}
