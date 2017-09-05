@@ -5,6 +5,7 @@ const path = require("path");
 const image = require("../models/image");
 const imageHelper = require("../helper/imageHelper");
 const directoryHelper = require("../helper/directoryHelper");
+let multer = require("multer");
 
 let router = express.Router();
 // Create object for directory:
@@ -77,8 +78,6 @@ router.get("/image", (req, res) => {
         res.render("imageForm", { images: result });
     });
 });
-
-let multer = require("multer");
 
 let arrPath = [];
 let count = 0;

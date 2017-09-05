@@ -23,6 +23,7 @@ module.exports = {
       "new-cap": "off",
       "no-param-reassign": [2, { "props": false }],
       "prefer-template": "error",
-      "func-names": ["off", "as-needed"]
+      "func-names": ["off", "as-needed"],
+      "import/no-unresolved": "off"
   }
 };
