@@ -1,6 +1,5 @@
-<script src="/Scripts/img.js" type="text/javascript">
 
-</script>
+<script src="/Scripts/img.js" type="text/javascript"></script>
 
 
 <div class="row">
@@ -9,7 +8,7 @@
         <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
             <li><i class="icon_document_alt"></i>Forms</li>
-            <li><i class="fa fa-files-o"></i>Addimages</li>
+            <li><i class="fa fa-files-o"></i>Add images</li>
         </ol>
     </div>
 </div>
@@ -22,43 +21,46 @@
             </header>
             <div class="panel-body">
                 <div class="form">
-                    <form action="/image/{{image._id}}" method="post" class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-10">
-                                <img src="{{image.media}}/{{image.medialist.articlePreview}}" style="width : 200px; height : 200px"></img>
 
+                    <form action="/image/{{image._id}}" method="post" class="form-horizontal" >
+                         <div class="form-group">
+                             <label class="col-md-2"></label>
+                            <div class="col-md-10">
+                                <img src = "{{image.media}}/{{image.medialist.thumbnail.thumbnail_300x300}}" ></img>
+                              
                             </div>
-
-
-                        </div>
+                                                            
+                        </div>   
                         <div>
-                            <input type="hidden" id="imgid" name="imgid" value="{{image._id}}">
+                            <input type="hidden" id = "imgid" name="imgid" value="{{image._id}}">
                         </div>
-
-                        <div class="form-group">
-                            <label for="cname" class="control-label col-lg-3"> Heading <span class="required">*</span></label>
-                            <div class="col-lg-6">
-                                <input id="heading" type="text" class="form-control" name="heading" value="{{image.heading}}">
+						
+						<div class="form-group">
+                            <label for="cname" class="control-label col-lg-2"> Heading <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <input id = "heading" type="text" class="form-control" name="heading" value="{{image.heading}}">
                             </div>
                         </div>
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-3"> Description <span class="required">*</span></label>
-                            <div class="col-lg-6">
-                                <textarea id="description" name="description" rows="5" class="col-md-12" value="">{{image.description}}</textarea>
+                            <label for="cname" class="control-label col-lg-2"> Description <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <textarea id="description" name="description" rows="5"  class="col-md-12" value = "">{{image.description}}</textarea>
                             </div>
                         </div>
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-3"> Photographer <span class="required">*</span></label>
-                            <div class="col-lg-6">
-                                <input id="photographer" type="tel" class="form-control" name="photographer" value="{{image.photographer}}">
+                            <label for="cname" class="control-label col-lg-2"> Photographer <span class="required">*</span></label>
+                            <div class="col-lg-10">
+                                <input id = "photographer" type="tel" class="form-control" name="photographer" value="{{image.photographer}}">
                             </div>
                         </div>
-
-
-
+                       
+                       <div>
+                            <input type="hidden" id = "usercreate" name="usercreate" value="{{user.username}}">
+                       </div>
+                        
                         <div class="form-group ">
-                            <div class="col-lg-offset-3 col-lg-10">
-                                <button class="btn btn-primary" type="button" id="btnUpdateImage">submit</button>
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="btn btn-primary" type="button" id ="btnUpdateImage">submit</button>
 
                             </div>
                         </div>
@@ -68,6 +70,5 @@
             </div>
         </section>
     </div>
-</div>
 </div>
 <!-- page end-->

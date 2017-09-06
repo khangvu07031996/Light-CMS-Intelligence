@@ -1,12 +1,8 @@
 <link href="/css/image.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/jquery.Jcrop.css" type="text/css" />
-
 <script type="text/javascript" src="/Scripts/jquery.Jcrop.min.js"></script>
-
 <script src="/Scripts/img.js" type="text/javascript"></script>
 
-<script src="/build/tracking-min.js"></script>
-<script src="/build/data/face-min.js"></script>
 
 <div class="row">
     <div class="col-lg-12">
@@ -23,9 +19,7 @@
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
-            </header>
-
-            
+            </header>         
 
             <div class="panel-body">
                 <div class="form" >
@@ -67,7 +61,7 @@
                                             <!-- rename it -->
                                         </div> 
                                 </div>
-                                <button type="button" id = "btnPopup2" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal" style="font-size: 15px;margin-top: 7px;">+</button>
+                                <button type="button" id = "btnPopup" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal" style="font-size: 15px;margin-top: 7px;">+</button>
                                
                            </div >
                                 <div class="col-md-10">                               
@@ -79,66 +73,78 @@
                                 
                         </div>   
                         
-                         <div class="form-group">
-                            <div class="col-md-2"></div>
+                          <div class="form-group">
+                                <div class="col-md-2"></div>
 
-                            <div class="col-md-10">
-                                <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
-                                    <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
-                                    <div>
-                                        <input type="radio"  name="cropimage" value="auto" checked="checked">automatical<br>
-                                        <input type="radio" name="cropimage" value="manual">manual<br>
-                                       
-                                        <br />
-									    <input type="button" class="btn btn-info"  id="btnCrop" value="Crop" style="display: true" />
-									</div>
-                                    <div>                                       
-                                         
-                                        <div class="demo-container" id ="divImgSelected">
-                                           
-                                             {{!-- <img id = "imgsrc0" src="" ></img>  --}}
-                                            
-                                        </div>
+                                <div class="col-md-10">
+                                    <div id="imgtab" class="tabcontent" class="col-md-6 col-md-offset-4">
+                                        <span onclick="this.parentElement.style.display='none'" class="topright">x</span>
+                                        <div>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <input type="radio" name="cropimage" value="auto" checked="checked">                                                        Automatical <br />
+                                                        <input type="radio" name="cropimage" value="manual"> Manual <br />
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" style="margin:20px" class="btn btn-info" id="btnCrop" value="Crop" style="display: true" />
+                                                    </td>
+                                                </tr>
 
-                                        <div class="demo-container2" >
-                                              <canvas id="myCanvas" style="display: none"></canvas>
-                                        </div> 
-                                        
-                                    </div>
-                                    <div>
-                                        <input type="hidden" id = "imgid" name="imgid" value="">
-                                    </div>
-									
-								
-                                    
-                                    <div >
-                                        <div >
-                                            <label for="heading">Heading:</label>
-                                            <input id = "heading" type="text" class="form-control" name="heading">
-                                        </div>
-                                        <div >
-                                            <label for="description">Description:</label>
-                                            ​<textarea id="description" rows="5"  class="col-md-12"></textarea>
+                                            </table>
+
+
+
                                         </div>
                                         <div>
-                                            <label for="photographer">Photographer:</label>
-                                            <input id = "photographer" type="tel" class="form-control" name="photographer">
+
+                                            <div class="demo-container" id="divImgSelected">
+
+                                                {{!-- <img id="imgsrc0" src=""></img> --}}
+
+                                            </div>
+
+                                            <div class="demo-container2">
+                                                <canvas id="myCanvas" style="display: none"></canvas>
+                                            </div>
+
                                         </div>
+                                        <div>
+                                            <input type="hidden" id="imgid" name="imgid" value="">
+                                        </div>
+
+
+
+                                        <div>
+                                            <div>
+                                                <label for="heading">Heading:</label>
+                                                <input id="heading" type="text" class="form-control" name="heading">
+                                            </div>
+                                            <div>
+                                                <label for="description">Description:</label> ​
+                                                <textarea id="description" rows="5" class="col-md-12"></textarea>
+                                            </div>
+                                            <div>
+                                                <label for="photographer">Photographer:</label>
+                                                <input id="photographer" type="tel" class="form-control" name="photographer">
+                                            </div>
+                                            <div>
+                                                <input type="hidden" id = "usercreate" name="usercreate" value="{{user.username}}">
+                                            </div>
 
                                             <br />
                                             <div class="pull-right">
-                                                <button id = "btnImgInfo" type="button" class="btn btn-primary">Save</button>
+                                                <button id="btnImgInfo" type="button" class="btn btn-primary">Save</button>
 
-                                                
+
                                             </div>
-                                        
+
+                                        </div>
                                     </div>
                                 </div>
+
+
                             </div>
-
-                             
-                         </div>
-
 
 
 
@@ -212,8 +218,11 @@
                             </div>
                         </div>
                         <div class="col-lg-offset-2 col-lg-10" >
-                            <button   class="btn btn-primary save" type="submit" style="width: 50%;" >Save</button>
+                            <button   class="btn btn-primary save" type="submit" name="submit" value="save" style="width: 45%;" >Save</button>
+                            &nbsp&nbsp
+                            <button   class="btn btn-primary save" type="submit" name="submit" value="publish" style="width: 45%;" >Publish</button>
                         </div>
+                        
                     </div>
                     
                     </form>
@@ -236,7 +245,7 @@
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-lg" style="width:100% !important; height:100% !important">
         <div class="modal-content" style="width:100% !important; height:100% !important">
-            
+
             <div class="modal-body" style="width:100% !important; height: 81%; overfolw: auto;">
 
 
@@ -258,19 +267,18 @@
                         <div class="clear"></div>
                     </div>
                 </div>
+                {{!-- style="width : 75px; height : 70px" --}}
 
                 <div id="item_container">
-
-
                     {{#each data}}
                     <div class="item" id="div_{{_id}}" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        <img src="{{media}}/{{medialist.articlePreview}}" draggable="true" id="{{_id}}" style="width : 75px; height : 70px">
+                       
+                        <img src="{{media}}/{{medialist.thumbnail.thumbnail_x75}}" draggable="true" id="{{_id}}" >
+                      
                     </div>
                     {{/each}}
-
                     <div class="clear"></div>
                 </div>
-
 
             </div>
 
@@ -284,81 +292,56 @@
 
 <!-- Modal -->
 <div id="modalFaces" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+    <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">image croped</h4>
-      </div>
-      <div class="modal-body">
-        	<div class="col-md-12" id="divFaces"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">image croped</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12" id="divFaces"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
- </div>
 </div>
 
 
-   
-	
-    
-   
-    <input type="hidden" name="imgX1" id="imgX1" />
-    <input type="hidden" name="imgY1" id="imgY1" />
-    <input type="hidden" name="imgWidth" id="imgWidth" />
-    <input type="hidden" name="imgHeight" id="imgHeight" />
-    <input type="hidden" name="imgCropped" id="imgCropped" />
-
-    <!-- Modal -->
-                <div class="modal fade" id="modalCropManual" role="dialog">
-                    <div class="modal-dialog">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Image croped</h4>
-                            </div>
-                            <div class="modal-body">
-                                <img src="" id = "imgCrop">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id = "btnSubmit" class="btn btn-default" >Save</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-<script>
-    /*
-    window.onload = function () {
-        var img = document.getElementById('imgsrc');
-        var tracker = new tracking.ObjectTracker(['face']);
-        tracker.setStepSize(1.7);
-        tracking.track('#imgsrc', tracker);
-        tracker.on('track', function (event) {
-            event.data.forEach(function (rect) {
-                window.plot(rect.x, rect.y, rect.width, rect.height);
-            });
-        });
-        window.plot = function (x, y, w, h) {
-            var rect = document.createElement('div');
-            document.querySelector('.demo-container').appendChild(rect);
-            rect.classList.add('rect');
-            rect.style.width = w + 'px';
-            rect.style.height = h + 'px';
-            rect.style.left = (img.offsetLeft + x) + 'px';
-            rect.style.top = (img.offsetTop + y) + 'px';
-        };
-    };
-    */
-</script>
 
 
 
+
+<input type="hidden" name="imgX1" id="imgX1" />
+<input type="hidden" name="imgY1" id="imgY1" />
+<input type="hidden" name="imgWidth" id="imgWidth" />
+<input type="hidden" name="imgHeight" id="imgHeight" />
+<input type="hidden" name="imgCropped" id="imgCropped" />
+
+<!-- Modal -->
+<div class="modal fade" id="modalCropManual" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Image croped</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" id="imgCrop">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSubmit" class="btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+ 

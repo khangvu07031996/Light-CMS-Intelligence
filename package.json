@@ -29,6 +29,7 @@
     "gulp-live-server": "0.0.31",
     "gulp-nodemon": "^2.2.1",
     "handlebars-loop": "^1.0.3",
+    "mkdirp": "^0.5.1",
     "mongodb": "*",
     "mongoosastic": "^4.3.0",
     "mongoose": "*",

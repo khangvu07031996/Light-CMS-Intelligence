@@ -1,7 +1,6 @@
 const express = require('express');
 
 const bodyParser = require('body-parser');
-
 const mongoose = require('mongoose');
 
 const app = express();
@@ -65,10 +64,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // app.use(require('connect').bodyParser());
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.urlencoded({limit: '50mb'}));
-app.use(bodyParser.json({limit: '50mb'}));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ limit: '50mb' }));
+app.use(bodyParser.json({ limit: '50mb' }));
 // app.use(expressValidator());
 // view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -76,10 +75,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({ defaultLayout: 'layout' }));
 app.set('view engine', 'handlebars');
 
-function error(err,req,res,next){
+function error(err, req, res, next) {
   errorlog.error(err.stack);
   res.send(500);
-} 
+}
 app.use(error);
 // Passport init
 

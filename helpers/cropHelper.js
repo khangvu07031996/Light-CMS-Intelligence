@@ -1,3 +1,4 @@
+
 module.exports = {
 
   initImageSize(im, x, y, width, height) {
@@ -5,9 +6,9 @@ module.exports = {
     let _y;
     let _width;
     let _height;
-    const w = width / 2;
-    const h = height / 2;
-    const obj = {};
+    let w = width / 2;
+    let h = height / 2;
+    let obj = {};
 
     if (x - w < 0) {
       _x = 0;

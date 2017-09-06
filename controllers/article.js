@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const variable = require('../config.js');
 const multer = require('multer');
+
 const domain = variable.token;
 const router = express.Router();
 
@@ -92,20 +93,25 @@ function updateArticle(req, res) {
   let response = {};
   ArticleController.findById(req.params.id, (err, dataArticle) => {
     if (err) {
-      throw new Error("Error fetching data")
+      throw new Error("Error fetching data");
     } else {
       dataArticle.headline = req.body.headline;
       dataArticle.section = req.body.section;
       dataArticle.premble = req.body.premble;
       dataArticle.body = req.body.body;
-      dataArticle.images = req.body.images;
+      dataArticle.images = req.body.imgPaths;
       dataArticle.author = req.body.author;
       dataArticle.tags = req.body.tags;
       dataArticle.widgets = req.body.widgets;
       dataArticle.date_created = new Date();
       dataArticle.publishDate = new Date();
       dataArticle.CreateBy = req.body.CreateBy;
-      dataArticle.status = req.body.status;
+      // dataArticle.status = req.body.status;
+      if (req.body.submit === "save") {
+        dataArticle.status = "Draft";
+      } else {
+        dataArticle.status = "Published";
+      }
       dataArticle.save((err) => {
         if (err) {
           return res.json({ error: true, message: 'error update data' });
