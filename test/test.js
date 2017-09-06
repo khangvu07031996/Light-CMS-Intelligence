@@ -6,9 +6,9 @@ const should = require('should');
 const server = supertest.agent('http://localhost:3000');
 
 describe('Test restful API', () => {
-  it('test add article', (done) => {
+  it('add article', (done) => {
     server
-      .post('/api/articles')
+      .post('/api/v1/articles')
       .send({
         headline: 'khangvu',
         section: 'khang',
@@ -30,7 +30,7 @@ describe('Test restful API', () => {
   });
   it('update an article', (done) => {
     server
-      .put('/api/articles/59a3dc0484f52626a826ee0c')
+      .put('/api/v1/articles/59a3dc0484f52626a826ee0c')
       .set('Acept', 'application/x-ww-form-urlencoded')
       .send({
         headline: 'khang vu123123123213123123',
@@ -52,7 +52,7 @@ describe('Test restful API', () => {
   });
   it('delete an article', (done) => {
     server
-      .delete('/api/articles/599b9cf72f4b372f386d37c5')
+      .delete('/api/v1/articles/599b9cf72f4b372f386d37c5')
       .expect(200)
       .end((err, res) => {
         done();

@@ -48,3 +48,6 @@ span.meta_date:hover, span.meta_comment:hover, span.meta_more:hover, span.meta_c
 .contact_us:before{border-bottom:1px solid #00a0df}
 .single_footer_top > h2{color:#fff}
 .similar_post h2 i{color:#00a0df}
+.text{
+    line-height : 26px;
+}

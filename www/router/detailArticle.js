@@ -17,7 +17,7 @@ function getArticleById(req, res) {
       arrtemp.push(arrimage[t]);
     }
     arrimage = arrtemp;
-    axios.get(`${domain}/api/articles`).then((responseAll) => {
+    axios.get(`${domain}/api/v1/Published_articles`).then((responseAll) => {
       const allArticle = responseAll.data;
       for (let i = 0; i < allArticle.length; i++) {
         let arr = [];

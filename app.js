@@ -82,10 +82,8 @@ function error(err,req,res,next){
 } 
 app.use(error);
 // Passport init
-
 // connect flash
 app.use(flash());
-
 // Global Vars
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
@@ -96,12 +94,6 @@ app.use((req, res, next) => {
 });
 app.use(require('./controllers'));
 app.use(require('./api'));
-
-const users = ['John', 'Betty', 'Hal'];
-
-app.get('/api/users', (req, res) => {
-  res.json(users);
-});
 
 mongoose.connect('mongodb://localhost:27017/intelligenceCms', (err) => {
   if (err) {

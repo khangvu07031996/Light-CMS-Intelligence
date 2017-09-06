@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const variable = require('../config.js');
 const multer = require('multer');
+
 const domain = variable.token;
 const router = express.Router();
 
@@ -24,12 +25,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 // --------------get All article -----------------
 function getAllArticle(req, res) {
-  const url = `${domain}/api/articles`;
+  const url = `${domain}/api/v1/articles`;
   axios.get(url).then((response) => {
     const data = response.data;
     res.render('ArticleForm', { articles: data });
   });
 }
+// ----------------add an article ---------------
 function addArticle(req, res) {
   const dbArticle = new ArticleController();
   dbArticle.headline = req.body.headline;
@@ -44,10 +46,8 @@ function addArticle(req, res) {
   dbArticle.publishDate = new Date();
   dbArticle.CreateBy = req.body.CreateBy;
   dbArticle.status = req.body.status;
-  dbArticle.save((err) => {
-    if (err) {
-      throw new Error("Can't save Article");
-    }
+  const command = ArticleData.addArticleApi(dbArticle);
+  command.then((result, err) => {
     res.redirect('/ArticleForm');
   });
 }
@@ -89,10 +89,9 @@ function getArticleById(req, res) {
   });
 }
 function updateArticle(req, res) {
-  let response = {};
-  ArticleController.findById(req.params.id, (err, dataArticle) => {
+  ArticleData.getArticleByIdApi(req.params.id, (err, dataArticle) => {
     if (err) {
-      throw new Error("Error fetching data")
+      throw new Error('Error fetching data');
     } else {
       dataArticle.headline = req.body.headline;
       dataArticle.section = req.body.section;
@@ -106,10 +105,8 @@ function updateArticle(req, res) {
       dataArticle.publishDate = new Date();
       dataArticle.CreateBy = req.body.CreateBy;
       dataArticle.status = req.body.status;
-      dataArticle.save((err) => {
-        if (err) {
-          return res.json({ error: true, message: 'error update data' });
-        }
+      const command = ArticleData.addArticleApi(dataArticle);
+      command.then((result, err) => {
         res.redirect('/ArticleForm');
       });
     }
@@ -136,9 +133,9 @@ router.get('/article/edit/:id', getArticleById);
 // update article
 router.post('/article/edit/:id', updateArticle);
 router.post('/article/search', searchArtical);
-router.get('/api/allArticle/:section', ArticleData.getAllArticleBySection);
-router.get('/api/Article/:section', ArticleData.getArticleBySection);
-router.get('/api/hotArticle/:section', ArticleData.getHotArticleBySection);
+router.get('/api/v1/allArticle/:section', ArticleData.getAllArticleBySection);
+router.get('/api/v1/articles/:section', ArticleData.getArticleBySection);
+router.get('/api/v1/hot_Article/:section', ArticleData.getHotArticleBySection);
 
 function getallName(req, res) {
   Author.getAuthorNames((err, data) => {

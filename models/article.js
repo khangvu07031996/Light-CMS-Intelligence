@@ -52,6 +52,7 @@ const ArticleSchema = mongoose.Schema({
   status: {
     type: String,
     es_indexed: true,
+    default: "Save Draft",
   },
   CreateBy: {
     type: String,
@@ -75,29 +76,32 @@ module.exports = {
   Article,
 };
 module.exports.getArticleBySection = function (req, res) {
-  Article.find({ section: req.params.section },
-    {}, { sort: { date_created: -1 }, limit: 3 }, (err, data) => {
+  Article.find({ section: req.params.section,status : "Published" },
+    {}, { sort: { date_created: -1 }, limit: 3}, (err, data) => {
       res.send(data);
     });
 };
 module.exports.getAllArticleBySection = function (req, res) {
-  Article.find({ section: req.params.section }, {}, { sort: { date_created: -1 } }, (err, data) => {
+  Article.find({ section: req.params.section,status : "Published" }, {}, {sort: { date_created: -1 } }, (err, data) => {
     res.send(data);
   });
 };
 module.exports.getHotArticleBySection = function (req, res) {
-  Article.findOne({ section: req.params.section }, {},
-    { sort: { date_created: -1 } }, (err, data) => {
+  Article.findOne({ section: req.params.section,status : "Published" }, {},
+    { sort: { date_created: -1 }}, (err, data) => {
       res.send(data);
     });
 };
 module.exports.getlastArticle = function (req, res) {
-  Article.findOne({}, [], { sort: { date_created: -1 }, limit: 8 }, (err, data) => {
+  Article.findOne({status : "Published"}, [], { sort: { date_created: -1 }, limit: 8}, (err, data) => {
     res.send(data);
   });
 };
 module.exports.getAllArticleApi = function (callback) {
   Article.find(callback);
+};
+module.exports.getPublishedArticle = function(callback){
+  Article.find({status : "Published"},callback);
 };
 module.exports.getArticleByIdApi = function (id, callback) {
   Article.findById({ _id: id }, callback);
@@ -106,7 +110,7 @@ module.exports.addArticleApi = function (articles) {
   return new Article(articles).save();
 };
 module.exports.getHotArticle = function (req, res) {
-  Article.find({}, [], { sort: { date_created: -1 }, limit: 4 }, (err, data) => {
+  Article.find({status : "Published"}, [], { sort: { date_created: -1 }, limit: 4 }, (err, data) => {
     res.send(data);
   });
 };
