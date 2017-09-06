@@ -144,10 +144,6 @@ var storage = multer.diskStorage({
         count++;
 
         original = 'Original_' + strDate;
-        // teaser = 'Teaser_' + strDate ;
-        // searchResult = 'SearchResul_' + strDate;
-        // articlePreview = 'ArticlePreview_' + strDate;
-
         arrPath.push(original);
         cb(null, original);
 
