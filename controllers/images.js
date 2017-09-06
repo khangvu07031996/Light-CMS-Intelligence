@@ -134,8 +134,7 @@ var arrPath = [];
 var count = 0;
 var storage = multer.diskStorage({
 
-    destination: function (req, file, cb) {
-        //createDirectory();
+    destination: function (req, file, cb) {       
         cb(null, destDirectory);
     },
 
