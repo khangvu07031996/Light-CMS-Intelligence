@@ -203,14 +203,16 @@
                             </div>
                         </div>
                          <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Date Publish <span class="required">*</span></label>
                             <div class="col-lg-10">
-                                <select class="form-control" id="sel1" name = "status" >
-                                     <option>Published</option>
-                                     <option>Save Draft</option>
-                                </select>
+                                <div class='input-group date' id='datetimepicker3'>
+                                    <input type='text' class="form-control" name="publishDate" />
+                                    <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                        </div> 
                          <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Create By<span class="required">*</span></label>
                             <div class="col-lg-10">
@@ -220,7 +222,7 @@
                         <div class="col-lg-offset-2 col-lg-10" >
                             <button   class="btn btn-primary save" type="submit" name="submit" value="save" style="width: 45%;" >Save</button>
                             &nbsp&nbsp
-                            <button   class="btn btn-primary save" type="submit" name="submit" value="publish" style="width: 45%;" >Publish</button>
+                            <button   class="btn btn-success save" type="submit" name="submit" value="publish" style="width: 45%;" >Publish</button>
                         </div>
                         
                     </div>

@@ -19,7 +19,6 @@ const UserSchema = mongoose.Schema({
 const User = module.exports = mongoose.model('User', UserSchema);
 module.exports = {
   // ----------------------add user ------------------------
-
   addUser(req, res) {
     const name = req.body.name;
     const email = req.body.email;
@@ -146,6 +145,6 @@ module.exports = {
   // -----------comparePassword--------------------
 
 };
-module.exports.getUserNames = function (callback) {
+module.exports.getUserName = function (callback) {
   User.find(callback);
 };

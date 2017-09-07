@@ -110,7 +110,7 @@ module.exports = {
       }
     });
   },
-  getSectionNames(callback) {
+  getSectionName(callback) {
     Session.find(callback);
   },
 };

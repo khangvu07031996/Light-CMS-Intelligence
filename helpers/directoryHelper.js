@@ -1,4 +1,3 @@
-
 const fs = require("fs");
 const path = require("path");
 let mkdirp = require("mkdirp");
@@ -57,6 +56,7 @@ module.exports = {
   },
 
   createDirectory(dirPublics, dirVpp, dirYear, dirMonth, dirDay, dirMoment) {
+    /*
     mkdirp(dirPublics, (errpl) => {
       // path was created unless there was error
       console.log(`Create directory with error: ${errpl}`);
@@ -81,40 +81,70 @@ module.exports = {
         });
       });
     });
+    */
     /*
-        fs.access(dirPublics, (err) => {
-            if (err) {
-                fs.mkdirSync(dirPublics);
-            }
-        });
-        fs.access(dirVpp, (err) => {
-            if (err) {
-                fs.mkdirSync(dirVpp);
-            }
-        });
+    fs.access(dirPublics, (err) => {
+      if (err) {
+        fs.mkdirSync(dirPublics);
+      }
+    });
+    fs.access(dirVpp, (err) => {
+      if (err) {
+        fs.mkdirSync(dirVpp);
+      }
+    });
+    fs.access(dirYear, (err) => {
+      if (err) {
+        fs.mkdirSync(dirYear);
+      }
+    });
+    fs.access(dirMonth, (err) => {
+      if (err) {
+        fs.mkdirSync(dirMonth);
+      }
+    });
+    fs.access(dirDay, (err) => {
+      if (err) {
+        fs.mkdirSync(dirDay);
+      }
+    });
+    fs.access(dirMoment, (err) => {
+      console.log(`--dirMoment = ${dirMoment}`);
+      if (err) {
+        fs.mkdirSync(dirMoment);
+      }
+    });
+    */
+    fs.access(dirPublics, (err) => {
+      if (err) {
+        fs.mkdirSync(dirPublics);
+      }
+      fs.access(dirVpp, (err) => {
+        if (err) {
+          fs.mkdirSync(dirVpp);
+        }
         fs.access(dirYear, (err) => {
+          if (err) {
+            fs.mkdirSync(dirYear);
+          }
+          fs.access(dirMonth, (err) => {
             if (err) {
-                fs.mkdirSync(dirYear);
+              fs.mkdirSync(dirMonth);
             }
-        });
-        fs.access(dirMonth, (err) => {
-            if (err) {
-                fs.mkdirSync(dirMonth);
-            }
-        });
-        fs.access(dirDay, (err) => {
-            if (err) {
+            fs.access(dirDay, (err) => {
+              if (err) {
                 fs.mkdirSync(dirDay);
-            }
+              }
+              fs.access(dirMoment, (err) => {
+                console.log(`--dirMoment = ${dirMoment}`);
+                if (err) {
+                  fs.mkdirSync(dirMoment);
+                }
+              });
+            });
+          });
         });
-        fs.access(dirMoment, (err) => {
-            console.log(`--dirMoment = ${dirMoment}`);
-            if (err) {
-                fs.mkdirSync(dirMoment);
-            }
-        });
-        */
+      });
+    });
   }
-
 };
-

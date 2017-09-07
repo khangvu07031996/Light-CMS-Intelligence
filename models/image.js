@@ -51,8 +51,6 @@ let image = db.model("image", imageSchema);
 
 module.exports = {
   getAll(req, res, cb) {
-    console.log("This is image model");
-    console.log("get all");
     image.find((err, rows) => {
       cb(err, rows);
       return false;
@@ -73,7 +71,6 @@ module.exports = {
 
 
   insert(req, res, objinfo, obj, cb) {
-    console.log("in add");
     let p = new image();
 
     if (objinfo == null) {
@@ -102,7 +99,6 @@ module.exports = {
     }
 
     p.save((err) => {
-      console.log("inserted");
       cb(err, p);
     });
   },
@@ -151,7 +147,6 @@ module.exports = {
   },
 
   delete(req, res, cb) {
-    // console.log('_id = ' + req.params.image_id)
     image.remove({ _id: req.params.image_id }, (err, prod) => {
       cb(err, prod);
     });
@@ -166,8 +161,6 @@ module.exports = {
       src = `${dirRoot}/publics${src}`;
       dstDir = `${dirRoot}/publics${dstDir}`;
       let countFaces = openCvHelper.cropFaces(src, filename, dstDir, (count) => {
-        console.log(`count faces = ${count}`);
-        // create object include info of image croped:
         let data = {};
         data.path = p.media;
         data.count = count;

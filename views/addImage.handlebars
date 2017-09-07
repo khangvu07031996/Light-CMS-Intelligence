@@ -1,5 +1,5 @@
-
-<script src="/Scripts/img.js" type="text/javascript"></script>
+<script src="/Scripts/img.js" type="text/javascript">
+</script>
 
 
 
@@ -9,7 +9,7 @@
         <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
             <li><i class="icon_document_alt"></i>Forms</li>
-            <li><i class="fa fa-files-o"></i>Addimages</li>
+            <li><i class="fa fa-files-o"></i>Add image</li>
         </ol>
     </div>
 </div>
@@ -23,52 +23,48 @@
             <div class="panel-body">
                 <div class="form">
 
-                    <form action="" method="post" class="form-horizontal" >
-                         <div class="form-group">
-                            <div class="col-md-12">
-                                <label class="" for="cname" class="control-label"> file : <span class="required">*</span></label>
+                    <form action="" method="post" class="form-horizontal">
+                        <div class="form-group ">
+                            <label class="control-label col-lg-3" for="cname" class="control-label"> File : <span class="required">*</span></label>
+                            <div class="col-lg-6 ">
+                                
                                 <div class="">
-                                     <input style="display: block;" type="file" id="files" name="files" multiple accept="image/*">
+                                    <input style="display: block;" type="file" id="files" name="files" multiple accept="image/*">
                                 </div>
-                              
+
                             </div>
                             <br />
-							
+
                             <div class="col-md-2"></div>
-							
-							<div class="col-md-10">                               
-								<div class="col-md-12" id="divimg"></div>
-							</div>
-                              
-                            <input type="hidden" id = "imgid" name="imgid" value="">
-                        </div>   
-                        
-						
-						<div class="form-group">
-                            <label for="cname" class="control-label col-lg-2"> Heading <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <input id = "heading" type="text" class="form-control" name="heading">
+
+                            <div class="col-md-10">
+                                <div class="col-md-12" id="divimg"></div>
+                            </div>
+
+                            <input type="hidden" id="imgid" name="imgid" value="">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="cname" class="control-label col-lg-3"> Heading <span class="required">*</span></label>
+                            <div class="col-lg-6">
+                                <input id="heading" type="text" class="form-control" name="heading">
                             </div>
                         </div>
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Description <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <textarea id="description" name="description" rows="5"  class="col-md-12"></textarea>
+                            <label for="cname" class="control-label col-lg-3"> Description <span class="required">*</span></label>
+                            <div class="col-lg-6">
+                                <textarea id="description" name="description" rows="5" class="col-md-12"></textarea>
                             </div>
                         </div>
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Photographer <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <input id = "photographer" type="tel" class="form-control" name="photographer">
+                            <label for="cname" class="control-label col-lg-3"> Photographer <span class="required">*</span></label>
+                            <div class="col-lg-6">
+                                <input id="photographer" type="tel" class="form-control" name="photographer">
                             </div>
                         </div>
-                       
-                        <div>
-                            <input type="hidden" id = "usercreate" name="usercreate" value="{{user.username}}">
-                       </div>
-                        
                         <div class="form-group ">
-                            <div class="col-lg-offset-2 col-lg-10">
+                            <div class="col-lg-offset-3 col-lg-6">
                                 <button class="btn btn-primary" type="button" id="btnInsertImage">submit</button>
 
                             </div>

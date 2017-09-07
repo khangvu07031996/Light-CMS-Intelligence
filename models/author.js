@@ -115,7 +115,6 @@ module.exports = {
         dataAuthor.image = req.body.image;
         dataAuthor.save((err) => {
           if (err) {
-            console.log('asssssssssssssdsadasdasdsa');
             response = { error: true, message: 'Error deleting data' };
           }
           res.redirect('/AuthorForm');
@@ -123,7 +122,7 @@ module.exports = {
       }
     });
   },
-  getAuthorNames(callback) {
+  getAuthorName(callback) {
     Author.find(callback);
   },
 };

@@ -6,13 +6,12 @@ const multer = require('multer');
 const domain = variable.token;
 const router = express.Router();
 
-const ArticleData = require('../models/article');
-const ArticleController = require('../models/article').Article;
-const userdata = require('../models/user');
+const Article = require('../models/article');
+const ArticleScheama = require('../models/article').Article;
+const Userdata = require('../models/user');
 const Author = require('../models/author');
-const section = require('../models/session');
-const image = require('../models/image');
-
+const Section = require('../models/session');
+const Image = require('../models/image');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -23,43 +22,60 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage });
-// --------------get All article -----------------
 function getAllArticle(req, res) {
-  const url = `${domain}/api/articles`;
-  axios.get(url).then((response) => {
-    const data = response.data;
-    res.render('ArticleForm', { articles: data });
+  Article.getArticles((err, data) => {
+    if (err) {
+      return next(err);
+    }
+    if (!data) {
+      const notFound = new Error('No such data');
+      notFound.status = 404;
+      errorlog.error(`Error Status : ${notFound.status}`, `Error Message : ${notFound.message}`, `Error Trace : ${new Error().stack}`);
+      return next(notFound);
+    }
+    res.render('ArticleForm', { articles: data,
+      helpers: {
+        date(data) {
+          const date = new Date(data);
+          const d = date.getDate();
+          const mm = date.getMonth() + 1;
+          const yyyy = date.getFullYear();
+          return `${d}/${mm}/${yyyy}`;
+        },
+      } });
   });
 }
 function addArticle(req, res) {
-  const dbArticle = new ArticleController();
-  dbArticle.headline = req.body.headline;
-  dbArticle.section = req.body.section;
-  dbArticle.premble = req.body.premble;
-  dbArticle.body = req.body.body;
-  dbArticle.images = req.body.imgPaths;
-  dbArticle.author = req.body.author;
-  dbArticle.tags = req.body.tags;
-  dbArticle.widgets = req.body.widgets;
-  dbArticle.date_created = new Date();
-  dbArticle.publishDate = new Date();
-  dbArticle.CreateBy = req.body.CreateBy;
-  dbArticle.status = req.body.status;
-  dbArticle.save((err) => {
-    if (err) {
-      throw new Error("Can't save Article");
-    }
+  const ArticleObj = new ArticleScheama();
+  ArticleObj.headline = req.body.headline;
+  ArticleObj.section = req.body.section;
+  ArticleObj.premble = req.body.premble;
+  ArticleObj.body = req.body.body;
+  ArticleObj.images = req.body.imgPaths;
+  ArticleObj.author = req.body.author;
+  ArticleObj.tags = req.body.tags;
+  ArticleObj.widgets = req.body.widgets;
+  ArticleObj.date_created = new Date();
+  ArticleObj.publishDate = new Date(req.body.publishDate);
+  ArticleObj.CreateBy = req.body.CreateBy;
+  if (req.body.submit === "save") {
+    ArticleObj.status = "Draft";
+  } else {
+    ArticleObj.status = "Published";
+  }
+  const command = Article.addArticle(ArticleObj);
+  command.then((result, err) => {
     res.redirect('/ArticleForm');
   });
 }
 
 function deleteArticle(req, res) {
-  ArticleData.deleteArticleApi(req.params.id, (err) => {
+  Article.deleteArticle(req.params.id, (err) => {
     res.redirect('/ArticleForm');
   });
 }
 function getArticleById(req, res) {
-  ArticleData.getArticleByIdApi(req.params.id, (err, data) => {
+  Article.getArticleById(req.params.id, (err, data) => {
     if (err) {
       throw new Error("Can't get Article");
     }
@@ -78,10 +94,10 @@ function getArticleById(req, res) {
       arrImg.push({ id: arrPath[i], src: arrPath[i + 1] });
       arrLab.push({ id: arrPath[i], src: arrPath[i + 1] });
     }
-    Author.getAuthorNames((err, dataA) => {
-      userdata.getUserNames((err) => {
-        section.getSectionNames((err, dataSection) => {
-          image.getAll(req, res, (err, rows) => {
+    Author.getAuthorName((err, dataA) => {
+      Userdata.getUserName((err) => {
+        Section.getSectionName((err, dataSection) => {
+          Image.getAll(req, res, (err, rows) => {
             res.render('editArticles', { Author: dataA, Section: dataSection, article: data, images: rows, arr, arrImg });
           });
         });
@@ -90,32 +106,28 @@ function getArticleById(req, res) {
   });
 }
 function updateArticle(req, res) {
-  let response = {};
-  ArticleController.findById(req.params.id, (err, dataArticle) => {
+  Article.getArticleById(req.params.id, (err, dataArticle) => {
     if (err) {
-      throw new Error("Error fetching data");
+      throw new Error('Error fetching data');
     } else {
       dataArticle.headline = req.body.headline;
       dataArticle.section = req.body.section;
       dataArticle.premble = req.body.premble;
       dataArticle.body = req.body.body;
-      dataArticle.images = req.body.imgPaths;
+      dataArticle.images = req.body.images;
       dataArticle.author = req.body.author;
       dataArticle.tags = req.body.tags;
       dataArticle.widgets = req.body.widgets;
       dataArticle.date_created = new Date();
       dataArticle.publishDate = new Date();
       dataArticle.CreateBy = req.body.CreateBy;
-      // dataArticle.status = req.body.status;
       if (req.body.submit === "save") {
         dataArticle.status = "Draft";
       } else {
         dataArticle.status = "Published";
       }
-      dataArticle.save((err) => {
-        if (err) {
-          return res.json({ error: true, message: 'error update data' });
-        }
+      const command = Article.addArticle(dataArticle);
+      command.then((result, err) => {
         res.redirect('/ArticleForm');
       });
     }
@@ -123,9 +135,9 @@ function updateArticle(req, res) {
 }
 function searchArtical(req, res) {
   const terms = req.body.terms;
-  ArticleController.search({ query_string: { query: terms } }, (err, results) => {
+  ArticleScheama.search({ query_string: { query: terms } }, (err, results) => {
     if (err) {
-      console.log('failed');
+      throw new Error('Error fetching data');
     } else {
       res.render('articleSearch', { articleResult: results.hits.hits });
     }
@@ -142,20 +154,20 @@ router.get('/article/edit/:id', getArticleById);
 // update article
 router.post('/article/edit/:id', updateArticle);
 router.post('/article/search', searchArtical);
-router.get('/api/allArticle/:section', ArticleData.getAllArticleBySection);
-router.get('/api/Article/:section', ArticleData.getArticleBySection);
-router.get('/api/hotArticle/:section', ArticleData.getHotArticleBySection);
+router.get('/api/v1/sec-aritcles/:section', Article.getAllArticleBySection);
+router.get('/api/v1/article/:section', Article.getArticleBySection);
+router.get('/api/v1/hot-article/:section', Article.getHotArticleBySection);
 
-function getallName(req, res) {
-  Author.getAuthorNames((err, data) => {
-    userdata.getUserNames(() => {
-      section.getSectionNames((err, dataSection) => {
-        image.getAll(req, res, (err, rows) => {
+function getAllName(req, res) {
+  Author.getAuthorName((err, data) => {
+    Userdata.getUserName(() => {
+      Section.getSectionName((err, dataSection) => {
+        Image.getAll(req, res, (err, rows) => {
           res.render('addArticles', { Author: data, Section: dataSection, data: rows });
         });
       });
     });
   });
 }
-router.get('/addArticles', getallName);
+router.get('/addArticles', getAllName);
 module.exports = router;

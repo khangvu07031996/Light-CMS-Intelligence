@@ -52,6 +52,7 @@ const ArticleSchema = mongoose.Schema({
   status: {
     type: String,
     es_indexed: true,
+    default: 'Save Draft',
   },
   CreateBy: {
     type: String,
@@ -75,50 +76,52 @@ module.exports = {
   Article,
 };
 module.exports.getArticleBySection = function (req, res) {
-  Article.find({ section: req.params.section },
+  Article.find({ section: req.params.section, status: 'Published' },
     {}, { sort: { date_created: -1 }, limit: 3 }, (err, data) => {
       res.send(data);
     });
 };
 module.exports.getAllArticleBySection = function (req, res) {
-  Article.find({ section: req.params.section }, {}, { sort: { date_created: -1 } }, (err, data) => {
+  Article.find({ section: req.params.section, status: 'Published' }, {}, { sort: { date_created: -1 } }, (err, data) => {
     res.send(data);
   });
 };
 module.exports.getHotArticleBySection = function (req, res) {
-  Article.findOne({ section: req.params.section }, {},
+  Article.findOne({ section: req.params.section, status: 'Published' }, {},
     { sort: { date_created: -1 } }, (err, data) => {
       res.send(data);
     });
 };
-module.exports.getlastArticle = function (req, res) {
-  Article.findOne({}, [], { sort: { date_created: -1 }, limit: 8 }, (err, data) => {
+module.exports.getLastArticle = function (req, res) {
+  Article.findOne({ status: 'Published' }, [], { sort: { date_created: -1 }, limit: 8 }, (err, data) => {
     res.send(data);
   });
 };
-module.exports.getAllArticleApi = function (callback) {
+module.exports.getArticles = function (callback) {
   Article.find(callback);
 };
-module.exports.getArticleByIdApi = function (id, callback) {
+module.exports.getPublishedArticles = function (callback) {
+  Article.find({ status: 'Published' }, callback);
+};
+module.exports.getArticleById = function (id, callback) {
   Article.findById({ _id: id }, callback);
 };
-module.exports.addArticleApi = function (articles) {
+module.exports.addArticle = function (articles) {
   return new Article(articles).save();
 };
 module.exports.getHotArticle = function (req, res) {
-  Article.find({}, [], { sort: { date_created: -1 }, limit: 4 }, (err, data) => {
+  Article.find({ status: 'Published' }, [], { sort: { date_created: -1 }, limit: 4 }, (err, data) => {
     res.send(data);
   });
 };
-module.exports.deleteArticleApi = function (id, callback) {
+module.exports.deleteArticle = function (id, callback) {
   Article.findById({ _id: id }, (err) => {
     if (!err) {
       Article.remove({ _id: id }, callback);
     }
   });
 };
-module.exports.updateArticleApi = function (req, res) {
-  let response = {};
+module.exports.updateArticle = function (req, res) {
   Article.findById(req.params.id, (err, dataArticle) => {
     if (err) {
       response = { error: true, message: 'Error fetching data' };

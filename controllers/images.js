@@ -114,7 +114,6 @@ router.post("/image/ajaxUpload", upload.any(), (req, res) => {
     for (let j = 0; j < setting.objThumbnailDim.count; j++) {
       objThumbnailName.push(`${setting.objThumbnailDim[j].width}x${setting.objThumbnailDim[j].height}_${subString}`);
     }
-    console.log(objThumbnailName);
     // create object thumbnail:
     let thumbnail = {
       thumbnail_567x330: objThumbnailName[0],
@@ -140,7 +139,6 @@ router.post("/image/ajaxUpload", upload.any(), (req, res) => {
     for (let j = 0; j < setting.objThumbnailDim.count; j++) {
       objThumbnailName.push(`x${setting.objThumbnailDim[j].height}_${subString}`);
     }
-    console.log(objThumbnailName);
     // create object thumbnail:
     thumbnail.thumbnail_x330 = objThumbnailName[0];
     thumbnail.thumbnail_x400 = objThumbnailName[2];
@@ -157,7 +155,6 @@ router.post("/image/ajaxUpload", upload.any(), (req, res) => {
     for (let j = 0; j < setting.objThumbnailDim.count; j++) {
       objThumbnailName.push(`${setting.objThumbnailDim[j].width}x_${subString}`);
     }
-    console.log(objThumbnailName);
     // create object thumbnail:
     thumbnail.thumbnail_567x = objThumbnailName[0];
     thumbnail.thumbnail_550x = objThumbnailName[1];
@@ -179,7 +176,6 @@ router.post("/image/ajaxUpload", upload.any(), (req, res) => {
     };
 
     image.insert(req, res, null, obj, (err, img) => {
-      console.log("inserted!");
     });
   }
 
@@ -230,8 +226,6 @@ router.post("/image/insert", (req, res) => {
     for (let j = 0; j < setting.objThumbnailDim.count; j++) {
       objThumbnailName.push(`x${setting.objThumbnailDim[j].height}_${subString}`);
     }
-    console.log(objThumbnailName);
-    // create object thumbnail:
     thumbnail.thumbnail_x330 = objThumbnailName[0];
     thumbnail.thumbnail_x400 = objThumbnailName[2];
     thumbnail.thumbnail_x240 = objThumbnailName[3];
@@ -246,7 +240,6 @@ router.post("/image/insert", (req, res) => {
     for (let j = 0; j < setting.objThumbnailDim.count; j++) {
       objThumbnailName.push(`${setting.objThumbnailDim[j].width}x_${subString}`);
     }
-    console.log(objThumbnailName);
     // create object thumbnail:
     thumbnail.thumbnail_567x = objThumbnailName[0];
     thumbnail.thumbnail_550x = objThumbnailName[1];
@@ -266,7 +259,6 @@ router.post("/image/insert", (req, res) => {
       thumbnail,
     };
     image.insert(req, res, objinfo, null, (err, img) => {
-      console.log("inserted!");
     });
   }
   // reset:
@@ -289,7 +281,6 @@ router.route("/image/:image_id").get((req, res) => {
 });
 // update image and render form list images:
 router.route("/image/:image_id").post((req, res) => {
-  console.log("This is controller update");
   image.update(req, res, (err, row) => {
     if (err) res.send(err);
     res.json("Update successful");
@@ -319,7 +310,6 @@ router.route("/image/delete/:image_id").get((req, res) => {
 
 // Detect faces on image and smart crop:
 router.route("/image/cropImage/faces").post((req, res) => {
-  console.log(`controller : id = ${req.body.id}`);
   image.cropImage(req, res, (err, result) => {
     if (err) {
       res.json(err);
@@ -331,7 +321,6 @@ router.route("/image/cropImage/faces").post((req, res) => {
 router.post("/urlsave", (req, res) => {
   let data = req.body.imgBase64;
   let objimg = req.body.img;
-  console.log(`data = ${data}`);
   let dstDir = objimg.media;
   let filename = objimg.medialist.articlePreview;
   let dirRoot = path.dirname(require.main.filename).replace("\\", "/");
@@ -348,7 +337,6 @@ router.post("/urlsave", (req, res) => {
       }
     });
   });
-    // console.log(imageBuffer);
 });
 
 function decodeBase64Image(dataString, cb) {
