@@ -1,0 +1,20 @@
+2017-08-29T04:05:14.582Z - error: Error Message : You are not logged in
+2017-08-29T04:47:08.572Z - error: Error Status : 404 Error Message : No such data
+2017-08-29T04:47:08.611Z - error: Error Trace : Error
+    at ArticleData.getArticleByIdApi (F:\Light_CMS_Intelligence\api\articles.js:116:45)
+    at Query.<anonymous> (F:\Light_CMS_Intelligence\node_modules\mongoose\lib\model.js:3822:16)
+    at F:\Light_CMS_Intelligence\node_modules\kareem\index.js:273:21
+    at F:\Light_CMS_Intelligence\node_modules\kareem\index.js:131:16
+    at _combinedTickCallback (internal/process/next_tick.js:73:7)
+    at process._tickCallback (internal/process/next_tick.js:104:9)
+2017-08-29T04:48:42.099Z - error: Error Status : 404 Error Message : No such data
+2017-08-29T04:48:42.100Z - error: Error Trace : Error
+    at ArticleData.getArticleByIdApi (F:\Light_CMS_Intelligence\api\articles.js:116:45)
+    at Query.<anonymous> (F:\Light_CMS_Intelligence\node_modules\mongoose\lib\model.js:3822:16)
+    at F:\Light_CMS_Intelligence\node_modules\kareem\index.js:273:21
+    at F:\Light_CMS_Intelligence\node_modules\kareem\index.js:131:16
+    at _combinedTickCallback (internal/process/next_tick.js:73:7)
+    at process._tickCallback (internal/process/next_tick.js:104:9)
+2017-08-29T06:29:01.813Z - error: Error Message : You are not logged in
+2017-08-29T07:35:14.248Z - error: Error Message : You are not logged in
+2017-08-29T15:00:39.814Z - error: Error Message : You are not logged in

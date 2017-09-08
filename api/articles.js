@@ -1,6 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var ArticleData = require('../models/article');
+const express = require('express');
+const router = express.Router();
+const errorlog = require('../utils/logger').errorlog;
+
+const ArticleData = require('../models/article');
 /**
  * @swagger
  * definition:
@@ -22,18 +24,18 @@ var ArticleData = require('../models/article');
  *              type: string
  *          widgets:
  *              type: string
- *          date_created:
+ *          dateCreated:
  *              type: date
  *          publishDate:
  *              type: Date
  *          status:
  *              type: string
- *          CreateBy:
+ *          createBy:
  *              type: string
  */
 /**
  * @swagger
- * /api/articles:
+ * /api/v1/articles:
  *  get:
  *      tags:
  *          - articles
@@ -48,19 +50,28 @@ var ArticleData = require('../models/article');
  *                  $ref: '#/definitions/Article'
  */
 
-function datagot(req, res) {
-    ArticleData.getAllArticleApi(function (err, data) {
-        res.send(data);
-    })
+function getAllArticle(req, res, next) {
+  ArticleData.getArticles((err, data) => {
+    if (err) {
+      return next(err);
+    }
+    if (!data) {
+      const notFound = new Error('No such data');
+      notFound.status = 404;
+      errorlog.error(`Error Status : ${notFound.status}`, `Error Message : ${notFound.message}`, `Error Trace : ${new Error().stack}`);
+      return next(notFound);
+    }
+    res.send(data);
+  });
 }
-router.get("/api/articles", datagot);
+router.get('/api/v1/articles', getAllArticle);
 /**
  * @swagger
- * /api/hotArticles:
+ * /api/v1/published-articles:
  *  get:
  *      tags:
  *          - articles
- *      description: Return some articles
+ *      description: Return all articles
  *      produces:
  *          - application/json
  *         
@@ -70,10 +81,43 @@ router.get("/api/articles", datagot);
  *              schema:
  *                  $ref: '#/definitions/Article'
  */
-router.get("/api/hotArticles",ArticleData.getHotArticle);
+
+function getAllPublishedArticle(req, res, next) {
+  ArticleData.getPublishedArticles((err, data) => {
+    if (err) {
+      return next(err);
+    }
+    if (!data) {
+      const notFound = new Error('No such data');
+      notFound.status = 404;
+      errorlog.error(`Error Status : ${notFound.status}`, `Error Message : ${notFound.message}`, `Error Trace : ${new Error().stack}`);
+      res.send(notFound);
+      //return next(notFound);???
+    }
+    res.send(data);
+  });
+}
+router.get('/api/v1/published-articles', getAllPublishedArticle);
 /**
  * @swagger
- * /api/articles/{id}:
+ * /api/v1/hot-articles:
+ *  get:
+ *      tags:
+ *          - articles
+ *      description: Return articles
+ *      produces:
+ *          - application/json
+ *         
+ *      responses:
+ *          200:
+ *              description: list of articles
+ *              schema:
+ *                  $ref: '#/definitions/Article'
+ */
+router.get('/api/v1/hot-articles', ArticleData.getHotArticle);
+/**
+ * @swagger
+ * /api/v1/articles/{id}:
  *   get:
  *     tags:
  *       - articles
@@ -92,16 +136,25 @@ router.get("/api/hotArticles",ArticleData.getHotArticle);
  *         schema:
  *           $ref: '#/definitions/Article'
  */
-function getAllArticlebyid(req, res) {
-    ArticleData.getArticleByIdApi(req.params.id, function (err, data) {
-        res.send(data);
-    })
+function getAllArticleByid(req, res, next) {
+  ArticleData.getArticleById(req.params.id, (err, data) => {
+    if (err) {
+      return next(err);
+    }
+    if (!data) {
+      const notFound = new Error('No such data');
+      notFound.status = 404;
+      errorlog.error(`Error Status : ${notFound.status}`, `Error Message : ${notFound.message}`, `Error Trace : ${new Error().stack}`);
+     res.send(notFound);
+    }
+    res.send(data);
+  });
 }
-router.get("/api/articles/:id", getAllArticlebyid);
+router.get('/api/articles/:id', getAllArticleByid);
 
 /**
  * @swagger
- * /api/articles/{section}:
+ * /api/v1/section/{section-name}/articles:
  *   get:
  *     tags:
  *       - articles
@@ -120,10 +173,10 @@ router.get("/api/articles/:id", getAllArticlebyid);
  *         schema:
  *           $ref: '#/definitions/Article'
  */
-router.get("/api/articles/:section",ArticleData.getArticleBySection);
+router.get('/api/v1/articles/:section', ArticleData.getArticleBySection);
 /**
  * @swagger
- * /api/articles:
+ * /api/v1/articles:
  *   post:
  *     tags:
  *       - articles
@@ -141,21 +194,38 @@ router.get("/api/articles/:section",ArticleData.getArticleBySection);
  *       200:
  *         description: Successfully created
  */
-function createArticle(req, res) {
-    var { headline, section, premble, body, images, author, tags, widgets, date_created, publishDate, status, CreateBy } = req.body;
-    const command = ArticleData.addArticleApi({ headline, section, premble, body, images, author, tags, widgets, date_created, publishDate, status, CreateBy });
-    command.then((result, err) => {
-        if (err) {
-            res.status(500).json(err);
-        } else {
-            res.status(201).json({ Message: 'Insert new product', Name });
-        }
-    });
+function createArticle(req, res, next) {
+  const { headline, section,
+    premble, body, images, author,
+    tags, widgets, dateCreated, publishDate, status, createBy } = req.body;
+  const command = ArticleData.addArticle({
+    headline,
+    section,
+    premble,
+    body,
+    images,
+    author,
+    tags,
+    widgets,
+    dateCreated,
+    publishDate,
+    status,
+    createBy,
+  });
+  command.then((result, err) => {
+    if (err) {
+      const err = new Error('No such data');
+      notFound.status = 500;
+      errorlog.error(`Error Status : ${notFound.status}`, `Error Message : ${notFound.message}`, `Error Trace : ${new Error().stack}`);
+      res.send(notFound);
+    }
+    res.status(201).json({ Message: 'Insert new Articles', Name });
+  });
 }
-router.post("/api/articles", createArticle);
+router.post('/api/v1/articles', createArticle);
 /**
  * @swagger
- * /api/articles/{id}:
+ * /api/v1/articles/{id}:
  *   delete:
  *     tags:
  *       - articles
@@ -173,14 +243,14 @@ router.post("/api/articles", createArticle);
  *         description: Successfully deleted
  */
 function deletearticle(req, res) {
-    ArticleData.deleteArticleApi(req.params.id, function (err) {
-        res.send("deleted");
-    })
+  ArticleData.deleteArticle(req.params.id, (err) => {
+    res.send('Deleted');
+  });
 }
-router.delete("/api/articles/:id", deletearticle)
+router.delete('/api/v1/articles/:id', deletearticle);
 /**
  * @swagger
- * /api/articles/{id}:
+ * /api/v1/articles/{id}:
  *   put:
  *     tags:
  *       - articles
@@ -203,11 +273,11 @@ router.delete("/api/articles/:id", deletearticle)
  *       200:
  *         description: Successfully updated
  */
-router.put("/api/articles/:id", ArticleData.updateArticleApi)
+router.put('/api/v1/articles/:id', ArticleData.updateArticle);
 
 /**
  * @swagger
- * /api/lastArticles:
+ * /api/v1/last-articles:
  *  get:
  *      tags:
  *          - articles
@@ -220,5 +290,5 @@ router.put("/api/articles/:id", ArticleData.updateArticleApi)
  *              schema:
  *                  $ref: '#/definitions/Article'
  */
-router.get("/api/lastArticles", ArticleData.getlastArticle);
+router.get('/api/v1/last-articles', ArticleData.getLastArticle);
 module.exports = router;

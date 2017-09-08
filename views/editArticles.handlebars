@@ -1,20 +1,15 @@
 <link href="/css/image.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/jquery.Jcrop.css" type="text/css" />
-
 <script type="text/javascript" src="/Scripts/jquery.Jcrop.min.js"></script>
-
 <script src="/Scripts/img.js" type="text/javascript"></script>
-
-<script src="/build/tracking-min.js"></script>
-<script src="/build/data/face-min.js"></script>
 
 <div class="row">
     <div class="col-lg-12">
-        <h3 class="page-header"><i class="fa fa-files-o"></i> Add Article</h3>
+        <h3 class="page-header"><i class="fa fa-files-o"></i> Edit Article</h3>
         <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
             <li><i class="icon_document_alt"></i>Forms</li>
-            <li><i class="fa fa-files-o"></i>AddArticle</li>
+            <li><i class="fa fa-files-o"></i>Edit Article</li>
         </ol>
     </div>
 </div>
@@ -28,7 +23,7 @@
                 <div class="form">
                    
                     <form method="post" action="/Article/edit/{{article.id}}" class="form-validate form-horizontal save" id="save">
-                         <div class = "col-lg-8">
+                         <div class = "col-lg-7">
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Headline <span class="required">*</span></label>
                             <div class="col-lg-10">
@@ -36,7 +31,7 @@
                             </div>
                         </div>
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> section <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Section <span class="required">*</span></label>
                             <div class="col-lg-10">
                                 <select class="form-control" id="section_selection" name = "section" >
                                     {{#each Section}}
@@ -46,7 +41,7 @@
                             </div>
                         </div>
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2">  premble <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2">  Premble <span class="required">*</span></label>
                             <div class="col-lg-10">
                                 <textarea class="col-lg-12" name = "premble"> {{article.premble}}</textarea>
                             </div>
@@ -59,15 +54,14 @@
                                         <label class="" for="cname" class="control-label"> File : <span class="required">*</span></label>
                                     </div>
                                     <div class="col-lg-12 col-md-offset-5" id="divajax">
-                                        <div class="btn btn-info image-preview-input">
-                                            <span class="glyphicon glyphicon-folder-open"></span> {{!-- <input type="file"
-                                                multiple accept="image/png, image/jpeg, image/gif" name="file" /> --}}
+                                       <div class="btn btn-info image-preview-input fileUpload">
+                                            <span class="glyphicon glyphicon-folder-open"></span>
+                                            {{!-- <input type="file" multiple accept="image/png, image/jpeg, image/gif" name="file" /> --}}
                                             <input style="display: block; margin:0px ;width:50px;" type="file" id="files" name="files" multiple accept="image/*">
                                             <!-- rename it -->
-                                        </div>
+                                        </div> 
                                     </div>
-                                    <button type="button" id="btnPopup" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal"
-                                        style="font-size: 15px;margin-top: 7px;">+</button>
+                                   <button type="button" id = "btnPopup" class="btn btn-info btn-lg col-lg-7 col-lg-offset-6" data-toggle="modal" data-target="#myModal" style="font-size: 15px;margin-top: 7px;">+</button>
 
                                 </div>
                                 <div class="col-md-10">
@@ -81,15 +75,9 @@
                                         </div>
                                         {{/each}}
 
-
                                     </div>
                                     <input type="hidden" id="imgPaths" name="imgPaths" value="">
-
-
-
                                 </div>
-
-
                             </div>
 
                             <div class="form-group">
@@ -160,31 +148,19 @@
 
 
                             </div>
-
-                   
+							
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2">  body <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2">  Body <span class="required">*</span></label>
                             <div class="col-lg-10">
                                 <textarea class="body" name = "body">{{article.body}}</textarea>
                             </div>
                         </div>
-                                               
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Status <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <select class="form-control" id="sel1" name = "status" >
-                                    <option>Save Draft</option>
-                                    <option>Published</option>
-                                    
-                                </select>
-                            </div>
-                        </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Tags <span class="required">*</span></label>
                             <div class="col-lg-10">
-                               <button class="btn btn-info col-lg-4" id = "press_me" type="button">generator</button>
+                               <button class="btn btn-info col-lg-4" id = "press_me" type="button">Generator</button>
                                 <input class = "form-control col-lg-8" type="text" data-role="tagsinput"  id ="result" value="{{article.tags}}"  data-role="" name = "tags"/>
                             </div>
                         </div>
@@ -205,44 +181,22 @@
                         </div>
                          
                         <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> widgets <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Widgets <span class="required">*</span></label>
                             <div class="col-lg-10">
                                 <input class="form-control" id="cname" name="widgets" minlength="5" value="{{article.widgets}}" type="text" required />
                             </div>
-                        </div>
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Date Created <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <div class='input-group date' id='datetimepicker2'>
-                                    <input type='text' class="form-control" name="date_created" value="{{article.date_created}}"/>
-                                    <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Date Publish <span class="required">*</span></label>
-                            <div class="col-lg-10">
-                                <div class='input-group date' id='datetimepicker3'>
-                                    <input type='text' class="form-control" name="publishDate" value="{{article.publishDate}}"/>
-                                    <span class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        
+                        </div>  
                          <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> CreateBy <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Create By <span class="required">*</span></label>
                             <div class="col-lg-10">
                                  <input class="form-control" id="cname" name="CreateBy" value= "{{user.username}}" minlength="5" type="text" required />
                                 
                             </div>
                         </div>
                         <div class="col-lg-offset-2 col-lg-10">
-                            <button class="btn btn-primary" type="submit" style="width: 50%;">Save</button>
+                             <button   class="btn btn-primary save" type="submit" name="submit" value="save" style="width: 45%;" >Save</button>
+                            &nbsp&nbsp
+                            <button   class="btn btn-success save" type="submit" name="submit" value="publish" style="width: 45%;" >Publish</button>
                         </div>
                     </div>
                     

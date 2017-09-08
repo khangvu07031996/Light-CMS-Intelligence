@@ -39,7 +39,16 @@ module.exports = {
       if (err) {
         response = { error: true, message: 'Error fetching data' };
       } else {
-        res.render('keywordForm', { keyword: data });
+        res.render('keywordForm', { keyword: data,
+          helpers: {
+            date(data) {
+              const date = new Date(data);
+              const d = date.getDate();
+              const mm = date.getMonth() + 1;
+              const yyyy = date.getFullYear();
+              return `${d}/${mm}/${yyyy}`;
+            },
+          } });
       }
     });
   },

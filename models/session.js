@@ -25,10 +25,18 @@ module.exports = {
     let response = {};
     Session.find((err, data) => {
       if (err) {
-        console.log('getAll');
         response = { error: true, message: 'Error fetching data' };
       } else {
-        res.render('SessionForm', { Session: data });
+        res.render('SessionForm', { Session: data,
+          helpers: {
+            date(data) {
+              const date = new Date(data);
+              const d = date.getDate();
+              const mm = date.getMonth() + 1;
+              const yyyy = date.getFullYear();
+              return `${d}/${mm}/${yyyy}`;
+            },
+          } });
       }
     });
   },
@@ -41,7 +49,6 @@ module.exports = {
     dbSession.date_update = new Date(req.body.date_update);
     dbSession.save((err) => {
       if (err) {
-        console.log('add');
         response = { error: true, message: 'Error adding data' };
       } else {
         res.redirect('/SessionForm');
@@ -57,7 +64,6 @@ module.exports = {
       } else {
         Session.remove({ _id: req.params.id }, (err) => {
           if (err) {
-            console.log('delete');
             response = { error: true, message: 'Error deleting data' };
           } else {
             res.redirect('/sessionForm');
@@ -81,7 +87,6 @@ module.exports = {
     let response = {};
     Session.findById(req.params.id, (err, dataSession) => {
       if (err) {
-        console.log('update');
         response = { error: true, message: 'Error fetching data' };
       } else {
         if (req.body.name !== undefined) {
@@ -105,8 +110,7 @@ module.exports = {
       }
     });
   },
-
-};
-module.exports.getSectionNames = function (callback) {
-  Session.find(callback);
+  getSectionName(callback) {
+    Session.find(callback);
+  },
 };

@@ -15,15 +15,11 @@ const storage = multer.diskStorage({
 
 });
 const upload = multer({ storage });
-// router.post('/author/add',AuthorData.addAuthor);
+
 router.post('/author/upload', upload.single('file'), AuthorData.addAuthor);
-// router.post('/author/upload',AuthorData.addAuthor);
-// router.get('/authorForm',function(req,res){
-// res.render('authorForm');
-// },UserData.getUserByIdDone);
+
 router.post('/author', AuthorData.addAuthor);
 router.get('/authorForm', AuthorData.getAllAuthor, UserData.getUserByIdDone);
-// router.get("/author/:id",AuthorData.getAuthorById);
 router.get('/author/add', (req, res) => {
   res.render('addAuthor');
 });

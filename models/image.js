@@ -1,183 +1,163 @@
-let db = require("mongoose");
+let mongoose = require('mongoose');
+let mongoosePaginate = require('mongoose-paginate');
 let _ = require("lodash");
-let openCvHelper = require("../helper/openCvHelper");
+let openCvHelper = require("../helpers/openCvHelper");
 let path = require("path");
-let imageHelper = require("../helper/imageHelper");
+let imageHelper = require("../helpers/imageHelper");
 
-let Schema = db.Schema;
+let Schema = mongoose.Schema;
 let imageSchema = new Schema({
-    heading: String,
-    description: String,
-    media: String,
-    // caption: String,
-    photographer: String,
-    medialist: {
-        teaser: "",
-        searchResult: "",
-        articlePreview: "",
-        imageupload: "",
-        thumbnail: {
-        },
-
+  heading: String,
+  description: String,
+  media: String,
+  photographer: String,
+  medialist: {
+    teaser: "",
+    searchResult: "",
+    articlePreview: "",
+    imageupload: "",
+    thumbnail: {
     },
 
-    imageinfo: {
-        size: String,
-        ratio: String,
-    },
-    usercreate: String,
-    datecreate: {
-        type: Date,
-        default: Date.now,
-    },
-    dateupdate: {
-        type: Date,
-        default: Date.now,
-    },
-    moment: String
+  },
+  imageinfo: {
+    size: String,
+    ratio: String,
+  },
+  usercreate: String,
+  datecreate: {
+    type: Date,
+    default: Date.now,
+  },
+  dateupdate: {
+    type: Date,
+    default: Date.now,
+  },
+  moment: String,
 });
 
 imageSchema.virtual("imageinfo.full").get(function () {
-    return _.startCase(`${this.imageinfo.size} ${this.imageinfo.ratio}`);
+  return _.startCase(`${this.imageinfo.size} ${this.imageinfo.ratio}`);
 });
 
 imageSchema.virtual("imageinfo.full").set(function (value) {
-    let bits = value.split(" ");
-    this.imageinfo.size = bits[0];
-    this.imageinfo.ratio = bits[1];
+  let bits = value.split(" ");
+  this.imageinfo.size = bits[0];
+  this.imageinfo.ratio = bits[1];
 });
 
-let image = db.model("image", imageSchema);
+imageSchema.plugin(mongoosePaginate);
+let image = mongoose.model("image", imageSchema);
 
 module.exports = {
-    getAll(req, res, cb) {
-        console.log("This is image model");
-        console.log("get all");
-        image.find((err, rows) => {
-            cb(err, rows);
-            return false;
-        });
-    },
-    getDataByID(req, res, cb) {
-        image.find({ _id: req.body.id }, (err, rows) => {
-            cb(err, rows);
-            return false;
-        });
-    },
-    // getDataByMoment
-    getDataByMoment(req, res, cb) {
-        image.find({ moment: req.body.moment }, (err, rows) => {
-            cb(err, rows);
-        });
-    },
+  getAll(page, limit, callback) {
+    image.paginate({}, { page, limit }, (err, result) => {
+      console.log(result);
+      callback(err, result);
+    });
+    // image.find((err, rows) => {
+    //   callback(err, rows);
+    //   return false;
+    // });
+  },
+  getDataByID(id, callback) {
+    image.find({ _id: id }, (err, rows) => {
+      callback(err, rows);
+      return false;
+    });
+  },
+  // getDataByMoment
+  getDataByMoment(m, callback) {
+    image.find({ moment: m }, (err, rows) => {
+      callback(err, rows);
+    });
+  },
 
+  insert(img, callback) {
+    let p = new image();
+    p.media = img.media;
+    p.heading = img.heading;
+    p.description = img.description;
+    p.photographer = img.photographer;
+    p.usercreate = img.usercreate;
+    p.moment = img.moment;
+    p.medialist.teaser = img.medialist.teaser;
+    p.medialist.searchResult = img.medialist.searchResult;
+    p.medialist.articlePreview = img.medialist.articlePreview;
+    p.medialist.thumbnail = img.medialist.thumbnail;
+    p.save((err) => {
+      callback(err, p);
+    });
+  },
 
-    insert(req, res, objinfo, obj, cb) {
-        console.log("in add");
-        let p = new image();
+  edit(id, callback) {
+    image.findById(id, (err, row) => {
+      callback(err, row);
+    });
+  },
 
-        if (objinfo == null) {
-            p.media = obj.path;
-            p.heading = "";
-            p.description = "";
-            p.photographer = "";
-            p.usercreate = "";
+  update(img, callback) {
+    image.findById(img.id, (err, p) => {
+      if (err) {
+        callback(err, null);
+        return false;
+      }
+      p.heading = img.heading;
+      p.description = img.description;
+      p.photographer = img.photographer;
+      p.usercreate = img.usercreate;
+      p.save((error, imgdata) => {
+        callback(error, imgdata);
+        return false;
+      });
+      return false;
+    });
+  },
 
-            p.moment = obj.moment;
-            p.medialist.teaser = "";
-            p.medialist.searchResult = "";
-            p.medialist.articlePreview = obj.articlePreview;
-            p.medialist.thumbnail = obj.thumbnail;
-        } else {
-            p.heading = req.body.heading;
-            p.media = objinfo.path;
-            p.description = req.body.description;
-            p.photographer = req.body.photographer;
-            p.medialist.teaser = "";
-            p.medialist.searchResult = "";
-            p.medialist.articlePreview = objinfo.articlePreview;
-            p.usercreate = req.body.usercreate;
-            p.moment = objinfo.moment;
-            p.medialist.thumbnail = objinfo.thumbnail;
-        }
+  // Ajax update:
+  ajaxUpdate(img, callback) {
+    image.findById(img.id, (err, p) => {
+      if (err) {
+        callback(err, null);
+        return false;
+      }
+      p.heading = img.heading;
+      p.description = img.description;
+      p.photographer = img.photographer;
+      p.save((error, img) => {
+        callback(error, img);
+        return false;
+      });
+      return false;
+    });
+  },
 
-        p.save((err) => {
-            console.log("inserted");
-            cb(err, p);
-        });
-    },
+  delete(id, callback) {
+    image.remove({ _id: id }, (err, prod) => {
+      callback(err, prod);
+    });
+  },
 
-    edit(req, res, cb) {
-        image.findById(req.params.image_id, (err, row) => {
-            cb(err, row);
-        });
-    },
-
-    update(req, res, cb) {
-        image.findById(req.params.image_id, (err, p) => {
-            if (err) {
-                cb(err, null);
-                return false;
-            }
-            p.heading = req.body.heading;
-            p.description = req.body.description;
-            p.photographer = req.body.photographer;
-            p.usercreate = req.body.usercreate;
-            p.save((error, img) => {
-                cb(error, img);
-                return false;
-            });
-            return false;
-        });
-    },
-
-    // Ajax update:
-    ajaxUpdate(req, res, cb) {
-        image.findById(req.params.image_id, (err, p) => {
-            if (err) {
-                cb(err, null);
-                return false;
-            }
-            p.heading = req.body.heading;
-            p.description = req.body.description;
-            p.photographer = req.body.photographer;
-            // p.usercreate = "unknow";
-            p.save((error, img) => {
-                cb(error, img);
-                return false;
-            });
-            return false;
-        });
-    },
-
-    delete(req, res, cb) {
-        // console.log('_id = ' + req.params.image_id)
-        image.remove({ _id: req.params.image_id }, (err, prod) => {
-            cb(err, prod);
-        });
-    },
-
-    cropImage(req, res, cb) {
-        image.findById(req.body.id, (err, p) => {
-            let src = `${p.media}/${p.medialist.articlePreview}`;
-            let dstDir = p.media;
-            let filename = p.medialist.articlePreview.replace(".jpg", "");
-            let dirRoot = path.dirname(require.main.filename).replace("\\", "/");
-            src = `${dirRoot}/publics${src}`;
-            dstDir = `${dirRoot}/publics${dstDir}`;
-            let countFaces = openCvHelper.cropFaces(src, filename, dstDir, (count) => {
-                console.log(`count faces = ${count}`);
-                // create object include info of image croped:
-                let data = {};
-                data.path = p.media;
-                data.count = count;
-                data.filename = filename;
-                cb(err, data);
-            }, (imgSrc) => {
-                imageHelper.resize(imgSrc, imgSrc, 200, 200);
-            });
-        });
-    }
+  cropImage(req, res, callback) {
+    image.findById(req.body.id, (err, p) => {
+      let src = `${p.media}/${p.medialist.articlePreview}`;
+      let dstDir = p.media;
+      let filename = p.medialist.articlePreview.replace(".jpg", "");
+      let dirRoot = path.dirname(require.main.filename).replace("\\", "/");
+      src = `${dirRoot}/publics${src}`;
+      dstDir = `${dirRoot}/publics${dstDir}`;
+      let countFaces = openCvHelper.cropFaces(src, filename, dstDir, (count) => {
+        // create object include info of image croped:
+        let data = {};
+        data.path = p.media;
+        data.count = count;
+        data.filename = filename;
+        callback(err, data);
+      }, (imgSrc) => {
+        imageHelper.resize(imgSrc, imgSrc, 200, 200);
+      });
+    });
+  },
 
 };
 

@@ -28,9 +28,16 @@ $(document).ready(function () {
         arrPaths[i] = arrTagImg[i].currentSrc.replace(domain, "");
     }
     for (let i = 0; i < arrPaths.length; i++) {
-        arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i];
+        let o = arrPaths[i];
+        let o2 = o.replace('x75_', 'Original_');
+        arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i].replace('x75_', 'Original_');
+        //console.log(arrPathAndID[i]);
+        console.log('o = ' + o);
+        console.log('o2 = ' + o2);
     }
     $("#imgPaths").val(arrPathAndID);
+    console.log("--");
+    console.log(arrPathAndID);
     arrPathAndID = [];
 
     //Event click on button OK:
@@ -47,7 +54,7 @@ $(document).ready(function () {
         //Update path selected images:
         addItemToPathArray();
         for (let i = 0; i < arrPaths.length; i++) {
-            arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i];
+            arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i].replace('x75_', 'Original_');
         }
         $("#imgPaths").val(arrPathAndID);
         //Reset:
@@ -152,11 +159,11 @@ $(document).ready(function () {
 
 //Remove on the popup:
 function remove(el) {
-    //alert($(el).parent().parent());
+    //console.log($(el).parent().parent());
     let divOfImg = $(el).parent().parent();
     let img = divOfImg.find('img')[0];
     let path = img.currentSrc;
-    //alert(img.currentSrc);
+    //console.log(img.currentSrc);
     console.log(divOfImg);
     path = path.replace(domain, "");
     console.log(path);
@@ -188,11 +195,11 @@ function remove(el) {
 
 //Remove on the div selected images:
 function removeSelectedImage(el) {
-    //alert($(el).parent().parent());
+    //console.log($(el).parent().parent());
     let divOfImg = $(el).parent().parent();
     let myDivUL = divOfImg.find('img')[0];
     let path = myDivUL.currentSrc;
-    //alert(myDivUL.currentSrc);
+    //console.log(myDivUL.currentSrc);
     console.log(divOfImg);
     path = path.replace(domain, "");
     console.log(path);
@@ -210,9 +217,10 @@ function removeSelectedImage(el) {
     removeItemOfPathArray(path);
     arrPathAndID = [];
     for (let i = 0; i < arrPaths.length; i++) {
-        arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i];
+        arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i].replace('x75_', 'Original_');
     }
     $("#imgPaths").val(arrPathAndID);
+    console.log(arrPathAndID);
     //hidden tab:
     document.getElementById('imgtab').style.display = "none";
 }
@@ -238,7 +246,7 @@ function removeItemOfPathTempArray(path) {
 //Delete item of array of image path:
 function removeItemOfPathArray(obj) {
     for (let i = 0; i < arrPaths.length; i++) {
-        //alert((arrPaths[i] == obj));
+        //console.log((arrPaths[i] == obj));
         if (arrPaths[i] == obj) {
             arrPaths.splice(i, 1);
             arrImgID.splice(i, 1);
@@ -322,7 +330,7 @@ $(document).on('click', '#btnUpdateImage', function (evt) {
 //crop image:
 $(document).on('click', '#btnCrop', function (evt) {
     let radio = $("#save input[type='radio']:checked").val();
-    //alert(radio);
+    //console.log(radio);
 
     if ($("#save input[type='radio']:checked").val() == "auto") {
         cropAutoImage(imageID);
@@ -369,7 +377,7 @@ $(document).on('click', '#btnSubmit', function (evt) {
     data.img = objbyid;
     $.ajax({
         type: "POST",
-        url: "/urlsave",
+        url: "/crop-manual",
         data: data
     }).done(function (o) {
         console.log('saved');
@@ -377,11 +385,8 @@ $(document).on('click', '#btnSubmit', function (evt) {
         // - please modify the callback in javascript. All you
         // need is to return the url to the file, you just saved 
         // and than put the image in your browser.
-        console.log(o);        
-
-        $("#modalCropManual").modal('hide');
-
-        alert(o);
+        console.log(o);  
+        $("#modalCropManual").modal('hide');       
     });
 });
 
@@ -398,7 +403,7 @@ function uploadfile(cb) {
         }
         $.ajax(
             {
-                url: '/image/ajaxUpload',
+                url: '/image/ajax-upload',
                 type: 'POST',
                 contentType: false,
                 processData: false,
@@ -407,8 +412,7 @@ function uploadfile(cb) {
                     console.log(result);                    
 					cb(result);
                     //window.location.reload();
-                }, error: function (err) {
-                    alert(err);
+                }, error: function (err) {                 
                     console.log(err);
                 }
             }
@@ -416,7 +420,7 @@ function uploadfile(cb) {
 
     }
     else {
-        alert("FormData not support");
+        console.log("FormData not support");
     }
 }
 
@@ -452,13 +456,13 @@ function uploadImageData(cb) {
                     cb(data);
                     return false;
                 }, error: function (err) {
-                    alert('0 ' + err);
+                    console.log('0 ' + err);
                 }
             }
         );
     }
     else {
-        alert("FormData not support");
+        console.log("FormData not support");
     }		
 }
 
@@ -474,7 +478,7 @@ function insertImageInfo(imgdata) {
             success: function (result) {               
                 window.location.href = '/image';
             }, error: function (err) {
-                alert(err);
+                console.log(err);
             }
         }
     );
@@ -489,7 +493,7 @@ function getDataByMoment(moment) {
     }
     $.ajax(
         {
-            url: '/image/dataByMoment',
+            url: '/image/data-by-moment',
 
             type: 'POST',
             data: JSON.stringify(data),
@@ -497,12 +501,11 @@ function getDataByMoment(moment) {
             dataType: 'json',
             success: function (result) {                
                 //window.location.reload();
-                result.forEach(function (f) {  
-                    //let path = f.media + '/' + f.medialist.thumbnail.thumbnail_400x400;
+                result.forEach(function (f) {                    
                     //+ "style=\"height : 75px\" "
-                    let thumbnail_75x75 = f.medialist.articlePreview;
-                    let path = f.media + '/' + thumbnail_75x75;
-                    let img = "<img  src=\"" + path + "\" " + "id = \"" + f._id + "\" " + "style=\"width: 75px; height : 75px\";  " + ">  ";
+                    let imgSrc = f.medialist.articlePreview;                  
+                    let path = f.media + '/' + imgSrc;
+                    let img = "<img  src=\"" + path + "\" " + "id = \"" + f._id + "\" " + "style=\"height : 79px\";  " + ">  ";
                     let html = '<div class="item icart">';
                     html = html + '<div class="divrm">';
                     html = html + '<a onclick="removeSelectedImage(this)" class="remove ' + '">&times;</a>';
@@ -516,12 +519,13 @@ function getDataByMoment(moment) {
                 //refreshDivimg();
                 //update path of selected images:   
                 for (let i = 0; i < arrPaths.length; i++) {
-                    arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i];
+                    arrPathAndID[i] = arrImgID[i] + ',' + arrPaths[i].replace('x75_', 'Original_');
                 }
-                $("#imgPaths").val(arrPathAndID);                
+                $("#imgPaths").val(arrPathAndID);  
+                console.log(arrPathAndID);              
                 
             }, error: function (err) {
-                alert(err);
+                console.log(err);
             }
         }
     );
@@ -538,7 +542,7 @@ function getData() {
             success: function (result) {
                 console.log(result);
             }, error: function (err) {
-                alert(err);
+                console.log(err);
             }
         }
     );
@@ -548,7 +552,7 @@ function getDataByID(id) {
     let data = { id: id };
     $.ajax(
         { 
-            url: '/image/databyid',
+            url: '/image/data-by-id',
             type: 'POST',
             data: JSON.stringify(data),
             contentType: "application/json",          
@@ -609,7 +613,7 @@ function updateImageInfo(imgdata) {
 					document.getElementById('imgtab').style.display = "none";
 				}
             }, error: function (err) {
-                alert(err);
+                console.log(err);
             }
         }
     );
@@ -627,10 +631,10 @@ function updateImageInfoWithFormImage(imgdata) {
             contentType: "application/json",            
             dataType: 'json',
             success: function (result) {                
-                alert('Updated successful');                   
+                console.log('Updated successful');                   
                 window.location.href = '/image';
             }, error: function (err) {
-                alert(err);
+                console.log(err);
             }
         }
     );
@@ -643,7 +647,7 @@ var jcrop_api = null;
 function initImageTabcontent(imgdata) {
     
     let src = imgdata.media + "/" + imgdata.medialist.thumbnail.thumbnail_400x400;
-    $("#description").val(imgdata._id);
+    $("#description").val(imgdata.description);
     $("#heading").val(imgdata.heading);
     $("#photographer").val(imgdata.photographer);   
     $("#imgid").val(imgdata._id);    
@@ -654,8 +658,8 @@ function initImageTabcontent(imgdata) {
    
 	//Display dimension of image:
 	$("#" + "cp_" + imgdata._id).load(function() {
-        //alert($(this).height());
-       // alert($(this).width());
+        //console.log($(this).height());
+       // console.log($(this).width());
         let width = $(this).width();
         let height = $(this).height();
         let html = "<br /> <label>" + width +" x " + height + "</label> <br />";
@@ -676,7 +680,7 @@ function initImageTabcontent(imgdata) {
     $(function () {
 
         $('#save input:radio').change(function () {
-            //alert('changed');
+            //console.log('changed');
             //JQuery.Jcop:
             
             if ($("#save input[type='radio']:checked").val() != "auto") {
@@ -731,7 +735,7 @@ function createDirectory(cb, cb2) {
     console.log('created directory');
     $.ajax(
         {
-            url: '/image/createDirectory',
+            url: '/image/create-directory',
             type: 'GET',
             contentType: false,
             processData: false,
@@ -741,7 +745,7 @@ function createDirectory(cb, cb2) {
 				cb(cb2);
                 //window.location.reload();
             }, error: function (err) {
-                alert(err);
+                console.log(err);
             }
         }
     );
@@ -755,7 +759,7 @@ function cropAutoImage(id) {
 	let data = { id: id };
 	 $.ajax(
         {
-            url: '/image/cropImage/faces',
+            url: '/image/crop-image/faces',
             type: 'POST',
             data: JSON.stringify(data),
             contentType: "application/json",
@@ -766,7 +770,7 @@ function cropAutoImage(id) {
 				displayImageCropAuto(result);
 
             }, error: function (err) {
-                alert(err);
+                console.log(err);
             }
         }
     );
