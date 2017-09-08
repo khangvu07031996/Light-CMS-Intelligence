@@ -99,9 +99,21 @@ module.exports.getLastArticle = function (req, res) {
     res.send(data);
   });
 };
-module.exports.getArticles = function (callback) {
-  Article.find(callback);
+module.exports.getArticles = function (page, limit, callback) {
+  // Article.find(callback);
+  if (page === -1 || limit === -1) {
+    Article.find((err, rows) => {
+      callback(err, rows);
+      return false;
+    });
+  } else {
+    Article.paginate({}, { page, limit }, (err, result) => {
+      console.log(result);
+      callback(err, result);
+    });
+  }
 };
+
 module.exports.getPublishedArticles = function (callback) {
   Article.find({ status: 'Published' }, callback);
 };

@@ -23,7 +23,16 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 function getAllArticle(req, res) {
-  Article.getArticles((err, data) => {
+  console.log(`query = ${req.query.page}`);
+  let limit = 2;
+  let page = 1;
+  let totalRows = 1;
+  let index = Number(req.query.page);
+  if (!isNaN(index)) {
+    page = index;
+  }
+  console.log(`page = ${page}`);
+  Article.getArticles(page, limit, (err, data) => {
     if (err) {
       return next(err);
     }
@@ -33,7 +42,7 @@ function getAllArticle(req, res) {
       errorlog.error(`Error Status : ${notFound.status}`, `Error Message : ${notFound.message}`, `Error Trace : ${new Error().stack}`);
       return next(notFound);
     }
-    res.render('ArticleForm', { articles: data,
+    res.render('ArticleForm', { articles: data.docs,
       helpers: {
         date(data) {
           const date = new Date(data);
@@ -42,7 +51,9 @@ function getAllArticle(req, res) {
           const yyyy = date.getFullYear();
           return `${d}/${mm}/${yyyy}`;
         },
-      } });
+      },
+      pagination: { page, limit, totalRows: data.total }
+    });
   });
 }
 function addArticle(req, res) {
