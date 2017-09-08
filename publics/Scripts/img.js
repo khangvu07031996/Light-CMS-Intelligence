@@ -270,7 +270,7 @@ $(document).on('click', '#divimg img', function (evt) {
 });
 
 $(document).on('click', '#btnPopup', function (evt) {    
-    getData();
+    //-----------getData();
 	var selDiv = "";
     selDiv = document.querySelector("#divimg");
     //get all tag img in div divimg:

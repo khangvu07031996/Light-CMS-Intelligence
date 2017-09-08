@@ -42,7 +42,7 @@ router.get("/image/create-directory", (req, res) => {
 
 // Get only all data:
 router.get("/image/data", (req, res) => {
-  image.getAll((err, result) => {
+  image.getAll(-1, -1, (err, result) => {
     if (err) {
       res.send(err);
     }

@@ -4,6 +4,7 @@ const userdata = require('../models/user');
 const Author = require('../models/author');
 const mongoosastic = require('mongoosastic');
 const image = require('../models/image');
+let mongoosePaginate = require('mongoose-paginate');
 
 const ArticleSchema = mongoose.Schema({
   headline: {
@@ -62,6 +63,7 @@ const ArticleSchema = mongoose.Schema({
 ArticleSchema.plugin(mongoosastic, {
   hosts: 'localhost:9200',
 });
+ArticleSchema.plugin(mongoosePaginate);
 
 const Article = module.exports = mongoose.model('Article', ArticleSchema);
 Article.createMapping((err, mapping) => {

@@ -97,7 +97,7 @@ function getArticleById(req, res) {
     Author.getAuthorName((err, dataA) => {
       Userdata.getUserName((err) => {
         Section.getSectionName((err, dataSection) => {
-          Image.getAll(req, res, (err, rows) => {
+          Image.getAll(-1, -1, (err, rows) => {
             res.render('editArticles', { Author: dataA, Section: dataSection, article: data, images: rows, arr, arrImg });
           });
         });
@@ -162,7 +162,7 @@ function getAllName(req, res) {
   Author.getAuthorName((err, data) => {
     Userdata.getUserName(() => {
       Section.getSectionName((err, dataSection) => {
-        Image.getAll(req, res, (err, rows) => {
+        Image.getAll(-1, -1, (err, rows) => {
           res.render('addArticles', { Author: data, Section: dataSection, data: rows });
         });
       });

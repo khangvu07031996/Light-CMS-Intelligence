@@ -51,14 +51,17 @@ let image = mongoose.model("image", imageSchema);
 
 module.exports = {
   getAll(page, limit, callback) {
-    image.paginate({}, { page, limit }, (err, result) => {
-      console.log(result);
-      callback(err, result);
-    });
-    // image.find((err, rows) => {
-    //   callback(err, rows);
-    //   return false;
-    // });
+    if (page === -1 || limit === -1) {
+      image.find((err, rows) => {
+        callback(err, rows);
+        return false;
+      });
+    } else {
+      image.paginate({}, { page, limit }, (err, result) => {
+        console.log(result);
+        callback(err, result);
+      });
+    }
   },
   getDataByID(id, callback) {
     image.find({ _id: id }, (err, rows) => {
