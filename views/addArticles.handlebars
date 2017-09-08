@@ -181,7 +181,7 @@
                         <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Tags <span class="required">*</span></label>
                             <div class="col-lg-10">
-                               <button class="btn btn-info col-lg-4" id = "press_me" type = "button">generator</button>
+                               <button class="btn btn-info col-lg-4" id = "press_me" type = "button">Generator</button>
                                 <input class = "form-control col-lg-8" type="text" data-role="tagsinput"  id ="result" value="" data-role="" name = "tags"/>
                             </div>
                         </div>
@@ -203,7 +203,7 @@
                             </div>
                         </div>
                          <div class="form-group ">
-                            <label for="cname" class="control-label col-lg-2"> Date Publish <span class="required">*</span></label>
+                            <label for="cname" class="control-label col-lg-2"> Publish <span class="required">*</span></label>
                             <div class="col-lg-10">
                                 <div class='input-group date' id='datetimepicker3'>
                                     <input type='text' class="form-control" name="publishDate" />
@@ -216,7 +216,7 @@
                          <div class="form-group ">
                             <label for="cname" class="control-label col-lg-2"> Create By<span class="required">*</span></label>
                             <div class="col-lg-10">
-                                 <input class="form-control" id="cname" name="CreateBy" value= "{{user.username}}" minlength="5" type="text" required />
+                                 <input disabled class="form-control" id="cname" name="CreateBy" value= "{{user.username}}" minlength="5" type="text" required />
                             </div>
                         </div>
                         <div class="col-lg-offset-2 col-lg-10" >

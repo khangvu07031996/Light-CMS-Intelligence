@@ -55,9 +55,9 @@ function addArticle(req, res) {
   ArticleObj.author = req.body.author;
   ArticleObj.tags = req.body.tags;
   ArticleObj.widgets = req.body.widgets;
-  ArticleObj.date_created = new Date();
+  ArticleObj.dateCreated = new Date();
   ArticleObj.publishDate = new Date(req.body.publishDate);
-  ArticleObj.CreateBy = req.body.CreateBy;
+  ArticleObj.createBy = req.body.createBy;
   if (req.body.submit === "save") {
     ArticleObj.status = "Draft";
   } else {
@@ -118,9 +118,9 @@ function updateArticle(req, res) {
       dataArticle.author = req.body.author;
       dataArticle.tags = req.body.tags;
       dataArticle.widgets = req.body.widgets;
-      dataArticle.date_created = new Date();
+      dataArticle.dateCreated = new Date();
       dataArticle.publishDate = new Date();
-      dataArticle.CreateBy = req.body.CreateBy;
+      dataArticle.createBy = req.body.createBy;
       if (req.body.submit === "save") {
         dataArticle.status = "Draft";
       } else {
