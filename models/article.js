@@ -38,7 +38,7 @@ const ArticleSchema = mongoose.Schema({
     type: String,
     es_indexed: true,
   },
-  date_created: {
+  dateCreated: {
     type: Date,
     default: Date.now,
     es_indexed: true,
@@ -54,7 +54,7 @@ const ArticleSchema = mongoose.Schema({
     es_indexed: true,
     default: 'Save Draft',
   },
-  CreateBy: {
+  createBy: {
     type: String,
     es_indexed: true,
   },
@@ -77,23 +77,23 @@ module.exports = {
 };
 module.exports.getArticleBySection = function (req, res) {
   Article.find({ section: req.params.section, status: 'Published' },
-    {}, { sort: { date_created: -1 }, limit: 3 }, (err, data) => {
+    {}, { sort: { dateCreated: -1 }, limit: 3 }, (err, data) => {
       res.send(data);
     });
 };
 module.exports.getAllArticleBySection = function (req, res) {
-  Article.find({ section: req.params.section, status: 'Published' }, {}, { sort: { date_created: -1 } }, (err, data) => {
+  Article.find({ section: req.params.section, status: 'Published' }, {}, { sort: { dateCreated: -1 } }, (err, data) => {
     res.send(data);
   });
 };
 module.exports.getHotArticleBySection = function (req, res) {
   Article.findOne({ section: req.params.section, status: 'Published' }, {},
-    { sort: { date_created: -1 } }, (err, data) => {
+    { sort: { dateCreated: -1 } }, (err, data) => {
       res.send(data);
     });
 };
 module.exports.getLastArticle = function (req, res) {
-  Article.findOne({ status: 'Published' }, [], { sort: { date_created: -1 }, limit: 8 }, (err, data) => {
+  Article.findOne({ status: 'Published' }, [], { sort: { dateCreated: -1 }, limit: 8 }, (err, data) => {
     res.send(data);
   });
 };
@@ -110,7 +110,7 @@ module.exports.addArticle = function (articles) {
   return new Article(articles).save();
 };
 module.exports.getHotArticle = function (req, res) {
-  Article.find({ status: 'Published' }, [], { sort: { date_created: -1 }, limit: 4 }, (err, data) => {
+  Article.find({ status: 'Published' }, [], { sort: { dateCreated: -1 }, limit: 4 }, (err, data) => {
     res.send(data);
   });
 };
@@ -134,9 +134,9 @@ module.exports.updateArticle = function (req, res) {
       dataArticle.author = req.body.author;
       dataArticle.tags = req.body.tags;
       dataArticle.widgets = req.body.widgets;
-      dataArticle.date_created = new Date(req.body.date_created);
+      dataArticle.dateCreated = new Date();
       dataArticle.publishDate = new Date(req.body.publishDate);
-      dataArticle.CreateBy = req.body.CreateBy;
+      dataArticle.createBy = req.body.createBy;
       dataArticle.status = req.body.status;
       dataArticle.save((err) => {
         if (err) {
